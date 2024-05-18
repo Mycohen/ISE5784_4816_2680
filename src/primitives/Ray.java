@@ -1,15 +1,26 @@
 package primitives;
 
-// Class representing a ray in three-dimensional space
+/**
+ * Class representing a ray in three-dimensional space.
+ */
 public class Ray {
 
-    // The starting point of the ray
+    /**
+     * The starting point of the ray.
+     */
     private final Double3 head;
 
-    // The direction vector of the ray (normalized)
+    /**
+     * The direction vector of the ray (normalized).
+     */
     private final Vector direction;
 
-    // Constructor initializing the ray with a starting point and direction vector
+    /**
+     * Constructor initializing the ray with a starting point and direction vector.
+     *
+     * @param p0 the starting point of the ray
+     * @param dir the direction vector of the ray
+     */
     public Ray(Double3 p0, Vector dir) {
         // Setting the head to the specified starting point
         head = p0;
@@ -17,7 +28,12 @@ public class Ray {
         direction = dir.normalize();
     }
 
-    // Override equals method to compare rays' starting points and direction vectors
+    /**
+     * Override equals method to compare rays' starting points and direction vectors.
+     *
+     * @param o the object to compare with
+     * @return true if the rays are equal, false otherwise
+     */
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -26,7 +42,11 @@ public class Ray {
         return head.equals(ray.head) && direction.equals(ray.direction);
     }
 
-    // Override hashCode method for consistency with equals method
+    /**
+     * Override hashCode method for consistency with equals method.
+     *
+     * @return the hash code of the ray
+     */
     @Override
     public int hashCode() {
         int result = head.hashCode();
@@ -34,7 +54,11 @@ public class Ray {
         return result;
     }
 
-    // Override toString method to represent the ray as a string
+    /**
+     * Override toString method to represent the ray as a string.
+     *
+     * @return the string representation of the ray
+     */
     @Override
     public String toString() {
         return "Ray{" +

@@ -2,34 +2,53 @@ package primitives;
 
 import static primitives.Util.alignZero;
 
-// Class representing a vector in three-dimensional space, inheriting from Point
+/**
+ * Class representing a vector in three-dimensional space, inheriting from Point.
+ */
 public class Vector extends Point {
 
-    // Constructor initializing the vector with specified coordinates
+    /**
+     * Constructor initializing the vector with specified coordinates.
+     *
+     * @param x the x-coordinate of the vector
+     * @param y the y-coordinate of the vector
+     * @param z the z-coordinate of the vector
+     * @throws IllegalArgumentException if the vector is the zero vector
+     */
     public Vector(double x, double y, double z) {
-        // Call the superclass constructor to set the coordinates
         super(x, y, z);
-        // Check if the vector is the zero vector, which is not allowed
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector(0,0,0) is illegal");
     }
 
-    // Constructor initializing the vector with provided Double3 object
+    /**
+     * Constructor initializing the vector with provided Double3 object.
+     *
+     * @param xyz the coordinates of the vector as a Double3 object
+     * @throws IllegalArgumentException if the vector is the zero vector
+     */
     public Vector(Double3 xyz) {
-        // Call the superclass constructor to set the coordinates
         super(xyz);
-        // Check if the vector is the zero vector, which is not allowed
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector(0,0,0) is illegal");
     }
 
-    // Override toString method to represent the vector as a string
+    /**
+     * Override toString method to represent the vector as a string.
+     *
+     * @return the string representation of the vector
+     */
     @Override
     public String toString() {
         return "Vector{" + xyz + "}";
     }
 
-    // Override equals method to compare vectors' coordinates for equality
+    /**
+     * Override equals method to compare vectors' coordinates for equality.
+     *
+     * @param o the object to compare with
+     * @return true if the vectors are equal, false otherwise
+     */
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -38,28 +57,50 @@ public class Vector extends Point {
         return xyz.equals(vector.xyz);
     }
 
-    // Method to add another vector to this vector
+    /**
+     * Method to add another vector to this vector.
+     *
+     * @param vector the vector to add
+     * @return a new vector resulting from the addition
+     */
     public Vector add(Vector vector) {
         return new Vector(xyz.add(vector.xyz));
     }
 
-    // Method to scale this vector by a scalar
+    /**
+     * Method to scale this vector by a scalar.
+     *
+     * @param scalar the scalar to scale the vector by
+     * @return a new scaled vector
+     */
     public Vector scale(double scalar) {
         return new Vector(xyz.scale(scalar));
     }
 
-    // Method to calculate the squared length of this vector
+    /**
+     * Method to calculate the squared length of this vector.
+     *
+     * @return the squared length of the vector
+     */
     public double lengthSquared() {
         return xyz.d1 * xyz.d1 + xyz.d2 * xyz.d2 + xyz.d3 * xyz.d3;
     }
 
-    // Method to calculate the length of this vector
+    /**
+     * Method to calculate the length of this vector.
+     *
+     * @return the length of the vector
+     */
     public double length() {
         return Math.sqrt(lengthSquared());
     }
 
-    // Method to normalize this vector (make its length 1)
-    // Throws an exception if the vector is the zero vector
+    /**
+     * Method to normalize this vector (make its length 1).
+     *
+     * @return a new normalized vector
+     * @throws ArithmeticException if the vector is the zero vector
+     */
     public Vector normalize(){
         double length = alignZero(length());
         if(length == 0)
@@ -67,7 +108,12 @@ public class Vector extends Point {
         return new Vector(xyz.scale(1/length));
     }
 
-    // Method to calculate the cross product of this vector and another vector
+    /**
+     * Method to calculate the cross product of this vector and another vector.
+     *
+     * @param vector the vector to cross with
+     * @return a new vector representing the cross product
+     */
     public Vector crossProduct(Vector vector) {
         return new Vector(
                 xyz.d2 * vector.xyz.d3 - xyz.d3 * vector.xyz.d2,
@@ -75,7 +121,12 @@ public class Vector extends Point {
                 xyz.d1 * vector.xyz.d2 - xyz.d2 * vector.xyz.d1);
     }
 
-    // Method to calculate the dot product of this vector and another vector
+    /**
+     * Method to calculate the dot product of this vector and another vector.
+     *
+     * @param vector the vector to dot with
+     * @return the dot product
+     */
     public double dotProduct(Vector vector) {
         return xyz.d1 * vector.xyz.d1 + xyz.d2 * vector.xyz.d2 + xyz.d3 * vector.xyz.d3;
     }
