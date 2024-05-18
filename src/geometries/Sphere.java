@@ -2,7 +2,8 @@ package geometries;
 import primitives.Vector;
 import primitives.Point;
 
-public class Sphere implements Geometry{
+public class Sphere implements Geometry// extends RadialGeometry
+{
     private final Point center;
     public Sphere (Point myCenter)
     {
@@ -12,6 +13,7 @@ public class Sphere implements Geometry{
     {
       return null;
     }
+    @Override
     public Vector getNormal (Point p)
     {
         return null;
