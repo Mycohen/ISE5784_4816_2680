@@ -8,7 +8,7 @@ import primitives.Vector;
  * Cylinder class represents a cylinder in a 3D Cartesian coordinate system.
  * A cylinder is defined by its height and extends a tube.
  */
-public class Cylinder implements Geometry {
+public class Cylinder extends Tube {
     // The height of the cylinder
     private final double height;
 
@@ -17,7 +17,8 @@ public class Cylinder implements Geometry {
      *
      * @param height the height of the cylinder
      */
-    public Cylinder(double height) {
+    public Cylinder(double radius, Ray axis, double height) {
+        super(radius, axis);
         this.height = height;
     }
 
@@ -34,14 +35,6 @@ public class Cylinder implements Geometry {
         return null;
     }
 
-    /**
-     * Gets the normal vector to the cylinder.
-     * Note: This method currently returns null and needs to be implemented.
-     *
-     * @return the normal vector (currently null)
-     */
-    public Vector getNormal() {
-        // Placeholder implementation
-        return null;
-    }
+
+
 }

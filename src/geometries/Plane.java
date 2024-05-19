@@ -7,9 +7,11 @@ import primitives.Vector;
  * Plane class represents a plane in a 3D Cartesian coordinate system.
  * A plane is defined by a point and a normal vector.
  */
-public class Plane implements Geometry {
+public class Plane implements Geometry
+{
     // A point on the plane
     private final Point q;
+
     // The normal vector to the plane
     private final Vector normal;
 

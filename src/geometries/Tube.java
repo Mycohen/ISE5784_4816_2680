@@ -8,7 +8,7 @@ import primitives.Vector;
  * Class representing a tube in three-dimensional space.
  * A tube is defined by its axis (a ray) and a radius.
  */
-public class Tube implements Geometry {
+public class Tube extends RadialGeometry {
 
     /**
      * The axis ray of the tube.
@@ -20,19 +20,11 @@ public class Tube implements Geometry {
      *
      * @param axis the axis ray of the tube
      */
-    public Tube(Ray axis) {
+    public Tube(double radius, Ray axis) {
+        super(radius);
         this.axis = axis;
     }
 
-    /**
-     * This method is not implemented and returns null.
-     * Consider removing or implementing this method.
-     *
-     * @return null
-     */
-    public Vector getNormal() {
-        return null;
-    }
 
     /**
      * Gets the normal vector to the tube at a given point.
