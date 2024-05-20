@@ -64,6 +64,7 @@ public class Vector extends Point {
      * @return a new vector resulting from the addition
      */
     public Vector add(Vector vector) {
+        //I handle the case of the answer being the zero vector
         return new Vector(xyz.add(vector.xyz));
     }
 
@@ -73,8 +74,11 @@ public class Vector extends Point {
      * @param scalar the scalar to scale the vector by
      * @return a new scaled vector
      */
-    //if is zero!
     public Vector scale(double scalar) {
+        if(scalar==0)
+        {
+            throw new IllegalArgumentException("Scalar can't be 0");
+        }
         return new Vector(xyz.scale(scalar));
     }
 
@@ -83,7 +87,8 @@ public class Vector extends Point {
      *
      * @return the squared length of the vector
      */
-    public double lengthSquared() {
+    public double lengthSquared()
+    {
         return xyz.d1 * xyz.d1 + xyz.d2 * xyz.d2 + xyz.d3 * xyz.d3;
     }
 
@@ -116,7 +121,10 @@ public class Vector extends Point {
      * @return a new vector representing the cross product
      */
     public Vector crossProduct(Vector vector) {
-        //checking paralell vecrors
+        // Check if the vectors are parallel
+        if (isParallel(vector)) {
+            throw new IllegalArgumentException("Cross Product of parallel vectors is illegal");
+        }
         return new Vector(
                 xyz.d2 * vector.xyz.d3 - xyz.d3 * vector.xyz.d2,
                 xyz.d3 * vector.xyz.d1 - xyz.d1 * vector.xyz.d3,
@@ -131,5 +139,24 @@ public class Vector extends Point {
      */
     public double dotProduct(Vector vector) {
         return xyz.d1 * vector.xyz.d1 + xyz.d2 * vector.xyz.d2 + xyz.d3 * vector.xyz.d3;
+    }
+
+   //from here help functions
+    private boolean isParallel(Vector vector) {
+        // Calculate the ratios and compare them
+        double ratio1 = xyz.d1 / vector.xyz.d1;
+        double ratio2 = xyz.d2 / vector.xyz.d2;
+        double ratio3 = xyz.d3 / vector.xyz.d3;
+
+        // Handle cases where the components might be zero to avoid division by zero
+        boolean ratio1IsValid = !Double.isInfinite(ratio1) && !Double.isNaN(ratio1);
+        boolean ratio2IsValid = !Double.isInfinite(ratio2) && !Double.isNaN(ratio2);
+        boolean ratio3IsValid = !Double.isInfinite(ratio3) && !Double.isNaN(ratio3);
+
+        // Check if all valid ratios are equal
+        if (ratio1IsValid && ratio2IsValid && ratio3IsValid) {
+            return ratio1 == ratio2 && ratio2 == ratio3;
+        }
+        return false;
     }
 }
