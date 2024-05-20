@@ -73,6 +73,7 @@ public class Vector extends Point {
      * @param scalar the scalar to scale the vector by
      * @return a new scaled vector
      */
+    //if is zero!
     public Vector scale(double scalar) {
         return new Vector(xyz.scale(scalar));
     }
@@ -115,6 +116,7 @@ public class Vector extends Point {
      * @return a new vector representing the cross product
      */
     public Vector crossProduct(Vector vector) {
+        //checking paralell vecrors
         return new Vector(
                 xyz.d2 * vector.xyz.d3 - xyz.d3 * vector.xyz.d2,
                 xyz.d3 * vector.xyz.d1 - xyz.d1 * vector.xyz.d3,
