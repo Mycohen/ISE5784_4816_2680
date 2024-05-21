@@ -18,17 +18,16 @@ class VectorTests {
 
     @Test
     void testConstructor() {
+        // ============ Equivalence Partitions Tests ==============
         // TC01: Correct vector
         assertDoesNotThrow(() ->
                 new Vector(1, 2, 3), "Failed constructing a correct vector");
-    }
 
-    @Test
-    void testConstructorWithDouble3() {
         // TC01: Correct vector with Double3 parameter
         assertDoesNotThrow(() -> new Double3(1, 2, 3),
                 "Failed constructing a correct vector with Double3 parameter");
     }
+
 
     /**
      * Testing {@link Vector#add(Vector)} method.
@@ -47,7 +46,8 @@ class VectorTests {
 
         // TC10: Addition resulting in zero vector
         Vector v3 = new Vector(-1, -2, -3);
-        assertThrows(IllegalArgumentException.class, () -> v1.add(v3), "add() method did not throw for zero vector result");
+        assertThrows(IllegalArgumentException.class, () ->
+                v1.add(v3), "add() method did not throw for zero vector result");
     }
 
     /**
@@ -156,4 +156,6 @@ class VectorTests {
         Vector v3 = new Vector(1, 2, 4);
         assertFalse(v1.equals(v3), "equals() method failed for different vectors");
     }
+
+
 }

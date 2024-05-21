@@ -37,6 +37,58 @@ public class Point {
     }
 
     /**
+     * Method to add a vector's coordinates to this point's coordinates,
+     * resulting in a new point displaced by the vector from this point.
+     *
+     * @param vector the vector to add
+     * @return the new point displaced by the vector
+     */
+    public Point add(Vector vector) {
+        return new Point(xyz.add(vector.xyz));
+    }
+
+    /**
+     * Method to subtract another point's coordinates from this point's coordinates,
+     * resulting in a vector pointing from the other point to this point.
+     *
+     * @param point the other point
+     * @return the vector pointing from the other point to this point
+     */
+    public Vector subtract(Point point) {
+        return new Vector(xyz.subtract(point.xyz));
+    }
+
+    /**
+     * Method to calculate the distance between two points.
+     *
+     * @param point the other point
+     * @return the distance between this point and the other point
+     */
+    public double distance(Point point) {
+        return Math.sqrt(distanceSquared(point));
+    }
+
+    /**
+     * Method to calculate the squared distance between two points.
+     *
+     * @param point the other point
+     * @return the squared distance between this point and the other point
+     */
+    public double distanceSquared(Point point) {
+        double dx = xyz.d1 - point.xyz.d1;
+        double dy = xyz.d2 - point.xyz.d2;
+        double dz = xyz.d3 - point.xyz.d3;
+
+        return dx * dx + dy * dy + dz * dz;
+    }
+
+
+
+
+
+
+
+    /**
      * Override equals method to compare points' coordinates for equality.
      *
      * @param o the object to compare with
@@ -70,49 +122,4 @@ public class Point {
         return "Point {" + xyz + '}';
     }
 
-    /**
-     * Method to calculate the squared distance between two points.
-     *
-     * @param point the other point
-     * @return the squared distance between this point and the other point
-     */
-    public double distanceSquared(Point point) {
-        double dx = xyz.d1 - point.xyz.d1;
-        double dy = xyz.d2 - point.xyz.d2;
-        double dz = xyz.d3 - point.xyz.d3;
-
-        return dx * dx + dy * dy + dz * dz;
-    }
-
-    /**
-     * Method to calculate the distance between two points.
-     *
-     * @param point the other point
-     * @return the distance between this point and the other point
-     */
-    public double distance(Point point) {
-        return Math.sqrt(distanceSquared(point));
-    }
-
-    /**
-     * Method to subtract another point's coordinates from this point's coordinates,
-     * resulting in a vector pointing from the other point to this point.
-     *
-     * @param point the other point
-     * @return the vector pointing from the other point to this point
-     */
-    public Vector subtract(Point point) {
-        return new Vector(xyz.subtract(point.xyz));
-    }
-
-    /**
-     * Method to add a vector's coordinates to this point's coordinates,
-     * resulting in a new point displaced by the vector from this point.
-     *
-     * @param vector the vector to add
-     * @return the new point displaced by the vector
-     */
-    public Point add(Vector vector) {
-        return new Point(xyz.add(vector.xyz));
-    }
 }
