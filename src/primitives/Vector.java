@@ -33,29 +33,6 @@ public class Vector extends Point {
             throw new IllegalArgumentException("Vector(0,0,0) is illegal");
     }
 
-    /**
-     * Override toString method to represent the vector as a string.
-     *
-     * @return the string representation of the vector
-     */
-    @Override
-    public String toString() {
-        return "Vector{" + xyz + "}";
-    }
-
-    /**
-     * Override equals method to compare vectors' coordinates for equality.
-     *
-     * @param o the object to compare with
-     * @return true if the vectors are equal, false otherwise
-     */
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vector vector)) return false;
-
-        return xyz.equals(vector.xyz);
-    }
 
     /**
      * Method to add another vector to this vector.
@@ -138,6 +115,7 @@ public class Vector extends Point {
      * @return the dot product
      */
     public double dotProduct(Vector vector) {
+
         return xyz.d1 * vector.xyz.d1 + xyz.d2 * vector.xyz.d2 + xyz.d3 * vector.xyz.d3;
     }
 
@@ -159,4 +137,28 @@ public class Vector extends Point {
         }
         return false;
     }
+    /**
+     * Override toString method to represent the vector as a string.
+     *
+     * @return the string representation of the vector
+     */
+    @Override
+    public String toString() {
+        return "Vector{" + xyz + "}";
+    }
+
+    /**
+     * Override equals method to compare vectors' coordinates for equality.
+     *
+     * @param o the object to compare with
+     * @return true if the vectors are equal, false otherwise
+     */
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector vector)) return false;
+
+        return xyz.equals(vector.xyz);
+    }
+
 }
