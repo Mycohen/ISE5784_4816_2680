@@ -34,6 +34,9 @@ public class Sphere extends RadialGeometry {
      */
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        // Calculate the vector from the center of the sphere to the point p
+        Vector normalVector = p.subtract(center);
+        // Normalize the vector to get the normal vector
+        return normalVector.normalize();
     }
 }

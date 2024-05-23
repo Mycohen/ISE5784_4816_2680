@@ -26,6 +26,10 @@ class VectorTests {
         // TC01: Correct vector with Double3 parameter
         assertDoesNotThrow(() -> new Double3(1, 2, 3),
                 "Failed constructing a correct vector with Double3 parameter");
+
+        // TC02: Zero vector
+        assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
+                "Failed constructing a zero vector");
     }
 
 
@@ -138,6 +142,13 @@ class VectorTests {
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(4, -5, 6);
         assertEquals(12, v1.dotProduct(v2), DELTA, "dotProduct() method failed");
+
+        // =============== Boundary Values Tests ==================
+        // TC02: Orthogonal vectors
+        Vector v3 = new Vector(1, 0, 0);
+        Vector v4 = new Vector(0, 1, 0);
+        assertEquals(0, v3.dotProduct(v4), DELTA,
+               "dotProduct() method failed for orthogonal vectors");
     }
 
     /**

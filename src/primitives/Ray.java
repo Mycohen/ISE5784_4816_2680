@@ -27,6 +27,13 @@ public class Ray {
         // Normalizing and setting the direction vector
         direction = dir.normalize();
     }
+    public Vector getDirection() {
+        return this.direction;
+    }
+    public Double3 getHead() {
+        return this.head;
+    }
+
 
     /**
      * Override equals method to compare rays' starting points and direction vectors.

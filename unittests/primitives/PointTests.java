@@ -63,6 +63,7 @@ class PointTests {
                 p1.subtract(p3), "subtract() method did not throw for zero vector result");
     }
 
+
     /**
      * Testing {@link Point#distance(Point)} method.
      */
