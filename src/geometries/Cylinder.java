@@ -5,32 +5,46 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
- * Cylinder class represents a cylinder in a 3D Cartesian coordinate system.
- * A cylinder is defined by its height and extends a tube.
+ * The {@code Cylinder} class represents a cylinder in a 3D Cartesian coordinate system.
+ * A cylinder is defined by its height and extends the {@code Tube} class.
+ *
+ * <p>A cylinder has a circular base and top with the same radius, and it extends vertically
+ * to a certain height.</p>
+ *
+ * @see Tube
+ * @see Ray
+ * @see Point
+ * @see Vector
  */
 public class Cylinder extends Tube {
-    // The height of the cylinder
+    /** The height of the cylinder */
     private final double height;
 
     /**
-     * Constructor to create a Cylinder with a specified height.
+     * Constructs a {@code Cylinder} with a specified radius, axis ray, and height.
      *
      * @param radius the radius of the cylinder
      * @param axis the axis ray of the cylinder
      * @param height the height of the cylinder
+     * @throws IllegalArgumentException if the height is less than or equal to 0
      */
     public Cylinder(double radius, Ray axis, double height) {
         super(radius, axis);
-        if(height <= 0)
+        if (height <= 0) {
             throw new IllegalArgumentException("Height must be greater than 0");
+        }
         this.height = height;
     }
 
     /**
      * Gets the normal vector to the cylinder at a given point.
      *
+     * <p>The normal vector is calculated based on the position of the point relative
+     * to the cylindrical surface and the top or bottom bases.</p>
+     *
      * @param p the point on the cylinder
      * @return the normal vector at the given point
+     * @throws IllegalArgumentException if the point is exactly on the axis of the cylinder
      */
     @Override
     public Vector getNormal(Point p) {
