@@ -15,6 +15,8 @@ public abstract class RadialGeometry implements Geometry{ // implements Geometry
      * Constructor initializing the radial geometry with a specified radius.
      */
     public RadialGeometry(double radius) {
+        if(radius <= 0)
+            throw new IllegalArgumentException("Radius must be greater than 0");
         this.radius = radius;
     }
 }

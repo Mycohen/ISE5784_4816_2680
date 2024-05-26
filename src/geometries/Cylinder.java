@@ -21,6 +21,8 @@ public class Cylinder extends Tube {
      */
     public Cylinder(double radius, Ray axis, double height) {
         super(radius, axis);
+        if(height <= 0)
+            throw new IllegalArgumentException("Height must be greater than 0");
         this.height = height;
     }
 
@@ -53,8 +55,13 @@ public class Cylinder extends Tube {
 
         // Point is on the curved surface
         Point o = p0.add(dir.scale(t)); // Projection of p onto the axis
-        Vector normal = p.subtract(o).normalize(); // Normal vector is radial
+        Vector normal = p.subtract(o);
 
-        return normal;
+        if (normal.length() == 0) {
+            // Point is exactly on the axis (should not happen for valid cylinder surface points)
+            throw new IllegalArgumentException("Point cannot be on the axis of the cylinder");
+        }
+
+        return normal.normalize(); // Normal vector is radial
     }
 }
