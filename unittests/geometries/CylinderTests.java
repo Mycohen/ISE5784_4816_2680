@@ -35,10 +35,11 @@ class CylinderTests {
     }
     @Test
     void testGetNormal() {
+        // ============ Equivalence Partitions Tests ==============
         Cylinder cylinder = new Cylinder(1, new Ray(
                 new Point(0, 0, 0), new Vector(0, 0, 1)), 5);
 
-        // ============ Equivalence Partitions Tests ==============
+
 
         // TC01: Point on the curved surface
         Point pointOnSurface = new Point(1, 0, 2);
@@ -58,10 +59,10 @@ class CylinderTests {
         assertEquals(expectedNormalTop, cylinder.getNormal(pointOnTopBase),
                 "getNormal() wrong result for point on the top base");
 
+
+
+
         // =============== Boundary Values Tests ==================
-
-
-
         // TC05: Point at the center of the top base
         Point centerTopBase = new Point(0, 0, 5);
         assertEquals(expectedNormalTop, cylinder.getNormal(centerTopBase),

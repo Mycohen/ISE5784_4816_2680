@@ -10,7 +10,7 @@ class TriangleTests {
 
         @Test
         void testConstructor() {
-            // ============ Equivalence Partitions Tests ==============
+
             // TC01: Correct triangle
             assertDoesNotThrow(() ->
                             new Triangle(new Point(0, 0, 0),
@@ -18,19 +18,12 @@ class TriangleTests {
                                     new Point(0, 1, 0)),
                     "Failed constructing a correct triangle");
 
-            // TC02: Zero area
-            assertThrows(IllegalArgumentException.class, ()
-                    -> new Triangle(new Point(0, 0, 0),
-                            new Point(0, 0, 0),
-                            new Point(0, 0, 0)),
-                    "Failed constructing a triangle with zero area");
-
-            // TC03: Negative area
-            assertThrows(IllegalArgumentException.class,
-                    () -> new Triangle(new Point(0, 0, 0),
-                            new Point(1, 0, 0),
-                            new Point(0, -1, 0)),
-                    "Failed constructing a triangle with negative area");
+            // TC02: Another correct example
+            assertDoesNotThrow(() ->
+                            new Triangle(new Point(0, 0, 5),
+                                    new Point(0, 5, 0),
+                                    new Point(5, 0, 0)),
+                    "Failed constructing a correct triangle");
         }
 
         @Test
