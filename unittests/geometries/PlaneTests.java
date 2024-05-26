@@ -27,12 +27,21 @@ class PlaneTests {
     }
     @Test
     void testGetNormal() {
-
+        // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here
         Plane p = new Plane(new Point(1, 0, 0), new Vector(1, 0, 0));
-        assertEquals(new Vector(1, 0, 0), p.getNormal(new Point(2, 0, 0)), "Bad normal to plane");
+        assertEquals(new Vector(1, 0, 0),
+                p.getNormal(new Point(2, 0, 0)), "Bad normal to plane");
 
+        // TC02: Test normal by giving three points
+        Plane p2 = new Plane(new Point(0, 0, 1),
+                new Point(1, 0, 0), new Point(0, 1, 0));
 
+        // Expected normal vector calculation
+        Vector expectedNormal = new Vector(1, 1, 1).normalize();
+
+        assertEquals(expectedNormal,
+                p2.getNormal(), "Bad normal to plane");
     }
 
 
