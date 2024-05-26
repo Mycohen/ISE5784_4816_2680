@@ -1,7 +1,7 @@
 package geometries;
 
-import primitives.Ray;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -15,6 +15,8 @@ public class Cylinder extends Tube {
     /**
      * Constructor to create a Cylinder with a specified height.
      *
+     * @param radius the radius of the cylinder
+     * @param axis the axis ray of the cylinder
      * @param height the height of the cylinder
      */
     public Cylinder(double radius, Ray axis, double height) {
@@ -24,16 +26,35 @@ public class Cylinder extends Tube {
 
     /**
      * Gets the normal vector to the cylinder at a given point.
-     * Note: This method currently returns null and needs to be implemented.
      *
      * @param p the point on the cylinder
-     * @return the normal vector at the given point (currently null)
+     * @return the normal vector at the given point
      */
     @Override
     public Vector getNormal(Point p) {
-        // Placeholder implementation
-        return null;
+        Point p0 = axis.getHead();
+        Vector dir = axis.getDirection();
+
+        // Vector from p0 to the point p
+        Vector p0ToP = p.subtract(p0);
+
+        // Project p0ToP onto the direction vector dir
+        double t = dir.dotProduct(p0ToP);
+
+        // Check if the point is on the bottom base
+        if (t <= 0) {
+            return dir.scale(-1); // Normal is in the opposite direction of the axis
+        }
+
+        // Check if the point is on the top base
+        if (t >= this.height) {
+            return dir; // Normal is in the direction of the axis
+        }
+
+        // Point is on the curved surface
+        Point o = p0.add(dir.scale(t)); // Projection of p onto the axis
+        Vector normal = p.subtract(o).normalize(); // Normal vector is radial
+
+        return normal;
     }
-
-
 }

@@ -8,7 +8,7 @@ public class Ray {
     /**
      * The starting point of the ray.
      */
-    private final Double3 head;
+    private final Point head;
 
     /**
      * The direction vector of the ray (normalized).
@@ -21,7 +21,7 @@ public class Ray {
      * @param p0 the starting point of the ray
      * @param dir the direction vector of the ray
      */
-    public Ray(Double3 p0, Vector dir) {
+    public Ray(Point p0, Vector dir) {
         // Setting the head to the specified starting point
         head = p0;
         // Normalizing and setting the direction vector
@@ -30,7 +30,7 @@ public class Ray {
     public Vector getDirection() {
         return this.direction;
     }
-    public Double3 getHead() {
+    public Point getHead() {
         return this.head;
     }
 

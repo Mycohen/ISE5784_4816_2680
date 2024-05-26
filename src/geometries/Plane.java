@@ -28,6 +28,10 @@ public class Plane implements Geometry
         // Calculate two vectors lying on the plane
         Vector v1 = x.subtract(y);
         Vector v2 = x.subtract(z);
+
+        //Checking that the vectors are not collinear
+        if(v1.crossProduct(v2).length() == 0)
+            throw new IllegalArgumentException("The three points are collinear");
         // Calculate the normal vector using the cross product of the two vectors
         this.normal = v1.crossProduct(v2);
     }
