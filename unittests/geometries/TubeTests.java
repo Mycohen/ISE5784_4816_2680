@@ -44,6 +44,11 @@ class TubeTests {
         // TC02: Test normal at a point directly in front of the head of the axis ray
         Point p2 = new Point(1, 0, 0);
         Vector expectedNormal2 = new Vector(1, 0, 0);
-        assertEquals(expectedNormal2, tube.getNormal(p2), "Bad normal to tube at front of the head of the axis ray");
+        assertEquals(expectedNormal2, tube.getNormal(p2),
+                "Bad normal to tube at front of the head of the axis ray");
+        //TC03: Test normal if the point is exactly on the axis of the tube
+        Point p3 = new Point(0, 0, 0);
+       assertEquals(axis.getDirection(), tube.getNormal(p3),
+                "Bad normal to tube at point on the axis");
     }
 }

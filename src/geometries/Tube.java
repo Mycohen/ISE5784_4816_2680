@@ -4,6 +4,8 @@ import primitives.Ray;
 import primitives.Point;
 import primitives.Vector;
 
+import static primitives.Util.isZero;
+
 /**
  * Class representing a tube in three-dimensional space.
  * A tube is defined by its axis (a ray) and a radius.
@@ -36,8 +38,18 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point p) {
+        Point o;
+        if(axis.getHead().equals(p))
+            return axis.getDirection();
         double t = axis.getDirection().dotProduct(p.subtract(axis.getHead()));
-        Point o = axis.getHead().add(axis.getDirection().scale(t));
+        if(isZero(t))
+        {
+            o=axis.getHead();
+        }
+        else {
+            o= axis.getHead().add(axis.getDirection().scale(t));
+        }
+
         Vector n = p.subtract(o);
         return n.normalize();
 
