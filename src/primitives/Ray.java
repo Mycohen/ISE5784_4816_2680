@@ -27,13 +27,24 @@ public class Ray {
         // Normalizing and setting the direction vector
         direction = dir.normalize();
     }
+
+    /**
+     * Gets the direction vector of the ray.
+     *
+     * @return the direction vector of the ray
+     */
     public Vector getDirection() {
         return this.direction;
     }
+
+    /**
+     * Gets the starting point of the ray.
+     *
+     * @return the starting point of the ray
+     */
     public Point getHead() {
         return this.head;
     }
-
 
     /**
      * Override equals method to compare rays' starting points and direction vectors.

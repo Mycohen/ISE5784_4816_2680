@@ -25,21 +25,22 @@ public class Plane implements Geometry {
      * Constructor to create a Plane given three points in space.
      * The three points must not be collinear.
      *
-     * @param x the first point
-     * @param y the second point
-     * @param z the third point
+     * @param p1 the first point
+     * @param p2 the second point
+     * @param p3 the third point
      * @throws IllegalArgumentException if the three points are collinear
      */
-    public Plane(Point x, Point y, Point z) {
-        q = x;
+    public Plane(Point p1, Point p2, Point p3) {
+
         // Calculate two vectors lying on the plane
-        Vector v1 = x.subtract(y);
-        Vector v2 = x.subtract(z);
+        Vector v1 = p2.subtract(p1);
+        Vector v2 = p3.subtract(p1);
 
         // Check that the vectors are not collinear
         if (v1.crossProduct(v2).length() == 0) {
             throw new IllegalArgumentException("The three points are collinear");
         }
+        q = p1;
         // Calculate the normal vector using the cross product of the two vectors
         this.normal = v1.crossProduct(v2).normalize();
     }
