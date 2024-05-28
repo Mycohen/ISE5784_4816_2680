@@ -4,6 +4,10 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
+import static primitives.Util.isZero;
+
 /**
  * The {@code Cylinder} class represents a cylinder in a 3D Cartesian coordinate system.
  * A cylinder is defined by its height and extends the {@code Tube} class.
@@ -71,11 +75,14 @@ public class Cylinder extends Tube {
         Point o = p0.add(dir.scale(t)); // Projection of p onto the axis
         Vector normal = p.subtract(o);
 
-        if (normal.length() == 0) {
+        if ( isZero(normal.length())) {
             // Point is exactly on the axis (should not happen for valid cylinder surface points)
             throw new IllegalArgumentException("Point cannot be on the axis of the cylinder");
         }
 
         return normal.normalize(); // Normal vector is radial
     }
+
+
+
 }

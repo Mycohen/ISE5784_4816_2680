@@ -13,7 +13,7 @@ import primitives.Point;
  * @see Vector
  * @see Point
  */
-public interface Geometry {
+public interface Geometry extends Intersectable{
 
    /**
     * Calculates the normal vector to the geometry at a given point.
