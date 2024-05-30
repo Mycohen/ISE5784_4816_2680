@@ -2,9 +2,11 @@ package geometries;
 
 import primitives.Ray;
 import primitives.Vector;
-import primitives.Point;
+import primitives.*;
 
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * Class representing a sphere in three-dimensional space.
@@ -64,17 +66,19 @@ public class Sphere extends RadialGeometry {
         double t1 = tm - th;
         double t2 = tm + th;
 
-        if (t1 > 0 && t2 > 0) {
+        if (alignZero(t1) > 0 && alignZero(t2) > 0) {
             return List.of(ray.getHead().add(ray.getDirection().scale(t1)),
                     ray.getHead().add(ray.getDirection().scale(t2)));
-        } else if (t1 > 0) {
+        } else if (alignZero(t1 )> 0) {
             return List.of(ray.getHead().add(ray.getDirection().scale(t1)));
-        } else if (t2 > 0) {
+        } else if (alignZero(t2) > 0) {
             return List.of(ray.getHead().add(ray.getDirection().scale(t2)));
         } else {
             return null;
-            //return List.of();
+
 
         }
     }
+
+
 }
