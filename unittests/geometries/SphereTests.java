@@ -53,7 +53,7 @@ class SphereTests {
         assertNull(sphere.findIntsersections(ray), "Ray's line out of sphere");
         //TC02: Ray starts before and crosses the sphere (2 points)
 
-
+        ray = new Ray(new Point(0,0,3),new Vector(0,0,-1) );
 
 
 
