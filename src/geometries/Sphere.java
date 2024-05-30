@@ -50,6 +50,29 @@ public class Sphere extends RadialGeometry {
     }
     @Override
     public List<Point> findIntsersections(Ray ray) {
-        return null;
+        Vector U = this.center.subtract(ray.getHead());
+        double tm = ray.getDirection().dotProduct(U);
+        double dSquared = U.lengthSquared() - tm * tm;
+        double radiusSquared = this.radius * this.radius;
+
+        // If dSquared is greater than or equal to radiusSquared, there are no intersections
+        if (dSquared >= radiusSquared) {
+            return null;
+        }
+
+        double th = Math.sqrt(radiusSquared - dSquared);
+        double t1 = tm - th;
+        double t2 = tm + th;
+
+        if (t1 > 0 && t2 > 0) {
+            return List.of(ray.getHead().add(ray.getDirection().scale(t1)),
+                    ray.getHead().add(ray.getDirection().scale(t2)));
+        } else if (t1 > 0) {
+            return List.of(ray.getHead().add(ray.getDirection().scale(t1)));
+        } else if (t2 > 0) {
+            return List.of(ray.getHead().add(ray.getDirection().scale(t2)));
+        } else {
+            return null;
+        }
     }
 }

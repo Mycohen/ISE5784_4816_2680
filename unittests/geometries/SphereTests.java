@@ -1,13 +1,16 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SphereTests {
-
+    private final Point p001 = new Point(0, 0, 1);
+    private final Point p100 = new Point(1, 0, 0);
+    private final Vector v001 = new Vector(0, 0, 1);
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -40,4 +43,22 @@ class SphereTests {
 
 
     }
+    @Test
+    void testFindIntersections()
+    {
+        // ============ Equivalence Partitions Tests ==============
+        //TC01: Ray's line is outside the sphere (0 points)
+        Sphere sphere = new Sphere(1, p001);
+        Ray ray = new Ray(new Point(0,0,3),new Vector(3,0,-3) );
+        assertNull(sphere.findIntsersections(ray), "Ray's line out of sphere");
+        //TC02: Ray starts before and crosses the sphere (2 points)
+
+
+
+
+
+    }
+
+
+
 }

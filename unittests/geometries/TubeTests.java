@@ -51,4 +51,5 @@ class TubeTests {
        assertEquals(axis.getDirection(), tube.getNormal(p3),
                 "Bad normal to tube at point on the axis");
     }
+
 }

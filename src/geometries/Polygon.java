@@ -98,6 +98,8 @@ public class Polygon implements Geometry {
       return plane.getNormal();
    }
 
-
+   @Override public List<Point> findIntsersections(Ray ray) {
+      return null;
+   }
 
 }
