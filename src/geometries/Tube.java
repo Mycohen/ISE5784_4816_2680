@@ -53,7 +53,7 @@ public class Tube extends RadialGeometry {
         }
 
         Vector n = p.subtract(o);
-        return n.normalize();
+        return n.normalize(); 
 
 
     }
