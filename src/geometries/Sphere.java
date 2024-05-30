@@ -73,6 +73,8 @@ public class Sphere extends RadialGeometry {
             return List.of(ray.getHead().add(ray.getDirection().scale(t2)));
         } else {
             return null;
+            //return List.of();
+
         }
     }
 }
