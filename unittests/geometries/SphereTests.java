@@ -61,7 +61,17 @@ class SphereTests {
         Ray ray = new Ray(new Point(0,0,3),new Vector(3,0,-3) );
         assertNull(sphere.findIntsersections(ray), "Ray's line out of sphere");
 
-        //TC02: Ray starts before and crosses the sphere (2 points)
+        //TC02: Ray is tangent to the sphere, starts outside the sphere (0 point)
+        Ray ray3 = new Ray(new Point(2,2,0),new Vector (0, -2, 0) );
+        assertNull(sphere.findIntsersections(ray3),
+                "Ray is tangent to the sphere, starts outside");
+        //TC03: Ray is tangent to the sphere, starts on the sphere (0 point)
+        Ray ray4 = new Ray(new Point(0,0,2),new Vector (0, -2, 0) );
+        assertNull(sphere.findIntsersections(ray3),
+                "Ray is tangent to the sphere, starts outside");
+
+
+        //TC04: Ray starts before and crosses the sphere (2 points)
         var result2 = sphere.findIntsersections(new Ray(p100,
                 new Vector(-1.665278089022151,-0.12235841760011,1.736500836326363) ));
         assertEquals(2, result2.size(), "Method did not find 2 intersection points");
@@ -70,7 +80,16 @@ class SphereTests {
         final var expec = List.of(gp1, gp2);
         assertEquals(expec, result2, "Method did not find 2 intersection points");
 
-        //TC03: Ray starts inside the sphere (1 point)
+
+
+
+
+        // =============== Boundary Values Tests ==================
+        //TC05: Ray starts in the sphere and goes outside (1 point)
+        Ray ray5 = new Ray(p001,new Vector (1,0,0) );
+        var result5 = sphere.findIntsersections(ray5);
+        assertEquals(1, result5.size(),
+                "Method did not find 1 intersection point");
 
     }
 

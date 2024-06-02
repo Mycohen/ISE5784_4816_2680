@@ -52,13 +52,16 @@ public class Sphere extends RadialGeometry {
     }
     @Override
     public List<Point> findIntsersections(Ray ray) {
+        if(this.center.equals(ray.getHead())) {
+            return List.of(ray.getHead().add(ray.getDirection().scale(this.radius)));
+        }
         Vector U = this.center.subtract(ray.getHead());
         double tm = ray.getDirection().dotProduct(U);
         double dSquared = U.lengthSquared() - tm * tm;
         double radiusSquared = this.radius * this.radius;
 
         // If dSquared is greater than or equal to radiusSquared, there are no intersections
-        if (dSquared >= radiusSquared) {
+        if (alignZero(dSquared) >= alignZero(radiusSquared)) {
             return null;
         }
 
