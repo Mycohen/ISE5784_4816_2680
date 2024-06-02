@@ -99,6 +99,27 @@ class SphereTests {
         var resultStartsInsideGoesOutside = sphere.findIntsersections(rayStartsInsideGoesOutside);
         assertEquals(1, resultStartsInsideGoesOutside.size(),
                 "Method did not find 1 intersection point");
+
+        // TC08: Ray starts on the sphere and  doesn't go through the center (1 point)
+        Ray rayStartsOnSphereDoesntGoThroughCenter = new Ray(new Point(0.8625257736259, 0.06725163418501, 1.501524184392)  , new Vector(-1.647933084508,-0.4073885196039,0.01562401022017));
+        var resultStartsOnSphereDoesntGoThroughCenter = sphere.findIntsersections(rayStartsOnSphereDoesntGoThroughCenter);
+        assertEquals(1,resultStartsOnSphereDoesntGoThroughCenter.size(),
+                "Method did not find 1 intersection point Ray starts on the sphere and goes through the center");
+
+        // TC09: Ray starts on the sphere and  doesn't go through the center in reverse (0 point)
+        Ray rayStartsOnSphereDoesntGoThroughCenterInReverse = new Ray(new Point(-0.7854073108818,-0.3401368854189,1.517148194613) , new Vector(-1.647933084508,-0.4073885196039,0.01562401022017));
+        var resultStartsOnSphereDoesntGoThroughCenterInReverse = sphere.findIntsersections(rayStartsOnSphereDoesntGoThroughCenterInReverse);
+        assertNull(resultStartsOnSphereDoesntGoThroughCenterInReverse,
+                "Method did not find 0 intersection point Ray starts on the sphere and goes through the center in reverse");
+
+        // TC010: Ray is tangent to the sphere, starts after sphere (0 points)
+        Ray rayTangentOutsideStartsAfterTheSphere = new Ray(new Point(0, 1, 2) , new Vector(0,1,0));
+        assertNull(sphere.findIntsersections(rayTangentOutsideStartsAfterTheSphere),
+                "Method did not find 0 intersection points Ray is tangent to the sphere, starts after the sphere");
+        // right angle to the center
+        Ray rightAngleToTheCenter = new Ray(new Point(0,0,3) , new Vector(0,1,0));
+        assertNull(sphere.findIntsersections(rightAngleToTheCenter),
+                "Method did not find 0 intersection points Ray is right angle to the center");
     }
 
 

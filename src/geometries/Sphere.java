@@ -61,7 +61,7 @@ public class Sphere extends RadialGeometry {
         double radiusSquared = this.radius * this.radius;
 
         // If dSquared is greater than or equal to radiusSquared, there are no intersections
-        if (alignZero(dSquared) >= alignZero(radiusSquared)) {
+        if (dSquared >= radiusSquared) {
             return null;
         }
 
