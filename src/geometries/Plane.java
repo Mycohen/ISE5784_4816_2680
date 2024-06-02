@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+
 /**
  * Plane class represents a plane in a 3D Cartesian coordinate system.
  * A plane is defined by a point and a normal vector.
@@ -82,6 +84,34 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntsersections(Ray ray) {
-        return null;
+
+        if(ray.getHead().equals(q))
+            return null;
+
+        // Compute the numerator of the intersection formula
+        Vector pq = this.q.subtract(ray.getHead());
+        double numerator = this.normal.dotProduct(pq);
+
+        // Compute the denominator of the intersection formula
+        double denominator = this.normal.dotProduct(ray.getDirection());
+
+        // If the denominator is zero, the ray is parallel to the plane (no intersection)
+        if (denominator == 0) {
+            return null;
+        }
+
+        // Calculate the parameter t for the ray equation
+        double t = alignZero(numerator / denominator) ;
+
+        // If t is negative, the intersection point is behind the ray's origin (no valid intersection)
+        if (t <= 0) {
+            return null;
+        }
+
+        // Calculate the intersection point using the ray's equation
+        Point intersectionPoint = ray.getHead().add(ray.getDirection().scale(t));
+
+        // Return the intersection point as a list
+        return List.of(intersectionPoint);
     }
 }
