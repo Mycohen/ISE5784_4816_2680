@@ -120,6 +120,39 @@ class SphereTests {
         Ray rightAngleToTheCenter = new Ray(new Point(0,0,3) , new Vector(0,1,0));
         assertNull(sphere.findIntsersections(rightAngleToTheCenter),
                 "Method did not find 0 intersection points Ray is right angle to the center");
+
+        // TC11: The Ray projection intersects the center and the ray intersects the sphere (1 point)
+        Ray ray11 = new Ray(new Point(0.5,0,1) , new Vector(0.5,0,0));
+        var result11 = sphere.findIntsersections(ray11);
+        assertEquals(1, result11.size(),
+                "Method did not find 1 intersection point when the Ray projection intersects" +
+                        " the center and the ray intersects the sphere");
+
+        // TC12: The Ray starts outside the sphere, crosses the center and intersects the sphere (2 points)
+        Ray ray12 = new Ray(new Point(2,0,1) , new Vector(-2,0,0));
+        var result12 = sphere.findIntsersections(ray12);
+        assertEquals(2, result12.size(),
+                "Method did not find 2 intersection points when the Ray starts outside the sphere," +
+                        " crosses the center and intersects the sphere");
+
+        // TC13: The Ray starts on the sphere and goes through the center (1 point)
+        Ray ray13 = new Ray(new Point(1,0,1) , new Vector(-2,0,0));
+        var result13 = sphere.findIntsersections(ray13);
+        assertEquals(1, result13.size(),
+                "Method did not find 1 intersection " +
+                        "point when the Ray starts on the sphere and goes through the center");
+
+        //TC14: The Ray projection intersects the center and the ray does not intersect the sphere (0 points)
+        Ray ray14 = new Ray(new Point(-1.5,0,1) , new Vector(-1.5,0,0));
+        assertNull(sphere.findIntsersections(ray14),
+                "Method did not find 0 intersection points when the Ray projection intersects the center" +
+                        " and the ray does not intersect the sphere");
+
+        // TC15: The Ray starts on the sphere and the projection intersect the sphere throw its center (0 points)
+        Ray ray15 = new Ray(new Point(1,0,1) , new Vector(0,0,1));
+        assertNull(sphere.findIntsersections(ray15),
+                "Method did not find 0 intersection points when the Ray starts on the sphere" +
+                        " and the projection intersect the sphere throw its center");
     }
 
 
