@@ -83,17 +83,37 @@ class PlaneTests {
             "Ray is parallel to the plane and not include the plane");
 
 
+        // TC05:Ray is parallel to the plane and not include the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0.9236262812122,-0.7195234248737,2.000000000000),
+                    new Vector(-4, -2, 4))),
+            "Ray is parallel to the plane and not include the plane");
+
 
         //til here for today
+    Plane newplane = new Plane(
+            new Point(1, 1, 1),
+            new Point(1,1,0),
+            new Point (1,0,0));
+        // TC05: Ray's line is orthogonal to the plane and starts before the plane (1 point)
+        var result=newplane.findIntsersections(new Ray(new Point(2,1,1), new Vector(-3, 0, 0)));
+        assertEquals( 1,result.size(),
+                "Ray's line is orthogonal to the plane and starts before the plane");
 
-        // TC05: Ray's line is orthogonal to the plane and starts after the plane (0 points)
-        assertEquals(null, plane.findIntsersections(new Ray(new Point(0, 1, 0), new Vector(0, 0, 1))),
+        // TC05: Ray's line is orthogonal to the plane and starts on the plane (0 points)
+        assertNull( newplane.findIntsersections(new Ray(new Point(1, 1, 1), new Vector(-3, 0, 0))),
+                "Ray's line is orthogonal to the plane and starts on the plane");
+
+        // TC06: Ray's line is orthogonal to the plane and starts after the plane(0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0,1, 1), new Vector(-3, 0, 0))),
                 "Ray's line is orthogonal to the plane and starts after the plane");
 
-        // TC06: Ray's line is neither orthogonal nor parallel to and begins at the plane (0 points)
-        assertEquals(null, plane.findIntsersections(new Ray(new Point(0, 0, 0), new Vector(1, 1, 1))),
+        // TC07: Ray's line is neither orthogonal nor parallel to and begins at the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(1,1,1), new Vector(-3, 1, 0))),
                 "Ray's line is neither orthogonal nor parallel to and begins at the plane");
 
+        // TC08: Ray's line is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(1,1,1), new Vector(-3, 1, 0))),
+                "Ray's line is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane");
 
 
 }

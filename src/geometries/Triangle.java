@@ -1,6 +1,7 @@
 package geometries;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
@@ -28,6 +29,33 @@ public class Triangle extends Polygon {
     }
     @Override
     public List<Point> findIntsersections(Ray ray) {
+    Plane plane = new Plane(vertices.get(0),vertices.get(1),vertices.get(2));
+    var p = plane.findIntsersections(ray);
+    if (p == null) {
+        return null;
+    }
+        Vector AB = vertices.get(0).subtract(vertices.get(1));
+        Vector AC = vertices.get(0).subtract(vertices.get(2));
+        Vector AP = vertices.get(0).subtract(p.getFirst());
+
+        Double dot00 = AB.dotProduct(AB);
+        Double dot01 = AC.dotProduct(AB);
+        Double dot11 = AC.dotProduct(AC);
+        Double dot20 = AB.dotProduct(AP);
+        Double dot21 = AC.dotProduct(AP);
+
+        Double denominator =   dot01 * dot01 -dot00 * dot11;
+        if (denominator == 0) {
+            return null;
+        }
+        Double V = (dot01 * dot21-dot11 * dot20 ) / denominator;
+        Double W = (dot01 * dot20-dot00 * dot21 ) / denominator;
+        Double U = 1 - V - W;
+
+        if ((0 <= U && U <= 1) && (0 <= V && V <= 1) && (0 <= W && W <= 1)) {
+            return List.of(p.getFirst());
+        }
+
         return null;
     }
 
