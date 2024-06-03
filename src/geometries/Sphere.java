@@ -51,7 +51,7 @@ public class Sphere extends RadialGeometry {
         return normalVector.normalize();
     }
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntersections(Ray ray) {
         if(this.center.equals(ray.getHead())) {
             return List.of(ray.getHead().add(ray.getDirection().scale(this.radius)));
         }

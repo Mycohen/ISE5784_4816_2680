@@ -24,5 +24,5 @@ public interface Intersectable {
      * @param ray the ray to intersect with the geometry
      * @return a list of points where the ray intersects the geometry
      */
-    public  List<Point> findIntsersections(Ray ray);
+    public  List<Point> findIntersections(Ray ray);
 }

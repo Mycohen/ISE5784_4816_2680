@@ -6,12 +6,19 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for geometries.Plane class
+ */
 class PlaneTests {
 
-
+    /**
+     * Test method for {@link geometries.Plane#Plane(Point, Vector)} and
+     * {@link geometries.Plane#Plane(Point, Point, Point)} constructors.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Correct plane
         assertDoesNotThrow(() -> new Plane(new Point(0, 0, 0),
                         new Vector(1, 0, 0)),
@@ -22,99 +29,99 @@ class PlaneTests {
                         new Point(1, 0, 0), new Point(0, 1, 0)),
                 "Failed constructing a correct plane with three non-collinear points");
 
+        // =============== Boundary Values Tests ==================
+
         // TC03: Building a plane by three collinear points
         assertThrows(IllegalArgumentException.class, () -> new Plane(new Point(0, 2, 0),
                         new Point(0, 1, 0), new Point(0, 0, 0)),
                 "Constructed a plane with three collinear points");
     }
 
+    /**
+     * Test method for {@link geometries.Plane#getNormal(Point)} and
+     * {@link geometries.Plane#getNormal()}.
+     */
     @Test
     void testGetNormal() {
 
-        // TC01: There is a simple single test here
+        // TC01: Simple test for getNormal with a specific point
         Plane p = new Plane(new Point(1, 0, 0), new Vector(1, 0, 0));
         assertEquals(new Vector(1, 0, 0),
                 p.getNormal(new Point(2, 0, 0)),
                 "Bad normal to plane");
 
-        //TC02: Test normal by giving three points
+        // TC02: Test normal for plane defined by three points
         Plane p2 = new Plane(new Point(0, 0, 0),
                 new Point(1, 0, 0), new Point(0, 1, 0));
-        assertEquals(new Vector(0, 0, 1),p2.getNormal(),
+        assertEquals(new Vector(0, 0, 1), p2.getNormal(),
                 "Bad normal to plane");
-
-
     }
-@Test
+
+    /**
+     * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}.
+     */
+    @Test
     void testFindIntersections() {
         Plane plane = new Plane(
                 new Point(2, 1, 0),
-                new Point(0,-2,1),
-                new Point (0,0,2));
+                new Point(0, -2, 1),
+                new Point(0, 0, 2));
 
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray's line is parallel to the plane (0 points)
-         assertNull(plane.findIntsersections(new Ray(new Point(5, 0, 0),
-                    new Vector(0, 0, 10))),
-            "Ray's line is parallel to the plane");
+        assertNull(plane.findIntersections(new Ray(new Point(5, 0, 0),
+                        new Vector(0, 0, 10))),
+                "Ray's line is parallel to the plane");
 
-
-        // TC02: Ray's line intersects the plane  (1 point)
+        // TC02: Ray's line intersects the plane (1 point)
         assertEquals(List.of(
-                new Point(0, 0, 2)),
-                plane.findIntsersections(new Ray(new Point(3, 0, 0),
+                        new Point(0, 0, 2)),
+                plane.findIntersections(new Ray(new Point(3, 0, 0),
                         new Vector(-3, 0, 2))),
-                "Ray's line is orthogonal to the plane");
-
-
+                "Ray's line intersects the plane");
 
         // =============== Boundary Values Tests ==================
 
-        // TC03: Ray is parallel to the plane and include the plane (0 points)
-         assertNull(plane.findIntsersections(new Ray(new Point(2, 1, 0),
-                    new Vector(-2, -1, 2))),
-            "Ray is on the plane");
+        // TC03: Ray is parallel to the plane and included in the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(2, 1, 0),
+                        new Vector(-2, -1, 2))),
+                "Ray is on the plane");
 
+        // TC04: Ray is parallel to the plane and not included in the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(4, 2, 0),
+                        new Vector(-4, -2, 4))),
+                "Ray is parallel to the plane and not included in the plane");
 
-        // TC04:Ray is parallel to the plane and not include the plane (0 points)
-        assertNull(plane.findIntsersections(new Ray(new Point(4, 2, 0),
-                    new Vector(-4, -2, 4))),
-            "Ray is parallel to the plane and not include the plane");
+        // TC05: Ray is neither orthogonal nor parallel to the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(0.9236262812122, -0.7195234248737, 2.0),
+                        new Vector(-4, -2, 4))),
+                "Ray is neither orthogonal nor parallel to the plane");
 
+        Plane newPlane = new Plane(
+                new Point(1, 1, 1),
+                new Point(1, 1, 0),
+                new Point(1, 0, 0));
 
-        // TC05:Ray is parallel to the plane and not include the plane (0 points)
-        assertNull(plane.findIntsersections(new Ray(new Point(0.9236262812122,-0.7195234248737,2.000000000000),
-                    new Vector(-4, -2, 4))),
-            "Ray is parallel to the plane and not include the plane");
-
-
-        //til here for today
-    Plane newplane = new Plane(
-            new Point(1, 1, 1),
-            new Point(1,1,0),
-            new Point (1,0,0));
-        // TC05: Ray's line is orthogonal to the plane and starts before the plane (1 point)
-        var result=newplane.findIntsersections(new Ray(new Point(2,1,1), new Vector(-3, 0, 0)));
-        assertEquals( 1,result.size(),
+        // TC06: Ray's line is orthogonal to the plane and starts before the plane (1 point)
+        var result = newPlane.findIntersections(new Ray(new Point(2, 1, 1), new Vector(-3, 0, 0)));
+        assertEquals(1, result.size(),
                 "Ray's line is orthogonal to the plane and starts before the plane");
 
-        // TC05: Ray's line is orthogonal to the plane and starts on the plane (0 points)
-        assertNull( newplane.findIntsersections(new Ray(new Point(1, 1, 1), new Vector(-3, 0, 0))),
+        // TC07: Ray's line is orthogonal to the plane and starts on the plane (0 points)
+        assertNull(newPlane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(-3, 0, 0))),
                 "Ray's line is orthogonal to the plane and starts on the plane");
 
-        // TC06: Ray's line is orthogonal to the plane and starts after the plane(0 points)
-        assertNull(plane.findIntsersections(new Ray(new Point(0,1, 1), new Vector(-3, 0, 0))),
+        // TC08: Ray's line is orthogonal to the plane and starts after the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(0, 1, 1), new Vector(-3, 0, 0))),
                 "Ray's line is orthogonal to the plane and starts after the plane");
 
-        // TC07: Ray's line is neither orthogonal nor parallel to and begins at the plane (0 points)
-        assertNull(plane.findIntsersections(new Ray(new Point(1,1,1), new Vector(-3, 1, 0))),
-                "Ray's line is neither orthogonal nor parallel to and begins at the plane");
+        // TC09: Ray's line is neither orthogonal nor parallel and begins at the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(-3, 1, 0))),
+                "Ray's line is neither orthogonal nor parallel and begins at the plane");
 
-        // TC08: Ray's line is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane (0 points)
-        assertNull(plane.findIntsersections(new Ray(new Point(1,1,1), new Vector(-3, 1, 0))),
-                "Ray's line is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane");
-
-
-}
+        // TC10: Ray's line is neither orthogonal nor parallel and begins at reference point in the plane (0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(-3, 1, 0))),
+                "Ray's line is neither orthogonal nor parallel and begins at the reference point in the plane");
+    }
 }
