@@ -28,6 +28,13 @@ public class Ray {
         direction = dir.normalize();
     }
 
+    public Point getPoint(double t){
+    if(Util.isZero(t))
+        return this.head;
+
+    return this.head.add(this.direction.scale(t));
+    }
+
     /**
      * Gets the direction vector of the ray.
      *
@@ -71,6 +78,8 @@ public class Ray {
         result = 31 * result + direction.hashCode();
         return result;
     }
+
+
 
     /**
      * Override toString method to represent the ray as a string.

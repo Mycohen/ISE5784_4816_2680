@@ -113,5 +113,6 @@ public class Plane implements Geometry {
 
         // Return the intersection point as a list
         return List.of(intersectionPoint);
+        //return List.of(ray.getPoint(t));
     }
 }
