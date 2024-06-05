@@ -112,7 +112,7 @@ public class Plane implements Geometry {
         Point intersectionPoint = ray.getHead().add(ray.getDirection().scale(t));
 
         // Return the intersection point as a list
-        return List.of(intersectionPoint);
-        //return List.of(ray.getPoint(t));
+        //return List.of(intersectionPoint);
+        return List.of(ray.getPoint(t));
     }
 }
