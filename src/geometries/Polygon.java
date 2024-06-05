@@ -22,6 +22,9 @@ import primitives.Vector;
  *
  * <p>Note: The class is immutable once created.</p>
  *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
+ *
  * @see Geometry
  * @see Plane
  * @see Point

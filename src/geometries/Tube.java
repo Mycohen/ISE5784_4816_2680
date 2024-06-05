@@ -44,19 +44,19 @@ public class Tube extends RadialGeometry {
         if(axis.getHead().equals(p))
             return axis.getDirection();
         double t = axis.getDirection().dotProduct(p.subtract(axis.getHead()));
-        if(isZero(t))
-        {
-            o=axis.getHead();
-        }
-        else {
-            o= axis.getHead().add(axis.getDirection().scale(t));
-        }
-
+        o = axis.getPoint(t);
         Vector n = p.subtract(o);
         return n.normalize();
 
 
     }
+    /**
+     * Finds the intersection points of a given ray with the tube.
+     * Currently returns null. Needs to be implemented.
+     *
+     * @param ray the ray to find intersections with
+     * @return null
+     */
     @Override public List<Point> findIntersections(Ray ray) {
         return null;
     }

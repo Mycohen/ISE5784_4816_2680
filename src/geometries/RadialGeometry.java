@@ -3,6 +3,9 @@ package geometries;
 /**
  * Class representing radial geometry in three-dimensional space.
  * This class can be extended by geometries that are defined by a radius, such as spheres and tubes.
+ *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public abstract class RadialGeometry implements Geometry {
 

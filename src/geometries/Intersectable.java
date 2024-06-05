@@ -12,9 +12,8 @@ import java.util.List;
  * @see Ray
  * @see List
  *
- * Authors:
- * Moshe Yaakov Cohen
- * Eliaou Kopinski
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public interface Intersectable {
 

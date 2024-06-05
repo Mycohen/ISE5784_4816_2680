@@ -10,10 +10,13 @@ import primitives.Point;
  * Implementing classes should provide the logic to calculate the normal vector specific to the shape.
  * </p>
  *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
+ *
  * @see Vector
  * @see Point
  */
-public interface Geometry extends Intersectable{
+public interface Geometry extends Intersectable {
 
    /**
     * Calculates the normal vector to the geometry at a given point.

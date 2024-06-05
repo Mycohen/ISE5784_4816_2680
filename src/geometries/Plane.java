@@ -15,6 +15,9 @@ import static primitives.Util.alignZero;
  * <p>This class provides methods to create a plane from three non-collinear points or from a point and a normal vector.
  * It also provides methods to retrieve the normal vector to the plane.</p>
  *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
+ *
  * @see Geometry
  * @see Point
  * @see Vector
@@ -82,10 +85,16 @@ public class Plane implements Geometry {
         return this.normal;
     }
 
+    /**
+     * Finds the intersections of a ray with the plane.
+     *
+     * @param ray the ray to intersect with the plane
+     * @return a list of intersection points, or null if there are no intersections
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
 
-        if(ray.getHead().equals(q))
+        if (ray.getHead().equals(q))
             return null;
 
         // Compute the numerator of the intersection formula
@@ -101,7 +110,7 @@ public class Plane implements Geometry {
         }
 
         // Calculate the parameter t for the ray equation
-        double t = alignZero(numerator / denominator) ;
+        double t = alignZero(numerator / denominator);
 
         // If t is negative, the intersection point is behind the ray's origin (no valid intersection)
         if (t <= 0) {
@@ -112,7 +121,6 @@ public class Plane implements Geometry {
         Point intersectionPoint = ray.getHead().add(ray.getDirection().scale(t));
 
         // Return the intersection point as a list
-        //return List.of(intersectionPoint);
-        return List.of(ray.getPoint(t));
+        return List.of(intersectionPoint);
     }
 }

@@ -1,4 +1,5 @@
 package geometries;
+
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -14,6 +15,9 @@ import static primitives.Util.alignZero;
  * A triangle is a simple polygon with three edges and three vertices. In 3D space,
  * it is typically used to represent a flat surface.
  * </p>
+ *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public class Triangle extends Polygon {
 
@@ -29,25 +33,37 @@ public class Triangle extends Polygon {
         super(p1, p2, p3);
         // Additional validation can be added here if necessary
     }
+
+    /**
+     * Finds the intersection points of a given ray with the triangle.
+     *
+     * @param ray the ray to find intersections with
+     * @return a list of intersection points, or null if there are no intersections
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
-
         Plane plane = new Plane(vertices.get(0), vertices.get(1), vertices.get(2));
-        Vector V1 = vertices.get(0).subtract(ray.getHead());
-        Vector V2 = vertices.get(1).subtract(ray.getHead());
-        Vector V3 = vertices.get(2).subtract(ray.getHead());
-        Vector N1 = V1.crossProduct(V2).normalize();
-        Vector N2 = V2.crossProduct(V3).normalize();
-        Vector N3 = V3.crossProduct(V1).normalize();
+        List<Point> planeIntersections = plane.findIntersections(ray);
 
-        if (alignZero(ray.getDirection().dotProduct(N1)) > 0
-                && alignZero(ray.getDirection().dotProduct(N2)) > 0
-                && alignZero(ray.getDirection().dotProduct(N3)) > 0)
-            return plane.findIntersections(ray);
-        if (alignZero(ray.getDirection().dotProduct(N1)) < 0
-                && alignZero(ray.getDirection().dotProduct(N2)) < 0
-                && alignZero(ray.getDirection().dotProduct(N3)) < 0)
-            return plane.findIntersections(ray);
+        if (planeIntersections == null) {
+            return null;
+        }
+
+        Vector v1 = vertices.get(0).subtract(ray.getHead());
+        Vector v2 = vertices.get(1).subtract(ray.getHead());
+        Vector v3 = vertices.get(2).subtract(ray.getHead());
+
+        Vector n1 = v1.crossProduct(v2).normalize();
+        Vector n2 = v2.crossProduct(v3).normalize();
+        Vector n3 = v3.crossProduct(v1).normalize();
+
+        double sign1 = alignZero(ray.getDirection().dotProduct(n1));
+        double sign2 = alignZero(ray.getDirection().dotProduct(n2));
+        double sign3 = alignZero(ray.getDirection().dotProduct(n3));
+
+        if ((sign1 > 0 && sign2 > 0 && sign3 > 0) || (sign1 < 0 && sign2 < 0 && sign3 < 0)) {
+            return planeIntersections;
+        }
 
         return null;
     }

@@ -6,6 +6,7 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -14,6 +15,9 @@ import static primitives.Util.isZero;
  *
  * <p>A cylinder has a circular base and top with the same radius, and it extends vertically
  * to a certain height.</p>
+ *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  *
  * @see Tube
  * @see Ray
@@ -34,7 +38,7 @@ public class Cylinder extends Tube {
      */
     public Cylinder(double radius, Ray axis, double height) {
         super(radius, axis);
-        if (height <= 0) {
+        if ( alignZero(height)  <= 0) {
             throw new IllegalArgumentException("Height must be greater than 0");
         }
         this.height = height;
@@ -59,7 +63,7 @@ public class Cylinder extends Tube {
         Vector p0ToP = p.subtract(p0);
 
         // Project p0ToP onto the direction vector dir
-        double t = dir.dotProduct(p0ToP);
+        double t = alignZero(dir.dotProduct(p0ToP));
 
         // Check if the point is on the bottom base
         if (t <= 0) {
@@ -75,14 +79,11 @@ public class Cylinder extends Tube {
         Point o = p0.add(dir.scale(t)); // Projection of p onto the axis
         Vector normal = p.subtract(o);
 
-        if ( isZero(normal.length())) {
+        if (isZero(normal.length())) {
             // Point is exactly on the axis (should not happen for valid cylinder surface points)
             throw new IllegalArgumentException("Point cannot be on the axis of the cylinder");
         }
 
         return normal.normalize(); // Normal vector is radial
     }
-
-
-
 }

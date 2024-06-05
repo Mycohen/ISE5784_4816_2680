@@ -2,7 +2,7 @@ package geometries;
 
 import primitives.Ray;
 import primitives.Vector;
-import primitives.*;
+import primitives.Point;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ import static primitives.Util.alignZero;
 /**
  * Class representing a sphere in three-dimensional space.
  * A sphere is defined by its center point and a radius.
+ *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public class Sphere extends RadialGeometry {
 
@@ -50,12 +53,19 @@ public class Sphere extends RadialGeometry {
         // Normalize the vector to get the normal vector
         return normalVector.normalize();
     }
+
+    /**
+     * Finds the intersection points of a given ray with the sphere.
+     *
+     * @param ray the ray to find intersections with
+     * @return a list of intersection points, or null if there are no intersections
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if(this.center.equals(ray.getHead())) {
+        if (this.center.equals(ray.getHead())) {
             return List.of(ray.getHead().add(ray.getDirection().scale(this.radius)));
-            //return List.of(ray.getPoint(this.radius));
         }
+
         Vector U = this.center.subtract(ray.getHead());
         double tm = ray.getDirection().dotProduct(U);
         double dSquared = U.lengthSquared() - tm * tm;
@@ -71,24 +81,13 @@ public class Sphere extends RadialGeometry {
         double t2 = tm + th;
 
         if (alignZero(t1) > 0 && alignZero(t2) > 0) {
-        //   return List.of(ray.getHead().add(ray.getDirection().scale(t1)),
-        // ray.getHead().add(ray.getDirection().scale(t2)));
             return List.of(ray.getPoint(t1), ray.getPoint(t2));
-        }
-        else if (alignZero(t1 )> 0) {
-            //  return List.of(ray.getHead().add(ray.getDirection().scale(t1)));
+        } else if (alignZero(t1) > 0) {
             return List.of(ray.getPoint(t1));
-        }
-        else if (alignZero(t2) > 0)
-        {
-            //  return List.of(ray.getHead().add(ray.getDirection().scale(t2)));
+        } else if (alignZero(t2) > 0) {
             return List.of(ray.getPoint(t2));
         } else {
             return null;
-
-
         }
     }
-
-
 }
