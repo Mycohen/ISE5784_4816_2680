@@ -1,5 +1,7 @@
 package renderer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class CameraTests {
     /**
      * Camera builder for the tests
