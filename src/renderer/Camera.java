@@ -23,11 +23,25 @@ public class Camera implements Cloneable {
     private double width = 0.0;
     private double distance = 0.0;
 
+    /**
+     * Constructs a Camera with default values.
+     * The default values are:
+     * <ul>
+     *
+     */
     private Camera() {
         p0 = Point.ZERO;
         VRight = new Vector(1, 0, 0);
         VUp = new Vector(0, 1, 0);
         VTo = new Vector(0, 0, -1);
+    }
+    @Override
+    public Camera clone() {
+        try {
+            return (Camera) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     /**
@@ -48,8 +62,10 @@ public class Camera implements Cloneable {
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         Point pIJ = p0.add(VTo.scale(distance));
+        // Calculate the size of a single pixel
         double rX = width / nX;
         double rY = height / nY;
+        // Calculate the coordinates of the pixel's center
         double xJ = (j - (nX - 1) / 2.0) * rX;
         double yI = (i - (nY - 1) / 2.0) * rY;
         if (!isZero(xJ)) {
@@ -61,11 +77,7 @@ public class Camera implements Cloneable {
         return new Ray(p0, pIJ.subtract(p0));
     }
 
-//    // Clone method overridden from Cloneable interface
-//    @Override
-//    protected Object clone() throws CloneNotSupportedException {
-//        return super.clone(); // Default clone method is used
-//    }
+
 
     // Getters for private fields
     public Point getLocation() {
@@ -169,6 +181,7 @@ public class Camera implements Cloneable {
             return this;
         }
 
+
         /**
          * Builds and returns the Camera object.
          * @return the constructed Camera object
@@ -189,8 +202,11 @@ public class Camera implements Cloneable {
             }
             camera.VRight = camera.VTo.crossProduct(camera.VUp).normalize();
 
-            return camera;
+            return (Camera) camera.clone();
         }
+
+
+
     }
 
 
