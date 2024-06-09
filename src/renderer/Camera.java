@@ -61,6 +61,7 @@ public class Camera implements Cloneable {
      * @return a Ray object representing the ray passing through the pixel (i, j)
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+        // Calculate the intersection point of the ray with the view plane
         Point pIJ = p0.add(VTo.scale(distance));
         // Calculate the size of a single pixel
         double rX = width / nX;
