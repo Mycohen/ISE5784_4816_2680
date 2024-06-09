@@ -72,25 +72,35 @@ public class CameraIntegrationTests {
                 testRayIntersections(camera1, plane, 9),
                 "didn't find all 9 intersection points");
         // EP02: 9 intersection points
-        plane = new Plane(new Point(0, 0, -3), new Point(1, 0, -3), new Point(0, 1, -3));
+        plane = new Plane(new Point(-2, 0, -2), new Point(0, -2, -2), new Point(-1, -6, -1));
         assertEquals(9,
                 testRayIntersections(camera1, plane, 9),
                 "didn't find all 9 intersection points");
         // EP03: 6 intersection points
-        plane = new Plane(new Point(0, 0, -3), new Point(1, 0, -3), new Point(0, 1, -3));
+        plane = new Plane(new Point(-1, 0, 0), new Point(-1, 1, 0), new Point(0, 0, -1));
         assertEquals(6,
                 testRayIntersections(camera1, plane, 6),
                 "didn't find all 6 intersection points");
-        // EP04: 9 intersection points
-        plane = new Plane(new Point(0, 0, -3), new Point(1, 0, -3), new Point(0, 1, -3));
-        assertEquals(9,
-                testRayIntersections(camera1, plane, 9),
-                "didn't find all 9 intersection points");
-        // EP05: 9 intersection points
-        plane = new Plane(new Point(0, 0, -3), new Point(1, 0, -3), new Point(0, 1, -3));
-        assertEquals(9,
-                testRayIntersections(camera1, plane, 9),
-                "didn't find all 9 intersection points");
+    }
+    @Test
+    void integrationTestWithTriangle() {
+        Camera.Builder cameraBuilder = Camera.getBuilder()
+                .setLocation(Point.ZERO)
+                .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+                .setVpDistance(1);
+
+        // ============ Equivalence Partitions Tests ==============
+        // EP01: 1 intersection points
+        Camera camera1 = cameraBuilder.setVpSize(nX, nY).build();
+        Triangle triangle = new Triangle(new Point(0, 1, -2), new Point(1, -1, -2), new Point(-1, -1, -2));
+        assertEquals(1,
+                testRayIntersections(camera1, triangle, 1),
+                "didn't find all 1 intersection points");
+        // EP02: 2 intersection points
+        triangle = new Triangle(new Point(0, 20, -2), new Point(1, -1, -2), new Point(-1, -1, -2));
+        assertEquals(2,
+                testRayIntersections(camera1, triangle, 2),
+                "didn't find all 2 intersection points");
     }
 
 
