@@ -14,19 +14,19 @@ import primitives.Color;
  * producing a non-optimized jpeg image from this matrix. The class although is
  * responsible of holding image related parameters of View Plane - pixel matrix
  * size and resolution
- * @author Dan */
+ * @author Dan  */
 public class ImageWriter {
     /** Horizontal resolution of the image - number of pixels in row */
-    private int                 nX;
+    private int nX;
     /** Vertical resolution of the image - number of pixels in column */
-    private int                 nY;
+    private int nY;
 
     /** Directory path for the image file generation - relative to the user
      * directory */
     private static final String FOLDER_PATH = System.getProperty("user.dir") + "/images";
 
     /** Image generation buffer (the matrix of the pixels) */
-    private BufferedImage       image;
+    private BufferedImage image;
     /** image file name, not including the file extension '.png' */
     private String              imageName;
     /** logger for reporting I/O failures */
@@ -39,10 +39,10 @@ public class ImageWriter {
      * @param nY        amount of pixels by height */
     public ImageWriter(String imageName, int nX, int nY) {
         this.imageName = imageName;
-        this.nX        = nX;
-        this.nY        = nY;
+        this.nX = nX;
+        this.nY = nY;
 
-        image          = new BufferedImage(nX, nY, BufferedImage.TYPE_INT_RGB);
+        image  = new BufferedImage(nX, nY, BufferedImage.TYPE_INT_RGB);
     }
 
     // ***************** Getters/Setters ********************** //
