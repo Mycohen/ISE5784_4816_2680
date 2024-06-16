@@ -3,11 +3,12 @@ package renderer;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
 
 class ImageWriterTests {
 
     @Test
-    void ImageWriter() {
+    void writeImageTest() {
 
         final int width = 800;
         final int height = 500;
@@ -33,7 +34,5 @@ class ImageWriterTests {
 
     }
 
-    @Test
-    void testWritePixel() {
-    }
+
 }

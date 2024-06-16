@@ -1,8 +1,8 @@
 package primitives;
 
 import org.junit.jupiter.api.Test;
-import primitives.*;
-
+import java.util.List;
+import primitives.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
 class RayTests {
@@ -26,4 +26,32 @@ class RayTests {
         assertTrue(ray.equals(new Ray(new Point(1, 2, 3), new Vector(1, 1, 1)))," Ray equals() not working correctly");
         assertFalse(ray.equals(new Ray(new Point(1, 2, 8), new Vector(1, 1, 2)))," Ray equals() not working correctly");
     }
+    @Test
+    void testFindClosestPoint() {
+
+        Ray ray = new Ray(new Point(1, 2, 3), new Vector(1, 1, 1));
+
+        //============ Equivalence Partitions Tests ==============
+
+        // TC01: ray Point at the middle of the list
+        assertEquals(new Point(1, 2, 3),
+                ray.findClosestPoint(List.of(new Point(2, 3, 4),
+                        new Point(1, 2, 3), new Point(3, 4, 5))),
+                "findClosestPoint not working correctly at the middle of the list");
+
+        // =============== Boundary Values Tests ==================
+        // TC01: null list
+        assertNull(ray.findClosestPoint(null),
+                "Ray findClosestPoint() not working correctly with null list");
+        //TC02 ray Point at the beginning of the list
+        assertEquals(new Point(1, 2, 3),
+                ray.findClosestPoint(List.of(new Point(1, 2, 3),
+                        new Point(2, 3, 4), new Point(3, 4, 5))),
+                "findClosestPoint not working correctly at the middle of the list");
+        //TC03 ray Point at the end of the list
+        assertEquals(new Point(1, 2, 3),
+                ray.findClosestPoint(List.of(new Point(3, 4, 5),
+                        new Point(2, 3, 4), new Point(1, 2, 3))),
+                "findClosestPoint not working correctly at the middle of the list");
+        }
 }

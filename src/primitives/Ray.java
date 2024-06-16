@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * Class representing a ray in three-dimensional space.
  */
@@ -52,6 +54,23 @@ public class Ray {
         return this.head;
     }
 
+    public Point findClosestPoint(List<Point> points) {
+        Point closest = null;
+
+        if (points == null) {
+            return null;
+        }
+
+        double minDistance = Double.POSITIVE_INFINITY;
+        for (Point point : points) {
+            double distance = this.head.distance(point);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closest = point;
+            }
+        }
+        return closest;
+    }
     /**
      * Override equals method to compare rays' starting points and direction vectors.
      *
