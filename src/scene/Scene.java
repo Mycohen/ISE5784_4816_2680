@@ -3,8 +3,9 @@ import geometries.Geometries;
 import primitives.*;
 import lighting.AmbientLight;
 public class Scene {
-   public  String Name;
-    public   Color background;
+
+    public  String Name;
+    public  Color background;
     public AmbientLight ambientLight = AmbientLight.NONE;
     public Geometries geometries = new Geometries();
     public Scene(String name) {

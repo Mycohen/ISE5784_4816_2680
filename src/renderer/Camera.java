@@ -21,6 +21,8 @@ public class Camera implements Cloneable {
     private double height = 0.0;
     private double width = 0.0;
     private double distance = 0.0;
+    ImageWriter imageWriter;
+    RayTracerBase rayTracer;
 
     /**
      * Constructs a Camera with default values.
@@ -143,6 +145,59 @@ public class Camera implements Cloneable {
         return distance;
     }
 
+ public Camera printGrid(int interval, Color color) {
+        if (imageWriter == null) {
+            throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
+        }
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nY; i++) {
+            for (int j = 0; j < nX; j++) {
+                if (i % interval == 0 || j % interval == 0) {
+                    imageWriter.writePixel(j, i, color);
+                }
+            }
+        }
+        return this;
+    }
+    public void writeToImage() {
+        if (imageWriter == null) {
+            throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
+        }
+        imageWriter.writeToImage();
+
+    }
+    /**
+     * Casts a ray through the pixel at the given coordinates (i, j).
+     * @param nX total number of pixels in width
+     * @param nY total number of pixels in height
+     * @param j column index of the pixel (from left to right)
+     * @param i row index of the pixel (from top to bottom)
+     */
+   public void castRay(int nX, int nY, int j, int i) {
+        if (rayTracer == null) {
+            throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
+        }
+        Ray ray = constructRay(nX, nY, j, i);
+        Color color = rayTracer.traceRay(ray);
+        imageWriter.writePixel(j, i, color);
+    }
+    public Camera renderImage() {
+        if (imageWriter == null) {
+            throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
+        }
+        if (rayTracer == null) {
+            throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
+        }
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nY; i++) {
+            for (int j = 0; j < nX; j++) {
+                castRay(nX, nY, j, i);
+            }
+        }
+        return this;
+    }
     // Inner Builder class for constructing Camera objects
     public static class Builder {
 
@@ -233,9 +288,21 @@ public class Camera implements Cloneable {
             if (!isZero(camera.VRight.dotProduct(camera.VTo))) {
                 throw new IllegalArgumentException("Direction vectors must be orthogonal");
             }
+            if(camera.imageWriter==null)
+                throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
+            if(camera.rayTracer==null)
+                throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
             camera.VRight = camera.VTo.crossProduct(camera.VUp).normalize();
 
             return (Camera) camera.clone();
+        }
+        public Builder setImageWriter(ImageWriter imageWriter) {
+            camera.imageWriter = imageWriter;
+            return this;
+        }
+        public Builder setRayTracer(RayTracerBase rayTracer) {
+            camera.rayTracer = rayTracer;
+            return this;
         }
     }
 }

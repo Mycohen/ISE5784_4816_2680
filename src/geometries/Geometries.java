@@ -44,6 +44,7 @@ public class Geometries implements Intersectable {
         }
     }
 
+
     /**
      * Finds all intersections of the given ray with the geometrical objects
      * in the collection.
