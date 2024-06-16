@@ -13,7 +13,6 @@ import static primitives.Util.isZero;
  */
 public class Camera implements Cloneable {
 
-
     // Private fields
     private Point p0;
     private Vector VRight;
@@ -27,7 +26,11 @@ public class Camera implements Cloneable {
      * Constructs a Camera with default values.
      * The default values are:
      * <ul>
-     *
+     *     <li>p0 (position) is set to the origin (0, 0, 0).</li>
+     *     <li>VRight is set to (1, 0, 0).</li>
+     *     <li>VUp is set to (0, 1, 0).</li>
+     *     <li>VTo is set to (0, 0, -1).</li>
+     * </ul>
      */
     private Camera() {
         p0 = Point.ZERO;
@@ -35,6 +38,11 @@ public class Camera implements Cloneable {
         VUp = new Vector(0, 1, 0);
         VTo = new Vector(0, 0, -1);
     }
+
+    /**
+     * Creates and returns a copy of this Camera object.
+     * @return a clone of this Camera instance
+     */
     @Override
     public Camera clone() {
         try {
@@ -78,36 +86,63 @@ public class Camera implements Cloneable {
         return new Ray(p0, pIJ.subtract(p0));
     }
 
-
-
     // Getters for private fields
+    /**
+     * Gets the location of the camera.
+     * @return the location of the camera
+     */
     public Point getLocation() {
         return p0;
     }
 
+    /**
+     * Gets the right direction vector of the camera.
+     * @return the right direction vector of the camera
+     */
     public Vector getVRight() {
         return VRight;
     }
 
+    /**
+     * Gets the up direction vector of the camera.
+     * @return the up direction vector of the camera
+     */
     public Vector getVUp() {
         return VUp;
     }
 
+    /**
+     * Gets the direction vector towards which the camera is facing.
+     * @return the direction vector towards which the camera is facing
+     */
     public Vector getVTo() {
         return VTo;
     }
 
+    /**
+     * Gets the height of the viewport.
+     * @return the height of the viewport
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Gets the width of the viewport.
+     * @return the width of the viewport
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Gets the distance from the camera to the viewport.
+     * @return the distance from the camera to the viewport
+     */
     public double getDistance() {
         return distance;
     }
+
     // Inner Builder class for constructing Camera objects
     public static class Builder {
 
@@ -136,12 +171,11 @@ public class Camera implements Cloneable {
          * @return the Builder instance
          * @throws IllegalArgumentException if direction vectors are not orthogonal or cannot be normalized
          */
-        public Builder setDirectionVectors(Vector directionTo, Vector directionUp)
-        {
+        public Builder setDirectionVectors(Vector directionTo, Vector directionUp) {
             if (directionTo == null || directionUp == null) {
                 throw new IllegalArgumentException("Direction vectors cannot be null");
             }
-            if(!(isZero(directionTo.dotProduct(directionUp)))) {
+            if (!isZero(directionTo.dotProduct(directionUp))) {
                 throw new IllegalArgumentException("Direction vectors must be orthogonal");
             }
             camera.VTo = directionTo.normalize();
@@ -152,8 +186,7 @@ public class Camera implements Cloneable {
 
         /**
          * Sets the size of the viewport (screen plane).
-         *
-         * @param width  the width of the viewport
+         * @param width the width of the viewport
          * @param height the height of the viewport
          * @return the Builder instance
          * @throws IllegalArgumentException if width or height are non-positive
@@ -169,7 +202,6 @@ public class Camera implements Cloneable {
 
         /**
          * Sets the distance from the camera to the viewport (screen plane).
-         *
          * @param distance the distance from the camera to the viewport
          * @return the Builder instance
          * @throws IllegalArgumentException if distance is non-positive
@@ -182,33 +214,28 @@ public class Camera implements Cloneable {
             return this;
         }
 
-
         /**
          * Builds and returns the Camera object.
          * @return the constructed Camera object
+         * @throws MissingResourceException if any required resources are missing
+         * @throws IllegalArgumentException if width, height, or distance are non-positive or if direction vectors are not orthogonal
          */
         public Camera build() {
-            if(camera.p0 == null) {
+            if (camera.p0 == null) {
                 throw new MissingResourceException("Location", "Point", "Location point is missing");
             }
-            if(camera.VTo == null || camera.VUp == null || camera.VRight == null) {
+            if (camera.VTo == null || camera.VUp == null || camera.VRight == null) {
                 throw new MissingResourceException("Direction vectors", "Vector", "Direction vectors are missing");
             }
-            if(alignZero(camera.width) <= 0 || alignZero(camera.height) <= 0|| alignZero(camera.distance) <= 0)
-            {
+            if (alignZero(camera.width) <= 0 || alignZero(camera.height) <= 0 || alignZero(camera.distance) <= 0) {
                 throw new IllegalArgumentException("Width, height, and distance must be positive");
             }
-            if(!(isZero(camera.VRight.dotProduct(camera.VTo)))) {
+            if (!isZero(camera.VRight.dotProduct(camera.VTo))) {
                 throw new IllegalArgumentException("Direction vectors must be orthogonal");
             }
             camera.VRight = camera.VTo.crossProduct(camera.VUp).normalize();
 
             return (Camera) camera.clone();
         }
-
-
-
     }
-
-
 }

@@ -5,20 +5,21 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit tests for the Camera class.
+ */
 class CameraTests {
     /**
-     * Camera builder for the tests
+     * Camera builder for the tests.
      */
     private final Camera.Builder cameraBuilder = Camera.getBuilder()
-           // .setRayTracer(new SimpleRayTracer(new Scene("Test")))
-         //.setImageWriter(new ImageWriter("Test", 1, 1))
             .setLocation(Point.ZERO)
             .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
             .setVpDistance(10);
 
     /**
-     * Test method for
-     * {@link renderer.Camera#constructRay(int, int, int, int)}.
+     * Test method for {@link renderer.Camera#constructRay(int, int, int, int)}.
+     * This method tests the construction of rays through various pixels in the view plane.
      */
     @Test
     void testConstructRay() {
@@ -55,7 +56,5 @@ class CameraTests {
         // BV06: 3X3 Corner (0,0)
         assertEquals(new Ray(Point.ZERO, new Vector(2, -2, -10)),
                 camera2.constructRay(3, 3, 0, 0), badRay);
-
-
     }
 }

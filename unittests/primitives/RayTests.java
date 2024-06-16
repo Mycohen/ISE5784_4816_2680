@@ -24,6 +24,6 @@ class RayTests {
     void testTestEquals() {
         Ray ray = new Ray(new Point(1, 2, 3), new Vector(1, 1, 1));
         assertTrue(ray.equals(new Ray(new Point(1, 2, 3), new Vector(1, 1, 1)))," Ray equals() not working correctly");
-        assertNull(ray.equals(new Ray(new Point(1, 2, 8), new Vector(1, 1, 2)))," Ray equals() not working correctly");
+        assertFalse(ray.equals(new Ray(new Point(1, 2, 8), new Vector(1, 1, 2)))," Ray equals() not working correctly");
     }
 }
