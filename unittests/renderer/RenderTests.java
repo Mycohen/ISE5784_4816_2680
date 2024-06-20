@@ -9,6 +9,7 @@ import lighting.AmbientLight;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+import scene.SceneBuilderFromXml;
 
 /**
  * Test rendering a basic image
@@ -56,18 +57,24 @@ public class RenderTests {
      * Test for XML based scene - for bonus
      */
     @Test
-    public void basicRenderXml() {
-        // enter XML file name and parse from XML file into scene object
-        // using the code you added in appropriate packages
-        // ...
-        // NB: unit tests is not the correct place to put XML parsing code
 
-        camera
+    public void basicRenderXml() throws CloneNotSupportedException {
+        /*
+         * Directory path for the image file generation - relative to the user
+         * directory
+         */
+        final String FOLDER_PATH = System.getProperty("user.dir") + "/renderTestTwoColors";
+
+        // Build scene from XML
+        Scene scene = SceneBuilderFromXml.buildSceneFromXml(FOLDER_PATH + ".xml");
+
+        Camera cam = camera
+                .setRayTracer(new SimpleRayTracer(scene))
                 .setImageWriter(new ImageWriter("xml render test", 1000, 1000))
-                .build()
-                .renderImage()
-                .printGrid(100, new Color(YELLOW))
-                .writeToImage();
+                .build();
+        cam.renderImage();
+        cam.printGrid(100, new Color(java.awt.Color.YELLOW));
+        cam.writeToImage();
     }
 }
 

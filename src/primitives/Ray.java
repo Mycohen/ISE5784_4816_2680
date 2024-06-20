@@ -4,6 +4,8 @@ import java.util.List;
 
 /**
  * Class representing a ray in three-dimensional space.
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public class Ray {
 
@@ -54,6 +56,12 @@ public class Ray {
         return this.head;
     }
 
+    /**
+     * Finds the closest point to the starting point of the ray from a list of points.
+     *
+     * @param points the list of points to search from
+     * @return the closest point to the starting point of the ray
+     */
     public Point findClosestPoint(List<Point> points) {
         Point closest = null;
 
