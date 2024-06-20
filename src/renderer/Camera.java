@@ -288,10 +288,10 @@ public class Camera implements Cloneable {
             if (!isZero(camera.VRight.dotProduct(camera.VTo))) {
                 throw new IllegalArgumentException("Direction vectors must be orthogonal");
             }
-            if(camera.imageWriter==null)
-                throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
-            if(camera.rayTracer==null)
-                throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
+//            if (camera.imageWriter == null)
+//                throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
+//            if (camera.rayTracer == null)
+//                throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
             camera.VRight = camera.VTo.crossProduct(camera.VUp).normalize();
 
             return (Camera) camera.clone();

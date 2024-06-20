@@ -10,18 +10,27 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
-/** Test rendering a basic image
- * @author Dan */
+/**
+ * Test rendering a basic image
+ *
+ * @author Dan
+ */
 public class RenderTests {
-    /** Scene of the tests */
-    private final Scene  scene  = new Scene("Test scene");
-    /** Camera builder of the tests */
+    /**
+     * Scene of the tests
+     */
+    private final Scene scene = new Scene("Test scene");
+    /**
+     * Camera builder of the tests
+     */
     private final Camera.Builder camera = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene))
             .setLocation(Point.ZERO).setDirectionVectors(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(100)
             .setVpSize(500, 500);
 
-    /** Produce a scene with basic 3D model and render it into a png image with a
-     * grid */
+    /**
+     * Produce a scene with basic 3D model and render it into a png image with a
+     * grid
+     */
     @Test
     public void renderTwoColorTest() {
         scene.geometries.add(new Sphere(50d, new Point(0, 0, -100)),
@@ -43,7 +52,9 @@ public class RenderTests {
                 .writeToImage();
     }
 
-    /** Test for XML based scene - for bonus */
+    /**
+     * Test for XML based scene - for bonus
+     */
     @Test
     public void basicRenderXml() {
         // enter XML file name and parse from XML file into scene object

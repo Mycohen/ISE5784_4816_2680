@@ -29,7 +29,8 @@ public class Color {
      * @param b Blue component
      */
     public Color(double r, double g, double b) {
-        if (r < 0 || g < 0 || b < 0) throw new IllegalArgumentException("Negative color component is illegal");
+        if (r < 0 || g < 0 || b < 0)
+            throw new IllegalArgumentException("Negative color component is illegal");
         rgb = new Double3(r, g, b);
     }
 
