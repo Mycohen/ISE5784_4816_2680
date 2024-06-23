@@ -14,7 +14,7 @@ public class Scene {
     public String Name;
 
     /** The background color of the scene. */
-    public Color background;
+    public Color background = Color.BLACK;
 
     /** The ambient light in the scene. */
     public AmbientLight ambientLight = AmbientLight.NONE;
