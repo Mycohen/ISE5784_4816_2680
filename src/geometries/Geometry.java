@@ -3,6 +3,8 @@ package geometries;
 import primitives.Vector;
 import primitives.Point;
 
+import primitives.Color;
+
 /**
  * Interface for geometric shapes in a 3D space.
  * <p>
@@ -12,17 +14,27 @@ import primitives.Point;
  *
  * @autor Moshe Yaakov Cohen
  * @autor Eliaou Kopinski
- *
  * @see Vector
  * @see Point
  */
-public interface Geometry extends Intersectable {
+public abstract class Geometry extends Intersectable {
 
-   /**
-    * Calculates the normal vector to the geometry at a given point.
-    *
-    * @param p the point on the geometry where the normal is to be calculated
-    * @return the normal vector to the geometry at the specified point
-    */
-   public abstract Vector getNormal(Point p);
+    /**
+     * Calculates the normal vector to the geometry at a given point.
+     *
+     * @param p the point on the geometry where the normal is to be calculated
+     * @return the normal vector to the geometry at the specified point
+     */
+    public abstract Vector getNormal(Point p);
+
+    protected Color emission = Color.BLACK;
+
+    public Color getEmission() {
+        return emission;
+    }
+
+    public Geometry setEmission(Color emission) {
+        this.emission = emission;
+        return this;
+    }
 }

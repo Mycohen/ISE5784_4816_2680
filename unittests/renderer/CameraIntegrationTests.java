@@ -24,7 +24,7 @@ public class CameraIntegrationTests {
     void integrationTestWithSphere() {
         Camera.Builder cameraBuilder = Camera.getBuilder()
                 .setLocation(Point.ZERO)
-                .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
                 .setVpDistance(1);
 
         // ============ Equivalence Partitions Tests ==============
@@ -38,7 +38,7 @@ public class CameraIntegrationTests {
         // EP02: 18 intersection points
         cameraBuilder = Camera.getBuilder()
                 .setLocation(new Point(0, 0, 0.5))
-                .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
                 .setVpDistance(1);
         camera1 = cameraBuilder.setVpSize(nX, nY).build();
         sphere = new Sphere(2.5, new Point(0, 0, -2.5));
@@ -72,7 +72,7 @@ public class CameraIntegrationTests {
     void integrationTestWithPlane() {
         Camera.Builder cameraBuilder = Camera.getBuilder()
                 .setLocation(Point.ZERO)
-                .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
                 .setVpDistance(1);
 
         // ============ Equivalence Partitions Tests ==============
@@ -103,7 +103,7 @@ public class CameraIntegrationTests {
     void integrationTestWithTriangle() {
         Camera.Builder cameraBuilder = Camera.getBuilder()
                 .setLocation(Point.ZERO)
-                .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
                 .setVpDistance(1);
 
         // ============ Equivalence Partitions Tests ==============

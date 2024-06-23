@@ -14,7 +14,7 @@ class CameraTests {
      */
     private final Camera.Builder cameraBuilder = Camera.getBuilder()
             .setLocation(Point.ZERO)
-            .setDirectionVectors(new Vector(0, 0, -1), new Vector(0, -1, 0))
+            .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
             .setVpDistance(10);
 
     /**

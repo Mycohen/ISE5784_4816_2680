@@ -226,7 +226,7 @@ public class Camera implements Cloneable {
          * @return the Builder instance
          * @throws IllegalArgumentException if direction vectors are not orthogonal or cannot be normalized
          */
-        public Builder setDirectionVectors(Vector directionTo, Vector directionUp) {
+        public Builder setDirection(Vector directionTo, Vector directionUp) {
             if (directionTo == null || directionUp == null) {
                 throw new IllegalArgumentException("Direction vectors cannot be null");
             }

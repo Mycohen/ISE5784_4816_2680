@@ -22,7 +22,7 @@ import static primitives.Util.alignZero;
  * @see Point
  * @see Vector
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     /** A point on the plane */
     private final Point q;
 
@@ -92,7 +92,7 @@ public class Plane implements Geometry {
      * @return a list of intersection points, or null if there are no intersections
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 
         if (ray.getHead().equals(q))
             return null;
@@ -121,6 +121,7 @@ public class Plane implements Geometry {
         Point intersectionPoint = ray.getHead().add(ray.getDirection().scale(t));
 
         // Return the intersection point as a list
-        return List.of(intersectionPoint);
+        return List.of(new GeoPoint(this, intersectionPoint));
+
     }
 }

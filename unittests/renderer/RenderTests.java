@@ -4,28 +4,25 @@ import static java.awt.Color.*;
 
 import org.junit.jupiter.api.Test;
 
-import geometries.*;
+import geometries.Sphere;
+import geometries.Triangle;
 import lighting.AmbientLight;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
-import scene.SceneBuilderFromXml;
 
 /**
  * Test rendering a basic image
- *
  * @author Dan
  */
 public class RenderTests {
-    /**
-     * Scene of the tests
-     */
-    private final Scene scene = new Scene("Test scene");
-    /**
-     * Camera builder of the tests
-     */
-    private final Camera.Builder camera = Camera.getBuilder().setRayTracer(new SimpleRayTracer(scene))
-            .setLocation(Point.ZERO).setDirectionVectors(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(100)
+    /** Scene of the tests */
+    private final Scene          scene  = new Scene("Test scene");
+    /** Camera builder of the tests */
+    private final Camera.Builder camera = Camera.getBuilder()
+            .setRayTracer(new SimpleRayTracer(scene))
+            .setLocation(Point.ZERO).setDirection(new Point(0, 0, -1), Vector.Y)
+            .setVpDistance(100)
             .setVpSize(500, 500);
 
     /**
@@ -53,28 +50,47 @@ public class RenderTests {
                 .writeToImage();
     }
 
+    // For stage 6 - please disregard in stage 5
     /**
-     * Test for XML based scene - for bonus
+     * Produce a scene with basic 3D model - including individual lights of the
+     * bodies and render it into a png image with a grid
      */
     @Test
+    public void renderMultiColorTest() {
+        scene.geometries.add( // center
+                new Sphere(50, new Point(0, 0, -100)),
+                // up left
+                new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100))
+                        .setEmission(new Color(GREEN)),
+                // down left
+                new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100))
+                        .setEmission(new Color(RED)),
+                // down right
+                new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))
+                        .setEmission(new Color(BLUE)));
+        scene.setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.2, 0.2, 0.2))); //
 
-    public void basicRenderXml() throws CloneNotSupportedException {
-        /*
-         * Directory path for the image file generation - relative to the user
-         * directory
-         */
-        final String FOLDER_PATH = System.getProperty("user.dir") + "/renderTestTwoColors";
+        camera
+                .setImageWriter(new ImageWriter("color render test", 1000, 1000))
+                .build()
+                .renderImage()
+                .printGrid(100, new Color(WHITE))
+                .writeToImage();
+    }
 
-        // Build scene from XML
-        Scene scene = SceneBuilderFromXml.buildSceneFromXml(FOLDER_PATH + ".xml");
+    /** Test for XML based scene - for bonus */
+    @Test
+    public void basicRenderXml() {
+        // enter XML file name and parse from XML file into scene object
+        // using the code you added in appropriate packages
+        // ...
+        // NB: unit tests is not the correct place to put XML parsing code
 
-        Camera cam = camera
-                .setRayTracer(new SimpleRayTracer(scene))
+        camera
                 .setImageWriter(new ImageWriter("xml render test", 1000, 1000))
-                .build();
-        cam.renderImage();
-        cam.printGrid(100, new Color(java.awt.Color.YELLOW));
-        cam.writeToImage();
+                .build()
+                .renderImage()
+                .printGrid(100, new Color(YELLOW))
+                .writeToImage();
     }
 }
-
