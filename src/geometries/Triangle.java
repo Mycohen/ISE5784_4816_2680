@@ -41,9 +41,9 @@ public class Triangle extends Polygon {
      * @return a list of intersection points, or null if there are no intersections
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Plane plane = new Plane(vertices.get(0), vertices.get(1), vertices.get(2));
-        List<Point> planeIntersections = plane.findIntersections(ray);
+        List<GeoPoint> planeIntersections = plane.findGeoIntersectionsHelper(ray);
 
         if (planeIntersections == null) {
             return null;

@@ -4,6 +4,7 @@ import scene.Scene;
 import primitives.Color;
 import primitives.Ray;
 
+
 /**
  * Abstract base class for a ray tracer.
  * This class defines the common interface and holds the scene that will be rendered.

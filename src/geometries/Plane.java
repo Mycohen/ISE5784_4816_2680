@@ -3,10 +3,11 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
+import static primitives.Util.isZero;
 import java.util.List;
 
 import static primitives.Util.alignZero;
+
 
 /**
  * Plane class represents a plane in a 3D Cartesian coordinate system.
@@ -105,7 +106,7 @@ public class Plane extends Geometry {
         double denominator = this.normal.dotProduct(ray.getDirection());
 
         // If the denominator is zero, the ray is parallel to the plane (no intersection)
-        if (denominator == 0) {
+        if (isZero(denominator) ) {
             return null;
         }
 
