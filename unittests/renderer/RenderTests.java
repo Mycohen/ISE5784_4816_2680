@@ -79,6 +79,7 @@ public class RenderTests {
                 .writeToImage();
     }
 
+
     /** Test for XML based scene - for bonus */
     @Test
 
