@@ -62,7 +62,8 @@ public class Triangle extends Polygon {
         double sign3 = alignZero(ray.getDirection().dotProduct(n3));
 
         if ((sign1 > 0 && sign2 > 0 && sign3 > 0) || (sign1 < 0 && sign2 < 0 && sign3 < 0)) {
-            return planeIntersections;
+            return List.of(new GeoPoint(this, planeIntersections.get(0).point));
+            //return planeIntersections;
         }
 
         return null;

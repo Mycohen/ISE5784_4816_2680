@@ -2,13 +2,12 @@ package geometries;
 
 import primitives.Vector;
 import primitives.Point;
-
 import primitives.Color;
 
 /**
- * Interface for geometric shapes in a 3D space.
+ * Abstract class representing geometric shapes in a 3D space.
  * <p>
- * This interface provides a method to calculate the normal vector to the shape at a given point.
+ * This abstract class provides a method to calculate the normal vector to the shape at a given point.
  * Implementing classes should provide the logic to calculate the normal vector specific to the shape.
  * </p>
  *
@@ -20,6 +19,13 @@ import primitives.Color;
 public abstract class Geometry extends Intersectable {
 
     /**
+     * The emission color of the geometry.
+     * Default emission color is black.
+     *
+     */
+    protected Color emission = Color.BLACK;
+
+    /**
      * Calculates the normal vector to the geometry at a given point.
      *
      * @param p the point on the geometry where the normal is to be calculated
@@ -27,12 +33,21 @@ public abstract class Geometry extends Intersectable {
      */
     public abstract Vector getNormal(Point p);
 
-    protected Color emission = Color.BLACK;
-
+    /**
+     * Gets the emission color of the geometry.
+     *
+     * @return the emission color of the geometry
+     */
     public Color getEmission() {
         return emission;
     }
 
+    /**
+     * Sets the emission color of the geometry.
+     *
+     * @param emission the emission color to set
+     * @return the geometry itself (for method chaining)
+     */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
         return this;

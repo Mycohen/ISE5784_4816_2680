@@ -1,10 +1,3 @@
-/**
- * Represents a collection of geometrical objects that can be intersected by a ray.
- * Provides methods to add geometrical objects and find intersections with a ray.
- *
- * @autor Moshe Yaakov Cohen
- * @autor Eliaou Kopinski
- */
 package geometries;
 
 import primitives.*;
@@ -12,8 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The Geometries class implements the Intersectable interface and represents
- * a collection of intersectable geometrical objects.
+ * Represents a collection of geometrical objects that can be intersected by a ray.
+ * Provides methods to add geometrical objects and find intersections with a ray.
+ *
+ * @autor Moshe Yaakov Cohen
+ * @autor Eliaou Kopinski
  */
 public class Geometries extends Intersectable {
     // A list to store the geometrical objects
@@ -44,7 +40,6 @@ public class Geometries extends Intersectable {
         }
     }
 
-
     /**
      * Finds all intersections of the given ray with the geometrical objects
      * in the collection.
@@ -53,7 +48,7 @@ public class Geometries extends Intersectable {
      * @return A list of intersection points, or null if no intersections are found.
      */
     @Override
-    protected  List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> intersections = null;
         for (Intersectable geo : geometries) {
             List<GeoPoint> geoIntersections = geo.findGeoIntersections(ray);
@@ -66,5 +61,4 @@ public class Geometries extends Intersectable {
         }
         return intersections;
     }
-
 }
