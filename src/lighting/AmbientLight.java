@@ -7,10 +7,9 @@ import primitives.Double3;
  * Represents the ambient light in a scene, which illuminates all objects equally
  * regardless of their position or orientation.
  */
-public class AmbientLight {
+public class AmbientLight extends Light {
 
-    /** The intensity of the ambient light. */
-    private final Color intensity;
+
 
     /** A constant representing no ambient light. */
     public static final AmbientLight NONE = new AmbientLight(Color.BLACK, 0.0);
@@ -22,7 +21,7 @@ public class AmbientLight {
      * @param scale the scale factor for the intensity
      */
     public AmbientLight(Color intensity, Double3 scale) {
-        this.intensity = intensity.scale(scale);
+        super(intensity.scale(scale));
     }
 
     /**
@@ -32,7 +31,7 @@ public class AmbientLight {
      * @param scale the scale factor for the intensity
      */
     public AmbientLight(Color intensity, double scale) {
-        this.intensity = intensity.scale(scale);
+       super(intensity.scale(scale));
     }
 
     /**
@@ -40,7 +39,5 @@ public class AmbientLight {
      *
      * @return the intensity of the ambient light
      */
-    public Color getIntensity() {
-        return intensity;
-    }
+
 }
