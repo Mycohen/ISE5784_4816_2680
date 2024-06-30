@@ -69,7 +69,7 @@ public class LightsTests {
     /**
      * Material for some of the geometries in the tests
      */
-    private final Material material = new Material().setKd(KD3).setKs(KS3).setShininess(SHININESS);
+    private final Material material = new Material().setkD(KD3).setkS(KS3).setShininess(SHININESS);
     /**
      * Light color for tests with triangles
      */
