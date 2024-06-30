@@ -37,6 +37,7 @@ public class SimpleRayTracer extends RayTracerBase {
     }
 
     /**
+     * jhjh
      * Calculates the color at the given point.
      * This implementation returns the ambient light intensity of the scene.
      *
