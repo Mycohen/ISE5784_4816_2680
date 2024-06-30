@@ -226,6 +226,24 @@ public class LightsTests {
                 .renderImage()
                 .writeToImage();
     }
+    @Test
+    public void sphereMultipleLights() {
+        // Define multiple light sources for the sphere
+        scene1.geometries.add(sphere);
+
+        // Define different light sources with varied positions, directions, and colors
+        scene1.lights.add(new DirectionalLight(new Vector(-1, -1, -1), new Color(400, 300, 100)));
+        scene1.lights.add(new PointLight(new Color(300, 500, 700), new Point(-30, 20, -40))
+                .setKl(0.001).setKq(0.0005));
+        scene1.lights.add(new SpotLight(new Color(700, 200, 200), new Point(20, -50, -20), new Vector(-1, 1, -0.5))
+                .setKl(0.001).setKq(0.0002));
+
+        // Setup camera and render the image
+        camera1.setImageWriter(new ImageWriter("lightSphereMultipleLights", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
 
     /**
      * Produce a picture of a sphere lighted by a narrow spotlight
