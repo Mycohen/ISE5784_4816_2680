@@ -15,7 +15,10 @@ class PointTests {
     private final double DELTA = 0.000001;
 
     // ============ Equivalence Partitions Tests ==============
-
+/**
+     * Test method for {@link primitives.Point#Point(double, double, double)}.
+     * This method tests the creation of a Point object using the constructor.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============

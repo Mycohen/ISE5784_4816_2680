@@ -34,7 +34,7 @@ public class LightsTests {
             .setRayTracer(new SimpleRayTracer(scene1))
             .setLocation(new Point(0, 0, 1000))
             .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-            .setVpSize(150, 150).setVpDistance(1000);
+            .setVUpSize(150, 150).setVpDistance(1000);
     /**
      * Second camera builder for some of tests
      */
@@ -42,7 +42,7 @@ public class LightsTests {
             .setRayTracer(new SimpleRayTracer(scene2))
             .setLocation(new Point(0, 0, 1000))
             .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-            .setVpSize(200, 200).setVpDistance(1000);
+            .setVUpSize(200, 200).setVpDistance(1000);
 
     /**
      * Shininess value for most of the geometries in the tests

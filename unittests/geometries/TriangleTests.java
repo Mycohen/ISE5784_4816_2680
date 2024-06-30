@@ -9,46 +9,60 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing Triangle
+ * This class contains unit tests for the Triangle class.
+ * It tests the constructors and the findIntersections method.
+ */
 class TriangleTests {
+    /**
+     * Test method for {@link geometries.Triangle#Triangle(Point, Point, Point)}.
+     */
+    @Test
+    void testConstructor() {
 
-        @Test
-        void testConstructor() {
+        // TC01: Correct triangle
+        assertDoesNotThrow(() ->
+                        new Triangle(new Point(0, 0, 0),
+                                new Point(1, 0, 0),
+                                new Point(0, 1, 0)),
+                "Failed constructing a correct triangle");
 
-            // TC01: Correct triangle
-            assertDoesNotThrow(() ->
-                            new Triangle(new Point(0, 0, 0),
-                                    new Point(1, 0, 0),
-                                    new Point(0, 1, 0)),
-                    "Failed constructing a correct triangle");
+        // TC02: Another correct example
+        assertDoesNotThrow(() ->
+                        new Triangle(new Point(0, 0, 5),
+                                new Point(0, 5, 0),
+                                new Point(5, 0, 0)),
+                "Failed constructing a correct triangle");
+        // TC03: Three points on the same line
+        assertThrows(IllegalArgumentException.class, ()
+                        -> new Triangle(new Point(0, 0, 0),
+                        new Point(1, 0, 0),
+                        new Point(2, 0, 0)),
+                "Constructed a triangle with three points on the same line");
+    }
 
-            // TC02: Another correct example
-            assertDoesNotThrow(() ->
-                            new Triangle(new Point(0, 0, 5),
-                                    new Point(0, 5, 0),
-                                    new Point(5, 0, 0)),
-                    "Failed constructing a correct triangle");
-            // TC03: Three points on the same line
-            assertThrows(IllegalArgumentException.class, ()
-                    -> new Triangle(new Point(0, 0, 0),
-                    new Point(1, 0, 0),
-                    new Point(2, 0, 0)),
-                    "Constructed a triangle with three points on the same line");
-        }
+    /**
+     * Test method for {@link geometries.Triangle#getNormal(Point)}.
+     */
+    @Test
+    void testGetNormal() {
 
-        @Test
-        void testGetNormal() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Simple test
+        Triangle t = new Triangle(new Point(0, 0, 0),
+                new Point(1, 0, 0),
+                new Point(0, 1, 0));
+        assertEquals(new Vector(0, 0, 1), t.getNormal(new Point(0, 0, 0)), "Bad normal to triangle");
+    }
 
-            // ============ Equivalence Partitions Tests ==============
-            // TC01: Simple test
-            Triangle t = new Triangle(new Point(0, 0, 0),
-                    new Point(1, 0, 0),
-                    new Point(0, 1, 0));
-            assertEquals(new Vector(0, 0, 1), t.getNormal(new Point(0, 0, 0)), "Bad normal to triangle");
-        }
+    /**
+     * Test method for {@link geometries.Triangle#findIntersections(Ray)}.
+     */
     @Test
     void testFindIntersections() {
         Triangle triangle = new Triangle(
-                new Point(1,0,0),
+                new Point(1, 0, 0),
                 new Point(1, 2, 0),
                 new Point(1, 1, 2));
 
@@ -77,7 +91,7 @@ class TriangleTests {
 
         // TC04: Ray's line is on the triangle's vertex (0 points)
         assertNull(triangle.findIntersections(new Ray(new Point(1, 1, 1),
-                        new Vector (2.008624609072,0.1758996997724,0.5431703221150))),
+                        new Vector(2.008624609072, 0.1758996997724, 0.5431703221150))),
                 "Ray's line is on the triangle's vertex");
 
         // =============== Boundary Values Tests ==================

@@ -6,11 +6,20 @@ import primitives.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Testing Sphere
+ * This class contains unit tests for the Sphere class.
+ * It tests the constructors and the findIntersections method.
+ *
+ */
 
 class SphereTests {
     private final Point p001 = new Point(0, 0, 1);
     private final Point p100 = new Point(1, 0, 0);
     private final Vector v001 = new Vector(0, 0, 1);
+    /**
+     * Test method for {@link geometries.Sphere#Sphere(double, Point)}.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -29,6 +38,9 @@ class SphereTests {
                 "Failed constructing a sphere with negative radius");
     }
 
+    /**
+     * Test method for {@link geometries.Sphere#getNormal(Point)}.
+     */
     @Test
     void testGetNormal() {
         Sphere sphere = new Sphere(1, new Point(0, 0, 0));
@@ -49,6 +61,9 @@ class SphereTests {
         }
 
     }
+    /**
+     * Test method for {@link geometries.Sphere#findIntersections(Ray)}.
+     */
     @Test
     void testFindIntersections() {
 

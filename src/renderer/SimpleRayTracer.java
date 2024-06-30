@@ -6,7 +6,6 @@ import geometries.Intersectable.GeoPoint;
 
 import static primitives.Util.alignZero;
 
-
 /**
  * A simple implementation of a ray tracer.
  * This class extends RayTracerBase and provides a basic ray tracing mechanism.
@@ -38,46 +37,64 @@ public class SimpleRayTracer extends RayTracerBase {
     }
 
     /**
+     * Calculates the color of the intersection point by considering the ambient light and local effects.
      *
-     * The pong light propagation model is used to calculate the color of the intersection point.
+     * @param intersection the intersection point
+     * @param ray          the ray that intersects the geometry
+     * @return the color at the intersection point
      */
     private Color calcColor(GeoPoint intersection, Ray ray) {
-//        return scene.ambientLight.getIntensity().add(geoPoint.geometry.getEmission());
         return scene.ambientLight.getIntensity().add(calcLocalEffects(intersection, ray));
-
     }
-/**
+
+    /**
      * Calculates the color of the intersection point by considering the local effects only.
      *
-     * @param gp the intersection point
+     * @param gp  the intersection point
      * @param ray the ray that intersects the geometry
      * @return the color at the intersection point
      */
-private Color calcLocalEffects(GeoPoint gp, Ray ray) {
-    Vector n = gp.geometry.getNormal(gp.point);
-    Vector v = ray.getDirection();
-    double nv = alignZero(n.dotProduct(v));
-    if (nv == 0)
-        return null;
-    Material material = gp.geometry.getMaterial();
-    Color color = gp.geometry.getEmission();
-    for (LightSource lightSource : scene.lights) {
-        Vector l = lightSource.getL(gp.point);
-        double nl = alignZero(n.dotProduct(l));
-        if (nl * nv > 0) {
-            // sign(nl) == sing(nv);
-            Color iL = lightSource.getIntensity(gp.point);
-            color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+        Vector n = gp.geometry.getNormal(gp.point);
+        Vector v = ray.getDirection();
+        double nv = alignZero(n.dotProduct(v));
+        if (nv == 0)
+            return null;
+        Material material = gp.geometry.getMaterial();
+        Color color = gp.geometry.getEmission();
+        for (LightSource lightSource : scene.lights) {
+            Vector l = lightSource.getL(gp.point);
+            double nl = alignZero(n.dotProduct(l));
+            if (nl * nv > 0) {
+                // sign(nl) == sign(nv);
+                Color iL = lightSource.getIntensity(gp.point);
+                color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+            }
         }
-    }
-    return color;
-}
-private Double3 calcDiffusive(Material material, double nl) {
-
-   return material.kD.scale(Math.abs(nl));
-
+        return color;
     }
 
+    /**
+     * Calculates the diffusive component of the lighting model.
+     *
+     * @param material the material of the intersected geometry
+     * @param nl       the dot product of the normal and the light direction
+     * @return the diffusive component as a Double3
+     */
+    private Double3 calcDiffusive(Material material, double nl) {
+        return material.kD.scale(Math.abs(nl));
+    }
+
+    /**
+     * Calculates the specular component of the lighting model.
+     *
+     * @param material the material of the intersected geometry
+     * @param n        the normal vector at the intersection point
+     * @param l        the light direction vector
+     * @param nl       the dot product of the normal and the light direction
+     * @param v        the view direction vector
+     * @return the specular component as a Double3
+     */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.subtract(n.scale(2 * nl));
         double vr = -alignZero(v.dotProduct(r));

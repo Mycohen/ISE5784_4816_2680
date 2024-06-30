@@ -29,7 +29,7 @@ public class CameraIntegrationTests {
 
         // ============ Equivalence Partitions Tests ==============
         // EP01: best case, two intersections point
-        Camera camera1 = cameraBuilder.setVpSize(nX, nY).build();
+        Camera camera1 = cameraBuilder.setVUpSize(nX, nY).build();
         Sphere sphere = new Sphere(1, new Point(0, 0, -3));
         assertEquals(2,
                 testRayIntersections(camera1, sphere, 2),
@@ -40,7 +40,7 @@ public class CameraIntegrationTests {
                 .setLocation(new Point(0, 0, 0.5))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0))
                 .setVpDistance(1);
-        camera1 = cameraBuilder.setVpSize(nX, nY).build();
+        camera1 = cameraBuilder.setVUpSize(nX, nY).build();
         sphere = new Sphere(2.5, new Point(0, 0, -2.5));
         assertEquals(18,
                 testRayIntersections(camera1, sphere, 18),
@@ -77,7 +77,7 @@ public class CameraIntegrationTests {
 
         // ============ Equivalence Partitions Tests ==============
         // EP01: 9 intersection points
-        Camera camera1 = cameraBuilder.setVpSize(nX, nY).build();
+        Camera camera1 = cameraBuilder.setVUpSize(nX, nY).build();
         Plane plane = new Plane(new Point(0, 0, -3), new Point(1, 0, -3), new Point(0, 1, -3));
         assertEquals(9,
                 testRayIntersections(camera1, plane, 9),
@@ -108,7 +108,7 @@ public class CameraIntegrationTests {
 
         // ============ Equivalence Partitions Tests ==============
         // EP01: 1 intersection point
-        Camera camera1 = cameraBuilder.setVpSize(nX, nY).build();
+        Camera camera1 = cameraBuilder.setVUpSize(nX, nY).build();
         Triangle triangle = new Triangle(new Point(0, 1, -2), new Point(1, -1, -2), new Point(-1, -1, -2));
         assertEquals(1,
                 testRayIntersections(camera1, triangle, 1),

@@ -6,8 +6,8 @@ import primitives.Color;
  * Represents a generic light source.
  * Provides methods to get the intensity of the light.
  *
- * @autor Moshe Yaakov Cohen
- * @autor Eliaou Kopinski
+ * @author Moshe Yaakov Cohen
+ * @author Eliaou Kopinski
  */
 public class Light {
 

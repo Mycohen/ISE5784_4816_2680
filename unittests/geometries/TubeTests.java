@@ -2,11 +2,18 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * Unit tests for the Tube class.
+ */
 class TubeTests {
-
+    /**
+     * Test method for Tube constructor.
+     * Tests various cases including valid tube creation and invalid cases.
+     * Tests the normal calculation at various points on the tube.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -18,7 +25,7 @@ class TubeTests {
 
         // TC02: Zero radius
         assertThrows(IllegalArgumentException.class, ()
-                -> new Tube(0, new Ray(new Point(0, 0, 0),
+                        -> new Tube(0, new Ray(new Point(0, 0, 0),
                         new Vector(0, 0, 1))),
                 "Failed constructing a tube with zero radius");
 
@@ -28,6 +35,10 @@ class TubeTests {
                 "Failed constructing a tube with negative radius");
     }
 
+    /**
+     * Test method for {@link geometries.Tube#getNormal(Point)}.
+     * Tests the normal calculation at various points on the tube.
+     */
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
@@ -48,7 +59,7 @@ class TubeTests {
                 "Bad normal to tube at front of the head of the axis ray");
         //TC03: Test normal if the point is exactly on the axis of the tube
         Point p3 = new Point(0, 0, 0);
-       assertEquals(axis.getDirection(), tube.getNormal(p3),
+        assertEquals(axis.getDirection(), tube.getNormal(p3),
                 "Bad normal to tube at point on the axis");
     }
 

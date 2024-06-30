@@ -5,8 +5,11 @@ import geometries.Intersectable.GeoPoint;
 
 /**
  * Class representing a ray in three-dimensional space.
- * @autor Moshe Yaakov Cohen
- * @autor Eliaou Kopinski
+ *
+ * This class defines a ray with a starting point and a direction vector.
+ *
+ * @author Moshe Yaakov Cohen
+ * @author Eliaou Kopinski
  */
 public class Ray {
 
@@ -33,10 +36,16 @@ public class Ray {
         direction = dir.normalize();
     }
 
-    public Point getPoint(double t){
-    if(Util.isZero(t))
-        return this.head;
-    return this.head.add(this.direction.scale(t));
+    /**
+     * Calculates a point along the ray at a given parameter value t.
+     *
+     * @param t the parameter value
+     * @return the point along the ray at parameter t
+     */
+    public Point getPoint(double t) {
+        if (Util.isZero(t))
+            return this.head;
+        return this.head.add(this.direction.scale(t));
     }
 
     /**
@@ -57,13 +66,19 @@ public class Ray {
         return this.head;
     }
 
-
+    /**
+     * Finds the closest point to the head of the ray from a list of points.
+     *
+     * @param points the list of points to search in
+     * @return the closest point to the head of the ray
+     */
     public Point findClosestPoint(List<Point> points) {
         return points == null || points.isEmpty() ? null
                 : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
-/**
-     * Finds the closest point to the head of the ray from a list of GeoPoints.
+
+    /**
+     * Finds the closest GeoPoint to the head of the ray from a list of GeoPoints.
      *
      * @param geoPoints the list of GeoPoints to search in
      * @return the closest GeoPoint to the head of the ray
@@ -111,8 +126,6 @@ public class Ray {
         result = 31 * result + direction.hashCode();
         return result;
     }
-
-
 
     /**
      * Override toString method to represent the ray as a string.

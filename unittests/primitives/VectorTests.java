@@ -15,7 +15,10 @@ class VectorTests {
     private final double DELTA = 0.000001;
 
     // ============ Equivalence Partitions Tests ==============
-
+/**
+     * Test method for {@link primitives.Vector#Vector(double, double, double)}.
+     * This method tests the creation of a Vector object using the constructor.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============

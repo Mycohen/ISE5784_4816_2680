@@ -4,18 +4,27 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import primitives.*;
-//גליל סופי
+
+/**
+ * Unit tests for the Cylinder class.
+ */
 class CylinderTests {
+
+    /**
+     * Test method for Cylinder constructor.
+     * Tests various cases including valid cylinder creation and invalid cases.
+     */
     @Test
     void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
+
         // TC01: Correct cylinder
         assertDoesNotThrow(() -> new Cylinder(1, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 1),
                 "Failed constructing a correct cylinder");
 
         // TC02: Zero radius
         assertThrows(IllegalArgumentException.class, ()
-                -> new Cylinder(0, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 1),
+                        -> new Cylinder(0, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 1),
                 "Failed constructing a cylinder with zero radius");
 
         // TC03: Negative radius
@@ -25,7 +34,7 @@ class CylinderTests {
 
         // TC04: Zero height
         assertThrows(IllegalArgumentException.class, ()
-                -> new Cylinder(1, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 0),
+                        -> new Cylinder(1, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 0),
                 "Failed constructing a cylinder with zero height");
 
         // TC05: Negative height
@@ -33,13 +42,16 @@ class CylinderTests {
                 () -> new Cylinder(1, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), -1),
                 "Failed constructing a cylinder with negative height");
     }
+
+    /**
+     * Test method for {@link geometries.Cylinder#getNormal(Point)}.
+     * Tests the normal calculation at various points on the cylinder.
+     */
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         Cylinder cylinder = new Cylinder(1, new Ray(
                 new Point(0, 0, 0), new Vector(0, 0, 1)), 5);
-
-
 
         // TC01: Point on the curved surface
         Point pointOnSurface = new Point(1, 0, 2);
@@ -59,14 +71,10 @@ class CylinderTests {
         assertEquals(expectedNormalTop, cylinder.getNormal(pointOnTopBase),
                 "getNormal() wrong result for point on the top base");
 
-
-
-
         // =============== Boundary Values Tests ==================
-        // TC05: Point at the center of the top base
+        // TC04: Point at the center of the top base
         Point centerTopBase = new Point(0, 0, 5);
         assertEquals(expectedNormalTop, cylinder.getNormal(centerTopBase),
                 "getNormal() wrong result for point at the center of the top base");
     }
-
 }

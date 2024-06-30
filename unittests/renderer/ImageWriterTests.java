@@ -4,9 +4,15 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
-
+/**
+ * Testing ImageWriter
+ * This class contains unit tests for the ImageWriter class.
+ * It tests the constructors and the writeToImage method.
+ */
 class ImageWriterTests {
-
+    /**
+     * Test method for {@link renderer.ImageWriter#ImageWriter(String, int, int)}.
+     */
     @Test
     void writeImageTest() {
 

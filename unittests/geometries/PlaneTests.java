@@ -7,13 +7,14 @@ import primitives.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for geometries.Plane class
+ * Unit tests for geometries.Plane class.
  */
 class PlaneTests {
 
     /**
      * Test method for {@link geometries.Plane#Plane(Point, Vector)} and
      * {@link geometries.Plane#Plane(Point, Point, Point)} constructors.
+     * This method tests the creation of a Plane object using both constructors.
      */
     @Test
     void testConstructor() {
@@ -40,6 +41,7 @@ class PlaneTests {
     /**
      * Test method for {@link geometries.Plane#getNormal(Point)} and
      * {@link geometries.Plane#getNormal()}.
+     * This method tests the getNormal functionality of the Plane class.
      */
     @Test
     void testGetNormal() {
@@ -59,6 +61,7 @@ class PlaneTests {
 
     /**
      * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}.
+     * This method tests the findIntersections functionality of the Plane class with various cases.
      */
     @Test
     void testFindIntersections() {
