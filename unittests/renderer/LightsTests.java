@@ -244,6 +244,21 @@ public class LightsTests {
                 .renderImage()
                 .writeToImage();
     }
+    @Test
+    public void trianglesMultipleLights() {
+        scene2.geometries.add(triangle1, triangle2);
+        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+                .setKl(0.001).setKq(0.0001));
+        scene2.lights.add(new SpotLight(new Color(800, 500, 0), new Point(30, 10, -100), new Vector(2, 2, -2))
+                .setKl(0.001).setKq(0.0001));
+        scene2.lights.add(new SpotLight(new Color(0, 200, 1000), new Point(30, 10, -100), new Vector(-2, 2, 2))
+                .setKl(0.001).setKq(0.0001));
+        // Setup camera and render the image
+        camera2.setImageWriter(new ImageWriter("lightTrianglesMultipleLights", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
 
     /**
      * Produce a picture of a sphere lighted by a narrow spotlight
