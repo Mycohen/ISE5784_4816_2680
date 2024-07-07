@@ -93,7 +93,7 @@ public class Plane extends Geometry {
      * @return a list of intersection points, or null if there are no intersections
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
 
         if (ray.getHead().equals(q))
             return null;
@@ -117,6 +117,9 @@ public class Plane extends Geometry {
         if (t <= 0) {
             return null;
         }
+        if(alignZero(t-maxDistance) > 0)
+            return null;
+
 
         // Calculate the intersection point using the ray's equation
         Point intersectionPoint = ray.getHead().add(ray.getDirection().scale(t));

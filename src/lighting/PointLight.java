@@ -10,6 +10,7 @@ public class PointLight extends Light implements LightSource {
     /** The position of the point light source */
     protected Point position;
 
+
     /** Constant attenuation factor */
     private double kC = 1;
 
@@ -41,6 +42,16 @@ public class PointLight extends Light implements LightSource {
         double d = position.distance(p);
         double denominator = kC + kL * d + kQ * (d * d);
         return intensity.scale(1 / denominator);
+    }
+    /**
+     * Retrieves the distance between the point light source and a specific point.
+     *
+     * @param p the point towards which the distance is evaluated
+     * @return the distance between the point light source and the given point
+     */
+    @Override
+    public double getDistance(Point p) {
+        return position.distance(p);
     }
 
     /**

@@ -9,6 +9,7 @@ public class SpotLight extends PointLight {
 
     /** The direction in which the spot light is pointing */
     private Vector direction;
+    private double narrowBeam = 1;
 
     /**
      * Constructs a spot light with a given intensity, position, and direction.
@@ -79,5 +80,9 @@ public class SpotLight extends PointLight {
     @Override
     public Vector getL(Point p) {
         return super.getL(p); // Delegate to the PointLight implementation
+    }
+    public SpotLight setNarrowBeam(double narrowBeam) {
+        this.narrowBeam = narrowBeam;
+        return this;
     }
 }
