@@ -294,34 +294,34 @@ public class LightsTests {
                 .writeToImage();
 
     }
-    @Test
-    public void triangles() {
-        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
-        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
-
-        // Loop through each triangle and add it to scene2.geometries
-        for (Triangle triangle : triangles) {
-            scene2.geometries.add(triangle.setMaterial(material));
-        }
-
-        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
-                .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
-
-
-        camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
-                .build()
-                .renderImage()
-                .writeToImage();
-    }
-
-    public static void main(String[] args) {
-        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
-        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
-
-        // Print triangles
-        System.out.println("Triangles:");
-        for (Triangle triangle : triangles) {
-            System.out.println(triangle);
-        }
-    }
+//    @Test
+//    public void triangles() {
+//        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
+//        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
+//
+//        // Loop through each triangle and add it to scene2.geometries
+//        for (Triangle triangle : triangles) {
+//            scene2.geometries.add(triangle.setMaterial(material));
+//        }
+//
+//        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+//                .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
+//
+//
+//        camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
+//                .build()
+//                .renderImage()
+//                .writeToImage();
+//    }
+//
+//    public static void main(String[] args) {
+//        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
+//        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
+//
+//        // Print triangles
+//        System.out.println("Triangles:");
+//        for (Triangle triangle : triangles) {
+//            System.out.println(triangle);
+//        }
+//    }
 }

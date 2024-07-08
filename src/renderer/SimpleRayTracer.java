@@ -69,7 +69,7 @@ public class SimpleRayTracer extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0 && unshaded(gp, l, n, lightSource)){
+            if (nl * nv > 0 && unshaded(gp, l, n,nl, lightSource)){
                 //sign(nl) == sign(nv);
 
                 Color iL = lightSource.getIntensity(gp.point);
@@ -113,20 +113,20 @@ public class SimpleRayTracer extends RayTracerBase {
      * @param n the normal vector at the intersection point
      * @return true if the point is shaded, false otherwise
      */
-   private boolean unshaded (GeoPoint gp, Vector l, Vector n, LightSource light) {
-        Vector lightDirection = l.scale(-1); // from point to light source
+   private boolean unshaded (GeoPoint gp, Vector l, Vector n,double nl, LightSource light) {
+       Vector lightDirection = l.scale(-1); // from point to light source
+       Vector epsVector = n.scale(nl < 0 ? DELTA : -DELTA);
+       Point point = gp.point.add(epsVector);
+       Ray lightRay = new Ray(point, lightDirection);
+       List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+       if (intersections == null) return true;
+       double lightDistance = light.getDistance(gp.point);
+       for (GeoPoint geoPoint : intersections) {
+           if (alignZero(geoPoint.point.distance(gp.point) - lightDistance) <= 0)
+               return false;
+       }
+         return true;
 
-        Vector epsVector = n.scale(DELTA);
-        Point point = gp.point.add(epsVector);
-        Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, light.getDistance(gp.point));
-        if (intersections == null) return true;
-        double lightDistance = light.getDistance(gp.point);
-        for (GeoPoint geo : intersections) {
-            if (alignZero(geo.point.distance(gp.point) - lightDistance) <= 0)
-                return false;
-        }
-        return true;
-    }
+   }
 
 }
