@@ -1,15 +1,18 @@
 package renderer;
 
 import static java.awt.Color.*;
+import static test.OBJReader.readTrianglesFromOBJ;
 
 import org.junit.jupiter.api.Test;
-
+import test.OBJReader;
 import geometries.*;
 import lighting.*;
 import primitives.*;
 
 
 import scene.Scene;
+
+import java.util.List;
 
 /**
  * Test rendering a basic image
@@ -132,12 +135,12 @@ public class LightsTests {
      * The first triangle in appropriate tests
      */
     private final Geometry triangle1 = new Triangle(vertices[0], vertices[1], vertices[2])
-            .setMaterial(material);
+         .setMaterial(material);
     /**
      * The first triangle in appropriate tests
      */
     private final Geometry triangle2 = new Triangle(vertices[0], vertices[1], vertices[3])
-            .setMaterial(material);
+          .setMaterial(material);
 
     /**
      * Produce a picture of a sphere lighted by a directional light
@@ -289,6 +292,36 @@ public class LightsTests {
                 .build()
                 .renderImage()
                 .writeToImage();
+
+    }
+    @Test
+    public void triangles() {
+        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
+        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
+
+        // Loop through each triangle and add it to scene2.geometries
+        for (Triangle triangle : triangles) {
+            scene2.geometries.add(triangle.setMaterial(material));
+        }
+
+        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+                .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
+
+
+        camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
     }
 
+    public static void main(String[] args) {
+        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
+        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
+
+        // Print triangles
+        System.out.println("Triangles:");
+        for (Triangle triangle : triangles) {
+            System.out.println(triangle);
+        }
+    }
 }
