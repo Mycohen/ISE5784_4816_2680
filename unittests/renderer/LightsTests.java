@@ -314,14 +314,6 @@ public class LightsTests {
 //                .writeToImage();
 //    }
 //
-//    public static void main(String[] args) {
-//        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
-//        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
-//
-//        // Print triangles
-//        System.out.println("Triangles:");
-//        for (Triangle triangle : triangles) {
-//            System.out.println(triangle);
-//        }
+
 //    }
 }
