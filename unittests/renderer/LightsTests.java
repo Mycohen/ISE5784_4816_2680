@@ -296,7 +296,7 @@ public class LightsTests {
     }
 //    @Test
 //    public void triangles() {
-//        String filePath = "C:\\Users\\משפחה\\Downloads\\tinker.obj"; // Replace with your OBJ file path
+//        String filePath = "C:\\Users\\mycoh\\Downloads\\tinker.obj"; // Replace with your OBJ file path
 //        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
 //
 //        // Loop through each triangle and add it to scene2.geometries
@@ -313,7 +313,6 @@ public class LightsTests {
 //                .renderImage()
 //                .writeToImage();
 //    }
-//
 
-//    }
+
 }
