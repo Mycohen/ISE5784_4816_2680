@@ -76,7 +76,7 @@ public class SimpleRayTracer extends RayTracerBase {
      * @return the color at the intersection point
      */
     private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
-        Color localEffects = calcLocalEffects(geoPoint, ray);
+        Color localEffects = calcLocalEffects(geoPoint, ray, k);
         return level == 1 ? localEffects : localEffects.add(calcGlobalEffects(geoPoint, ray, level, k));
     }
 
@@ -179,15 +179,15 @@ public class SimpleRayTracer extends RayTracerBase {
             if (nl * nv > 0)
             {
                 Double3 ktr = transparency(geoPoint, light, l, normal);
-                if (!ktr.equals(Double3.ZERO))
+                if(!ktr.product(k).lowerThan(MIN_CALC_COLOR_K))
                 {
-                    Double3 ip = light.getIntensity(geoPoint.point).scale(ktr);
-                    color = color.add(calcDiffusive(material, nl).add(calcSpecular(material, normal, l, nl, viewDirection)).product(ip));
+                    Color lightIntensity = light.getIntensity(geoPoint.point).scale(ktr);
+                    color = color.add(lightIntensity.scale(calcDiffusive(material, nl).add(calcSpecular(material, normal, l, nl, viewDirection))));
                 }
             }
         }
 
-
+        return color;
 
 
     }
