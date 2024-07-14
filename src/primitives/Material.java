@@ -6,14 +6,43 @@ package primitives;
  */
 public class Material {
 
-    /** Diffuse reflection coefficient */
+    /** Diffuse reflection coefficient that means the intensity of the diffuse light */
     public Double3 kD = Double3.ZERO;
 
-    /** Specular reflection coefficient */
+    /** Specular reflection coefficient that means the intensity of the specular light */
     public Double3 kS = Double3.ZERO;
 
     /** Shininess exponent for specular highlights */
     public int nShininess = 0;
+    /** Reflection coefficient that means the intensity of the reflected light */
+    public Double3 kR = Double3.ZERO;
+    /** Transmission coefficient that means the intensity of the refracted light */
+    public Double3 kT = Double3.ZERO;
+
+    public Material setKR(Double3 kr) {
+        this.kR = kr;
+        return this;
+    }
+    public Material setKT(Double3 kt) {
+        this.kT = kt;
+        return this;
+    }
+    public Material setKT(double kt) {
+        this.kT = new Double3(kt);
+        return this;
+    }
+    public Material setKR(double kr) {
+        this.kR = new Double3(kr);
+        return this;
+    }
+   public Material setKD(double kd) {
+        this.kD = new Double3(kd);
+        return this;
+    }
+    public Material setKS(double ks) {
+        this.kS = new Double3(ks);
+        return this;
+    }
 
     /**
      * Sets the diffuse reflection coefficient (kD) of the material.

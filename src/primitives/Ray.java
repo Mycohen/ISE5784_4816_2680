@@ -3,6 +3,8 @@ package primitives;
 import java.util.List;
 import geometries.Intersectable.GeoPoint;
 
+
+
 /**
  * Class representing a ray in three-dimensional space.
  *
@@ -22,6 +24,7 @@ public class Ray {
      * The direction vector of the ray (normalized).
      */
     private final Vector direction;
+    private static final double DELTA = 0.1;
 
     /**
      * Constructor initializing the ray with a starting point and direction vector.
@@ -34,6 +37,13 @@ public class Ray {
         head = p0;
         // Normalizing and setting the direction vector
         direction = dir.normalize();
+    }
+    public Ray(Point p0, Vector dir, Vector normal) {
+
+        direction = dir.normalize();
+        double nv = normal.dotProduct(this.direction);
+        Vector deltaV = normal.scale(nv < 0 ? -DELTA : DELTA);
+        head = p0.add(deltaV);
     }
 
     /**
