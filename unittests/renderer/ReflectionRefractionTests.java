@@ -5,6 +5,7 @@ package renderer;
 
 import static java.awt.Color.*;
 
+import geometries.Ring;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -101,4 +102,30 @@ public class ReflectionRefractionTests {
                 .renderImage()
                 .writeToImage();
     }
+    
+    @Test
+    public void redRing() {
+        scene.geometries.add(
+                new Ring(new Point(0, 0, -50), 50d, 40d).setEmission(new Color(RED))
+                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100)));
+
+        // Add ambient light to ensure the ring is visible
+        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.2));
+
+        // Adjust the spotlight to ensure it illuminates the ring properly
+        scene.lights.add(
+                new SpotLight(new Color(1000, 600, 0), new Point(0, 0, 100), new Vector(0, 0, -1))
+                        .setKl(0.0004).setKq(0.0000006));
+
+        // Position the camera to view the ring correctly
+        cameraBuilder.setLocation(new Point(0, 0, 150))
+                .setVpDistance(100)
+                .setVUpSize(200, 200)
+                .setImageWriter(new ImageWriter("redRing", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
+
+
 }
