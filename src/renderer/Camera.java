@@ -23,7 +23,11 @@ public class Camera implements Cloneable {
     private double distance = 0.0;
     ImageWriter imageWriter;
     RayTracerBase rayTracer;
-
+    private int samplesPerPixel = 1;
+    public Camera setSamplesPerPixel(int samplesPerPixel) {
+        this.samplesPerPixel = samplesPerPixel;
+        return this;
+    }
     /**
      * Constructs a Camera with default values.
      * The default values are:
@@ -73,13 +77,10 @@ public class Camera implements Cloneable {
      * @param i  row index of the pixel (from top to bottom)
      * @return a Ray object representing the ray passing through the pixel (i, j)
      */
-    public Ray constructRay(int nX, int nY, int j, int i) {
-        // Calculate the intersection point of the ray with the view plane
+    public Ray constructRay(int nX, int nY, double j, double i) {
         Point pIJ = p0.add(VTo.scale(distance));
-        // Calculate the size of a single pixel
         double rX = width / nX;
         double rY = height / nY;
-        // Calculate the coordinates of the pixel's center
         double xJ = (j - (nX - 1) / 2.0) * rX;
         double yI = (i - (nY - 1) / 2.0) * rY;
         if (!isZero(xJ)) {
@@ -203,9 +204,20 @@ public class Camera implements Cloneable {
         if (rayTracer == null) {
             throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
         }
-        Ray ray = constructRay(nX, nY, j, i);
-        Color color = rayTracer.traceRay(ray);
-        imageWriter.writePixel(j, i, color);
+
+        Color finalColor = new Color(0, 0, 0);
+        for (int k = 0; k < samplesPerPixel; k++) {
+            for (int l = 0; l < samplesPerPixel; l++)
+            {
+                double offsetX = (k + Math.random()) / samplesPerPixel - 0.5;
+                double offsetY = (l + Math.random()) / samplesPerPixel - 0.5;
+                Ray ray = constructRay(nX, nY, j + offsetX, i + offsetY);
+                Color sampleColor = rayTracer.traceRay(ray);
+                finalColor = finalColor.add(sampleColor);
+            }
+        }
+        finalColor = finalColor.scale(1.0 / (samplesPerPixel * samplesPerPixel));
+        imageWriter.writePixel(j, i, finalColor);
     }
 
     /**
@@ -350,6 +362,11 @@ public class Camera implements Cloneable {
          */
         public Builder setRayTracer(RayTracerBase rayTracer) {
             camera.rayTracer = rayTracer;
+            return this;
+        }
+
+        public Builder setSamplesPerPixel(int i) {
+            camera.samplesPerPixel = i;
             return this;
         }
     }
