@@ -153,21 +153,61 @@ public class ReflectionRefractionTests {
                 new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
                         .setKl(0.0004).setKq(0.0000006));
 
-//    // Add a spotlight to illuminate the triangles
-//    scene.lights.add(
-//            new SpotLight(new Color(700, 400, 400), new Point(0, 0, 100), new Vector(0, 0, -1))
-//                    .setKl(4E-5).setKq(2E-7));
+        // Camera view configurations
+        cameraBuilder.setVpDistance(1000).setVUpSize(500, 500);
 
-        // Set up the camera for a left front top view
-        Point cameraLocation = new Point(-500, 500, 1000);
-        Vector directionVector = new Vector(0.5, -0.5, -1).normalize();
-        Vector upVector = new Vector(-0.5, -0.5, 0).normalize(); // Ensure orthogonality
+        // View 1: Default front view
+        cameraBuilder.setLocation(new Point(0, 0, 1000))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+                .setImageWriter(new ImageWriter("mosaicTriangles_frontView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
 
-        cameraBuilder.setLocation(cameraLocation)
-                .setDirection(directionVector, upVector)
-                .setVpDistance(1000)
-                .setVUpSize(500, 500)
+        // View 2: Left front top view
+        cameraBuilder.setLocation(new Point(-500, 500, 1000))
+                .setDirection(new Vector(0.5, -0.5, -1).normalize(), new Vector(-0.5, -0.5, 0).normalize())
                 .setImageWriter(new ImageWriter("mosaicTriangles_leftFrontTopView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // View 3: Right front top view
+        cameraBuilder.setLocation(new Point(500, 500, 1000))
+                .setDirection(new Vector(-0.5, -0.5, -1).normalize(), new Vector(0.5, -0.5, 0).normalize())
+                .setImageWriter(new ImageWriter("mosaicTriangles_rightFrontTopView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // View 4: Left bottom view
+        cameraBuilder.setLocation(new Point(-500, -500, 1000))
+                .setDirection(new Vector(0.5, 0.5, -1).normalize(), new Vector(-0.5, 0.5, 0).normalize())
+                .setImageWriter(new ImageWriter("mosaicTriangles_leftBottomView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // View 5: Right bottom view
+        cameraBuilder.setLocation(new Point(500, -500, 1000))
+                .setDirection(new Vector(-0.5, 0.5, -1).normalize(), new Vector(0.5, 0.5, 0).normalize())
+                .setImageWriter(new ImageWriter("mosaicTriangles_rightBottomView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // View 6: Top down view
+        cameraBuilder.setLocation(new Point(0, 1000, 0))
+                .setDirection(new Vector(0, -1, 0).normalize(), new Vector(0, 0, -1).normalize())
+                .setImageWriter(new ImageWriter("mosaicTriangles_topDownView", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+        // View 7: Bottom up view
+        cameraBuilder.setLocation(new Point(0, -1000, 0))
+                .setDirection(new Vector(0, 1, 0).normalize(), new Vector(0, 0, 1).normalize())
+                .setImageWriter(new ImageWriter("mosaicTriangles_bottomUpView", 600, 600))
                 .build()
                 .renderImage()
                 .writeToImage();
