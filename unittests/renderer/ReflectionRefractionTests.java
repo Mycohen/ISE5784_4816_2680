@@ -119,7 +119,12 @@ public class ReflectionRefractionTests {
     @Test
     public void MosaicTriangles() {
 
-        scene.background = new Color(50, 50, 50);
+        // Magic Mint background color
+        // scene.background = new Color(185, 251, 237);
+        // Deep Teal or Sea Green
+       // scene.background = new Color(71, 105, 98);
+        // scene.background = new Color(0, 0, 0);
+        scene.background = new Color(0, 0, 0);
 
         // Define colors
         Color[] colors = {new Color(RED), new Color(GREEN), new Color(BLUE), new Color(YELLOW),
@@ -137,8 +142,10 @@ public class ReflectionRefractionTests {
                                 new Point(i * size, (j + 1) * size, -100),
                                 new Point((i + 1) * size, j * size, -100))
                                 .setEmission(color)
-                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20))
                 );
+
+
             }
         }
 
@@ -211,8 +218,9 @@ public class ReflectionRefractionTests {
                 .build()
                 .renderImage()
                 .writeToImage();
-    }
 
+
+    }
 
 
 }
