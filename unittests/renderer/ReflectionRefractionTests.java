@@ -5,7 +5,7 @@ package renderer;
 
 import static java.awt.Color.*;
 
-import geometries.Ring;
+
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -13,28 +13,36 @@ import geometries.Triangle;
 import lighting.AmbientLight;
 import lighting.SpotLight;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
-/** Tests for reflection and transparency functionality, test for partial
+/**
+ * Tests for reflection and transparency functionality, test for partial
  * shadows
  * (with transparency)
- * @author dzilb */
+ *
+ * @author dzilb
+ */
 public class ReflectionRefractionTests {
-    /** Scene for the tests */
-    private final Scene          scene         = new Scene("Test scene");
-    /** Camera builder for the tests with triangles */
+    /**
+     * Scene for the tests
+     */
+    private final Scene scene = new Scene("Test scene");
+    /**
+     * Camera builder for the tests with triangles
+     */
     private final Camera.Builder cameraBuilder = Camera.getBuilder()
             .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
             .setRayTracer(new SimpleRayTracer(scene));
 
-    /** Produce a picture of a sphere lighted by a spot light */
+    /**
+     * Produce a picture of a sphere lighted by a spot light
+     */
     @Test
     public void twoSpheres() {
         scene.geometries.add(
                 new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
                         .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
-                new Sphere( 25d,new Point(0, 0, -50)).setEmission(new Color(RED))
+                new Sphere(25d, new Point(0, 0, -50)).setEmission(new Color(RED))
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
         scene.lights.add(
                 new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
@@ -48,14 +56,16 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
-    /** Produce a picture of a sphere lighted by a spot light */
+    /**
+     * Produce a picture of a sphere lighted by a spot light
+     */
     @Test
     public void twoSpheresOnMirrors() {
         scene.geometries.add(
-                new Sphere( 400d,new Point(-950, -900, -1000)).setEmission(new Color(0, 50, 100))
+                new Sphere(400d, new Point(-950, -900, -1000)).setEmission(new Color(0, 50, 100))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
                                 .setKT(new Double3(0.5, 0, 0))),
-                new Sphere( 200d,new Point(-950, -900, -1000)).setEmission(new Color(100, 50, 20))
+                new Sphere(200d, new Point(-950, -900, -1000)).setEmission(new Color(100, 50, 20))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)),
                 new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
                         new Point(670, 670, 3000))
@@ -77,9 +87,11 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
-    /** Produce a picture of a two triangles lighted by a spot light with a
+    /**
+     * Produce a picture of a two triangles lighted by a spot light with a
      * partially
-     * transparent Sphere producing partial shadow */
+     * transparent Sphere producing partial shadow
+     */
     @Test
     public void trianglesTransparentSphere() {
         scene.geometries.add(
@@ -88,7 +100,7 @@ public class ReflectionRefractionTests {
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
                 new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150))
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
-                new Sphere( 30d,new Point(60, 50, -50)).setEmission(new Color(BLUE))
+                new Sphere(30d, new Point(60, 50, -50)).setEmission(new Color(BLUE))
                         .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKT(0.6)));
         scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
         scene.lights.add(
@@ -102,30 +114,44 @@ public class ReflectionRefractionTests {
                 .renderImage()
                 .writeToImage();
     }
-    
+
+
     @Test
-    public void redRing() {
-        scene.geometries.add(
-                new Ring(new Point(0, 0, -50), 50d, 40d).setEmission(new Color(RED))
-                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100)));
+    public void MosaicTriangles() {
+        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+        scene.background = new Color(50, 50, 50);
 
-        // Add ambient light to ensure the ring is visible
-        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.2));
+        // Define colors
+        Color[] colors = {new Color(RED), new Color(GREEN), new Color(BLUE), new Color(YELLOW),
+                new Color(CYAN), new Color(MAGENTA), new Color(ORANGE), new Color(PINK)};
 
-        // Adjust the spotlight to ensure it illuminates the ring properly
+        // Create triangles in a grid pattern
+        int gridSize = 10; // Adjust the grid size as needed
+        double size = 50;  // Size of each triangle
+        for (int i = -gridSize; i < gridSize; i++) {
+            for (int j = -gridSize; j < gridSize; j++) {
+                Color color = colors[(i + gridSize) % colors.length];
+                scene.geometries.add(
+                        new Triangle(
+                                new Point(i * size, j * size, -100),
+                                new Point(i * size, (j + 1) * size, -100),
+                                new Point((i + 1) * size, j * size, -100))
+                                .setEmission(color)
+                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+                );
+            }
+        }
+
+        // Add a spotlight to illuminate the triangles
         scene.lights.add(
-                new SpotLight(new Color(1000, 600, 0), new Point(0, 0, 100), new Vector(0, 0, -1))
-                        .setKl(0.0004).setKq(0.0000006));
+                new SpotLight(new Color(700, 400, 400), new Point(0, 0, 100), new Vector(0, 0, -1))
+                        .setKl(4E-5).setKq(2E-7));
 
-        // Position the camera to view the ring correctly
-        cameraBuilder.setLocation(new Point(0, 0, 150))
-                .setVpDistance(100)
-                .setVUpSize(200, 200)
-                .setImageWriter(new ImageWriter("redRing", 500, 500))
+        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
+                .setVUpSize(500, 500)
+                .setImageWriter(new ImageWriter("mosaicTriangles", 600, 600))
                 .build()
                 .renderImage()
                 .writeToImage();
     }
-
-
 }
