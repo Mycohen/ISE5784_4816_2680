@@ -34,27 +34,6 @@ public class ReflectionRefractionTests {
             .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
             .setRayTracer(new SimpleRayTracer(scene));
 
-    /**
-     * Produce a picture of a sphere lighted by a spot light
-     */
-    @Test
-    public void twoSpheres() {
-        scene.geometries.add(
-                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
-                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
-                new Sphere(25d, new Point(0, 0, -50)).setEmission(new Color(RED))
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
-        scene.lights.add(
-                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
-                        .setKl(0.0004).setKq(0.0000006));
-
-        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
-                .setVUpSize(150, 150)
-                .setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500))
-                .build()
-                .renderImage()
-                .writeToImage();
-    }
 
     /**
      * Produce a picture of a sphere lighted by a spot light
@@ -114,11 +93,32 @@ public class ReflectionRefractionTests {
                 .renderImage()
                 .writeToImage();
     }
+    /**
+     * Produce a picture of a sphere lighted by a spot light
+     */
+    @Test
+    public void twoSpheres() {
+        scene.geometries.add(
+                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
+                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
+                new Sphere(25d, new Point(0, 0, -50)).setEmission(new Color(RED))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
+        scene.lights.add(
+                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
+                        .setKl(0.0004).setKq(0.0000006));
+
+        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
+                .setVUpSize(150, 150)
+                .setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
 
 
     @Test
     public void MosaicTriangles() {
-        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+
         scene.background = new Color(50, 50, 50);
 
         // Define colors
@@ -141,11 +141,19 @@ public class ReflectionRefractionTests {
                 );
             }
         }
-
-        // Add a spotlight to illuminate the triangles
+        scene.geometries.add(
+                new Sphere(100d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
+                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
+                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(RED))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
         scene.lights.add(
-                new SpotLight(new Color(700, 400, 400), new Point(0, 0, 100), new Vector(0, 0, -1))
-                        .setKl(4E-5).setKq(2E-7));
+                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
+                        .setKl(0.0004).setKq(0.0000006));
+
+//        // Add a spotlight to illuminate the triangles
+//        scene.lights.add(
+//                new SpotLight(new Color(700, 400, 400), new Point(0, 0, 100), new Vector(0, 0, -1))
+//                        .setKl(4E-5).setKq(2E-7));
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVUpSize(500, 500)
