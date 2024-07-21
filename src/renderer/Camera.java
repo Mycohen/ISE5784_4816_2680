@@ -24,10 +24,13 @@ public class Camera implements Cloneable {
     ImageWriter imageWriter;
     RayTracerBase rayTracer;
     private int samplesPerPixel = 1;
+
     public Camera setSamplesPerPixel(int samplesPerPixel) {
+
         this.samplesPerPixel = samplesPerPixel;
         return this;
     }
+
     /**
      * Constructs a Camera with default values.
      * The default values are:
@@ -204,20 +207,26 @@ public class Camera implements Cloneable {
         if (rayTracer == null) {
             throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
         }
+        if (samplesPerPixel <= 1) {
+            Ray ray = constructRay(nX, nY, j, i);
+            Color color = rayTracer.traceRay(ray);
+            imageWriter.writePixel(j, i, color);
 
-        Color finalColor = new Color(0, 0, 0);
-        for (int k = 0; k < samplesPerPixel; k++) {
-            for (int l = 0; l < samplesPerPixel; l++)
-            {
-                double offsetX = (k + Math.random()) / samplesPerPixel - 0.5;
-                double offsetY = (l + Math.random()) / samplesPerPixel - 0.5;
-                Ray ray = constructRay(nX, nY, j + offsetX, i + offsetY);
-                Color sampleColor = rayTracer.traceRay(ray);
-                finalColor = finalColor.add(sampleColor);
+        } else {
+            Color finalColor = new Color(0, 0, 0);
+            double subPixelSize = 1.0 / samplesPerPixel;
+            for (int k = 0; k < samplesPerPixel; k++) {
+                for (int l = 0; l < samplesPerPixel; l++) {
+                    double offsetX = (k + Math.random()) * subPixelSize - 0.5;
+                    double offsetY = (l + Math.random()) * subPixelSize - 0.5;
+                    Ray ray = constructRay(nX, nY, j + offsetX, i + offsetY);
+                    Color sampleColor = rayTracer.traceRay(ray);
+                    finalColor = finalColor.add(sampleColor);
+                }
             }
+            finalColor = finalColor.scale(1.0 / (samplesPerPixel * samplesPerPixel));
+            imageWriter.writePixel(j, i, finalColor);
         }
-        finalColor = finalColor.scale(1.0 / (samplesPerPixel * samplesPerPixel));
-        imageWriter.writePixel(j, i, finalColor);
     }
 
     /**

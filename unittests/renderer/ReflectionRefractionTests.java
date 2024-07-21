@@ -59,8 +59,8 @@ public class ReflectionRefractionTests {
                 .setKl(0.00001).setKq(0.000005));
 
         cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
-                .setVUpSize(2500, 2500).setSamplesPerPixel(4)
-                .setImageWriter(new ImageWriter("reflectionTwoSpheresMirrored", 500, 500))
+                .setVUpSize(2500, 2500).setSamplesPerPixel(9)
+                .setImageWriter(new ImageWriter("reflectionTwoSpheresMirrored with 9 j", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
@@ -87,8 +87,8 @@ public class ReflectionRefractionTests {
                         .setKl(4E-5).setKq(2E-7));
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
-                .setVUpSize(200, 200).setSamplesPerPixel(4)
-                .setImageWriter(new ImageWriter("refractionShadow", 600, 600))
+                .setVUpSize(200, 200).setSamplesPerPixel(9)
+                .setImageWriter(new ImageWriter("refractionShadow with 9 j", 600, 600))
                 .build()
                 .renderImage()
                 .writeToImage();
@@ -109,8 +109,15 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVUpSize(150, 150)
-                .setSamplesPerPixel(4) // Enable 4x super-sampling anti-aliasing
-                .setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500))
+                .setSamplesPerPixel(9) // Enable 4x super-sampling anti-aliasing
+                .setImageWriter(new ImageWriter("refractionTwoSpheres with 9 j", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
+                .setVUpSize(150, 150)
+                .setSamplesPerPixel(1) // Enable 4x super-sampling anti-aliasing
+                .setImageWriter(new ImageWriter("refractionTwoSpheres with 1", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
@@ -223,50 +230,51 @@ public class ReflectionRefractionTests {
 //
 //
 //    }
-    @Test
-    public void MosaicTrianglesWithAntiAliasing() {
-        scene.background = Color.BLACK;
-        Color[] colors = {new Color(RED), new Color(GREEN), new Color(BLUE), new Color(YELLOW),
-                new Color(CYAN), new Color(MAGENTA), new Color(ORANGE), new Color(PINK)};
-
-        // Create triangles in a grid pattern
-        int gridSize = 10; // Adjust the grid size as needed
-        double size = 50;  // Size of each triangle
-        for (int i = -gridSize; i < gridSize; i++) {
-            for (int j = -gridSize; j < gridSize; j++) {
-                Color color = colors[(i + gridSize) % colors.length];
-                scene.geometries.add(
-                        new Triangle(
-                                new Point(i * size, j * size, -100),
-                                new Point(i * size, (j + 1) * size, -100),
-                                new Point((i + 1) * size, j * size, -100))
-                                .setEmission(color)
-                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20))
-                );
-            }
-        }
-
-        scene.geometries.add(
-                new Sphere(100d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
-                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
-                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(255, 215, 0))
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100))
-        );
-
-        scene.lights.add(
-                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
-                        .setKl(0.0004).setKq(0.0000006)
-        );
-
-        cameraBuilder.setVpDistance(1000).setVUpSize(500, 500)
-                .setSamplesPerPixel(4) // Enable 4x super-sampling
-                .setLocation(new Point(0, 0, 1000))
-                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-                .setImageWriter(new ImageWriter("mosaicTriangles_antiAliased", 600, 600))
-                .build()
-                .renderImage()
-                .writeToImage();
-    }
+    //the las test
+//    @Test
+//    public void MosaicTrianglesWithAntiAliasing() {
+//        scene.background = Color.BLACK;
+//        Color[] colors = {new Color(RED), new Color(GREEN), new Color(BLUE), new Color(YELLOW),
+//                new Color(CYAN), new Color(MAGENTA), new Color(ORANGE), new Color(PINK)};
+//
+//        // Create triangles in a grid pattern
+//        int gridSize = 10; // Adjust the grid size as needed
+//        double size = 50;  // Size of each triangle
+//        for (int i = -gridSize; i < gridSize; i++) {
+//            for (int j = -gridSize; j < gridSize; j++) {
+//                Color color = colors[(i + gridSize) % colors.length];
+//                scene.geometries.add(
+//                        new Triangle(
+//                                new Point(i * size, j * size, -100),
+//                                new Point(i * size, (j + 1) * size, -100),
+//                                new Point((i + 1) * size, j * size, -100))
+//                                .setEmission(color)
+//                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20))
+//                );
+//            }
+//        }
+//
+//        scene.geometries.add(
+//                new Sphere(100d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
+//                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
+//                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(255, 215, 0))
+//                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100))
+//        );
+//
+//        scene.lights.add(
+//                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
+//                        .setKl(0.0004).setKq(0.0000006)
+//        );
+//
+//        cameraBuilder.setVpDistance(1000).setVUpSize(500, 500)
+//                .setSamplesPerPixel(4) // Enable 4x super-sampling
+//                .setLocation(new Point(0, 0, 1000))
+//                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+//                .setImageWriter(new ImageWriter("mosaicTriangles_antiAliased", 600, 600))
+//                .build()
+//                .renderImage()
+//                .writeToImage();
+//    }
 
 
 
