@@ -19,18 +19,18 @@ public class ProjectImage {
     public void finalImage() {
 
         Scene scene = new Scene("Test final image");
-         final Camera.Builder camera2 = Camera.getBuilder()
+        final Camera.Builder camera2 = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
                 .setLocation(new Point(0, 0, 1000))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-                 .setMultithreading(9)
-                 .setSamplesPerPixel(9)
-                 .setVUpSize(200, 200).setVpDistance(1000);
+                .setMultithreading(9)
+                .setSamplesPerPixel(9)
+                .setVUpSize(200, 200).setVpDistance(1000);
 
         // Replace with your OBJ file path
         List<Triangle> triangles = Generated3DCode.Triangles();
         for (Triangle triangle : triangles) {
-            scene.geometries.add(triangle.setEmission(  new Color(255, 0, 255))
+            scene.geometries.add(triangle.setEmission(new Color(255, 0, 255))
                     .setMaterial(new Material()
                             .setkD(new Double3(0.2, 0.6, 0.4))
                             .setkS(new Double3(0.2, 0.4, 0.3))
@@ -40,7 +40,7 @@ public class ProjectImage {
         }
         triangles = Generated3DCode1.Triangles();
         for (Triangle triangle : triangles) {
-            scene.geometries.add(triangle.setEmission(  new Color(0, 0, 255))
+            scene.geometries.add(triangle.setEmission(new Color(0, 0, 255))
                     .setMaterial(new Material()
                             .setkD(new Double3(0.2, 0.6, 0.4))
                             .setkS(new Double3(0.2, 0.4, 0.3))
@@ -50,7 +50,7 @@ public class ProjectImage {
         }
         triangles = Generated3DCode2.Triangles();
         for (Triangle triangle : triangles) {
-            scene.geometries.add(triangle.setEmission(  new Color(0, 255, 0))
+            scene.geometries.add(triangle.setEmission(new Color(0, 255, 0))
                     .setMaterial(new Material()
                             .setkD(new Double3(0.2, 0.6, 0.4))
                             .setkS(new Double3(0.2, 0.4, 0.3))
@@ -60,7 +60,7 @@ public class ProjectImage {
         }
         triangles = Generated3DCode3.Triangles();
         for (Triangle triangle : triangles) {
-            scene.geometries.add(triangle.setEmission(  new Color(255, 0, 0))
+            scene.geometries.add(triangle.setEmission(new Color(255, 0, 0))
                     .setMaterial(new Material()
                             .setkD(new Double3(0.2, 0.6, 0.4))
                             .setkS(new Double3(0.2, 0.4, 0.3))
@@ -72,23 +72,23 @@ public class ProjectImage {
         scene.geometries.add(new Sphere(5, new Point(15, -400, 5)).setEmission(new Color(0, 255, 255)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setKR(0.97).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(10000)));
         scene.geometries.add(new Sphere(4, new Point(-10, -400, 4)).setEmission(new Color(255, 0, 0)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setKR(0.97).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(10000)));
         scene.geometries.add(new Sphere(3, new Point(0, -400, 3)).setEmission(new Color(0, 0, 255)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setKR(0.97).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(10000)));
-        scene.lights. add(new SpotLight(new Color(300,100,150), new Point(0,-420,0),new Vector(0,1,0)));
-        scene.geometries.add(new Plane(new Point(0,0,0),new Point(0,1,0),new Point(1,0,0)).setEmission(new Color(WHITE).reduce(5)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(301)));
-        scene.geometries.add(new Plane(new Point(0,350,0),new Point(0,350,1),new Point(1,350,0)).setEmission(new Color(0,0,0)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(100000)));
+        scene.lights.add(new SpotLight(new Color(300, 100, 150), new Point(0, -420, 0), new Vector(0, 1, 0)));
+        scene.geometries.add(new Plane(new Point(0, 0, 0), new Point(0, 1, 0), new Point(1, 0, 0)).setEmission(new Color(WHITE).reduce(5)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(301)));
+        scene.geometries.add(new Plane(new Point(0, 350, 0), new Point(0, 350, 1), new Point(1, 350, 0)).setEmission(new Color(0, 0, 0)).setMaterial(new Material().setkD(new Double3(0.2, 0.6, 0.4)).setkS(new Double3(0.2, 0.4, 0.3)).setShininess(100000)));
         scene.geometries.makeBVH();
 
-        scene.lights. add(new SpotLight( new Color(300, 200, 10000),new Point(-200,200,150), new Vector   (382,-353,-150))
+        scene.lights.add(new SpotLight(new Color(300, 200, 10000), new Point(-200, 200, 150), new Vector(382, -353, -150))
                 .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
-        scene.lights. add(new SpotLight(new Color(10000, 200, 100),new Point(200,200,150), new Vector  (-382,-353,-150))
+        scene.lights.add(new SpotLight(new Color(10000, 200, 100), new Point(200, 200, 150), new Vector(-382, -353, -150))
                 .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
 
-       camera2.setImageWriter(new ImageWriter("light83", 500, 500))
-               .setLocation(new Point(10,-780,30))
-               .setDirection(new Vector(0,1,0),new Vector(0,0,1))
-               .build()
-               .renderImage()
-               .writeToImage();
+        camera2.setImageWriter(new ImageWriter("light83", 500, 500))
+                .setLocation(new Point(10, -780, 30))
+                .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
+                .build()
+                .renderImage()
+                .writeToImage();
     }
 
     @Test
@@ -104,7 +104,7 @@ public class ProjectImage {
                 .setVUpSize(200, 200).setVpDistance(1000);
 
 
-        Geometry crystalSphere =  new Sphere(50, new Point(0, 0, -200))
+        Geometry crystalSphere = new Sphere(50, new Point(0, 0, -200))
                 .setEmission(new Color(20, 20, 20))
                 .setMaterial(new Material()
                         .setKd(0.2).setKs(0.9).setShininess(300)
@@ -136,15 +136,12 @@ public class ProjectImage {
                 .setEmission(new Color(100, 20, 20))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
 
-        Geometry reflectiveTriangle = new Triangle(
-                new Point(-120, 50, -200),
-                new Point(-70, -40, -150),
-                new Point(-150, -30, -100))
-                .setEmission(new Color(20, 100, 20))
-                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(80).setKR(0.2));
+        Geometry reflectiveSphere2 = new Sphere(30, new Point(-100, -20, -130))
+                .setEmission(new Color(20, 20, 180))
+                .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
 
         // Add all geometries to the scene
-        scene.geometries.add(crystalSphere, floor, backdrop, reflectiveSphere, reflectiveTriangle);
+        scene.geometries.add(crystalSphere, floor, backdrop, reflectiveSphere, reflectiveSphere2);
 
         // Set up lighting
         scene.setAmbientLight(new AmbientLight(new Color(150, 30, 50), 0.1));
@@ -167,4 +164,67 @@ public class ProjectImage {
                 .renderImage()
                 .writeToImage();
     }
+
+
+    @Test
+    public void testVerticalCheckerboardScene() {
+        Scene scene = new Scene("Vertical Checkerboard Crystal Scene");
+
+        // Crystal sphere at the origin
+        Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
+                .setEmission(new Color(20, 20, 20))
+                .setMaterial(new Material()
+                        .setKd(0.2).setKs(0.9).setShininess(300)
+                        .setKR(0.4).setKT(0.6));
+
+        // Create a checkered floor on YX plane (vertical)
+        int squareSize = 50;
+        Geometries checkerboard = new Geometries();
+        for (int i = -5; i <= 5; i++) {
+            for (int j = -5; j <= 5; j++) {
+                Color color = (i + j) % 2 == 0 ? new Color(20, 20, 20) : new Color(180, 180, 180);
+                checkerboard.add(new Polygon(
+                        new Point(i * squareSize, j * squareSize, 0),
+                        new Point((i + 1) * squareSize, j * squareSize, 0),
+                        new Point((i + 1) * squareSize, (j + 1) * squareSize, 0),
+                        new Point(i * squareSize, (j + 1) * squareSize, 0))
+                        .setEmission(color)
+                        .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30).setKR(0.1)));
+            }
+        }
+
+        // Add some additional objects for interesting reflections
+        Geometry reflectiveSphere = new Sphere(30, new Point(0, 100, 30))
+                .setEmission(new Color(100, 20, 20))
+                .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
+
+
+
+        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere);
+
+        scene.setAmbientLight(new AmbientLight(new Color(150, 30, 50), 0.1));
+
+        scene.lights.add(new SpotLight(
+                new Color(80, 30, 200),
+                new Point(100, 100, 500),
+                new Vector(-1, -1, -4))
+                .setKl(0.00001).setKq(0.000005));
+
+
+        Camera.Builder camera = Camera.getBuilder()
+                .setRayTracer(new SimpleRayTracer(scene))
+                .setLocation(new Point(10, -1200, 30))
+                .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
+                .setMultithreading(9)
+                .setSamplesPerPixel(9)
+                .setVUpSize(200, 200).setVpDistance(1500);
+        camera.setImageWriter(new ImageWriter("NaturalAxisCrystalScene", 800, 800))
+                .build()
+                .renderImage()
+                .writeToImage();
+
+
+    }
+
+
 }
