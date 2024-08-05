@@ -17,12 +17,7 @@ import java.util.List;
  */
 public abstract class Intersectable {
 
-    /**
-     * Finds all intersection points between a given ray and the geometry.
-     *
-     * @param ray the ray to intersect with the geometry
-     * @return a list of points where the ray intersects the geometry
-     */
+    protected BoundingBox boundingBox;
     public List<Point> findIntersections(Ray ray) {
         var geoList = findGeoIntersections(ray);
         return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
@@ -33,6 +28,10 @@ public abstract class Intersectable {
 
     public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         return findGeoIntersectionsHelper(ray, maxDistance);
+    }
+
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);

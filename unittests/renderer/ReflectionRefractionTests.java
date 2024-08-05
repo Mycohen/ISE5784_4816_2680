@@ -6,6 +6,10 @@ package renderer;
 import static java.awt.Color.*;
 
 
+import geometries.Geometry;
+import geometries.Polygon;
+import lighting.DirectionalLight;
+import lighting.PointLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -123,7 +127,44 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
+    @Test
+    public void testSimplePyramid() {
+        Scene scene = new Scene("Simple Pyramid");
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(Color.BLACK, 0)); // No ambient light
 
+        // Create a pyramid using polygons
+        Point apex = new Point(0, 1, -1);
+        Point base1 = new Point(-1, -1, -1);
+        Point base2 = new Point(1, -1, -1);
+        Point base3 = new Point(0, -1, 1);
+
+        Material whiteMaterial = new Material().setKd(0.8).setKs(0.2).setShininess(30);
+        Color whiteColor = new Color(255, 255, 255);
+
+        // Create polygons for the pyramid
+        Geometry side1 = new Polygon(apex, base1, base2).setEmission(whiteColor).setMaterial(whiteMaterial);
+        Geometry side2 = new Polygon(apex, base2, base3).setEmission(whiteColor).setMaterial(whiteMaterial);
+        Geometry side3 = new Polygon(apex, base3, base1).setEmission(whiteColor).setMaterial(whiteMaterial);
+        Geometry base = new Polygon(base1, base2, base3).setEmission(whiteColor).setMaterial(whiteMaterial);
+
+        scene.geometries.add(side1, side2, side3, base);
+
+        // Add a single light source
+        scene.lights.add(new DirectionalLight(new Vector(0, -1, -1),new Color(255, 255, 255)));
+
+        Camera camera = Camera.getBuilder()
+                .setLocation(new Point(0, 0, 5))
+                .setVpDistance(1)
+                .setVUpSize(2, 2)
+                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+                .setImageWriter(new ImageWriter("simplePyramid", 500, 500))
+                .setRayTracer(new SimpleRayTracer(scene))
+                .build();
+
+        camera.renderImage();
+        camera.writeToImage();
+    }
 
 //    @Test
 //    public void MosaicTriangles() {

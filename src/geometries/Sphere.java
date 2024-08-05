@@ -31,6 +31,10 @@ public class Sphere extends RadialGeometry {
     public Sphere(double radius, Point myCenter) {
         super(radius);
         this.center = myCenter;
+        // Calculate and set bounding box
+        Point min = new Point(center.getX() - radius, center.getY() - radius, center.getZ() - radius);
+        Point max = new Point(center.getX() + radius, center.getY() + radius, center.getZ() + radius);
+        this.boundingBox = new BoundingBox(min, max);
     }
 
     /**

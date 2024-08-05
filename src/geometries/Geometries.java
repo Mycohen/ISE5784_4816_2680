@@ -29,16 +29,15 @@ public class Geometries extends Intersectable {
         add(geometries);
     }
 
-    /**
-     * Adds geometrical objects to the collection.
-     *
-     * @param geometries The geometrical objects to add.
-     */
+
+//    public void add(Intersectable... geometries) {
+//        for (Intersectable geo : geometries) {
+//            this.geometries.add(geo);
+//        }
+//    }
     public void add(Intersectable... geometries) {
-        for (Intersectable geo : geometries) {
-            this.geometries.add(geo);
-        }
-    }
+    this.geometries.addAll(List.of(geometries));
+}
 
     /**
      * Finds all intersections of the given ray with the geometrical objects
@@ -61,5 +60,10 @@ public class Geometries extends Intersectable {
 
         }
         return intersections;
+    }
+    public void makeBVH() {
+        List<Intersectable> intersectables = BoundingBox.buildBVH(geometries);
+        geometries.clear();
+        geometries.addAll(intersectables);
     }
 }
