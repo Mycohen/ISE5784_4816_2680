@@ -3,6 +3,9 @@ package renderer;
 import primitives.*;
 
 import java.util.MissingResourceException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -24,22 +27,11 @@ public class Camera implements Cloneable {
     ImageWriter imageWriter;
     RayTracerBase rayTracer;
     private int samplesPerPixel = 1;
-
-    public Camera setSamplesPerPixel(int samplesPerPixel) {
-
-        this.samplesPerPixel = samplesPerPixel;
-        return this;
-    }
+    private int threadsCount = 1;
+    private PrintProgress printProgress = null;
 
     /**
      * Constructs a Camera with default values.
-     * The default values are:
-     * <ul>
-     *     <li>p0 (position) is set to the origin (0, 0, 0).</li>
-     *     <li>VRight is set to (1, 0, 0).</li>
-     *     <li>VUp is set to (0, 1, 0).</li>
-     *     <li>VTo is set to (0, 0, -1).</li>
-     * </ul>
      */
     private Camera() {
         p0 = Point.ZERO;
@@ -72,6 +64,41 @@ public class Camera implements Cloneable {
     }
 
     /**
+     * Sets the number of samples per pixel for anti-aliasing.
+     *
+     * @param samplesPerPixel the number of samples per pixel
+     * @return this Camera instance
+     */
+    public Camera setSamplesPerPixel(int samplesPerPixel) {
+        this.samplesPerPixel = samplesPerPixel;
+        return this;
+    }
+
+    /**
+     * Sets the debug print function for rendering progress.
+     *
+     * @param printProgress the progress printing function
+     * @return this Camera instance
+     */
+    public Camera setDebugPrint(PrintProgress printProgress) {
+        this.printProgress = printProgress;
+        return this;
+    }
+
+    /**
+     * Sets the number of threads for multi-threaded rendering.
+     *
+     * @param threads the number of threads to use
+     * @return this Camera instance
+     */
+    public Camera setMultithreading(int threads) {
+        if (threads < 1)
+            throw new IllegalArgumentException("Multithreading parameter must be 1 or higher");
+        this.threadsCount = threads;
+        return this;
+    }
+
+    /**
      * Constructs a ray for the given pixel coordinates (i, j).
      *
      * @param nX total number of pixels in width
@@ -93,69 +120,6 @@ public class Camera implements Cloneable {
             pIJ = pIJ.add(VUp.scale(-yI));
         }
         return new Ray(p0, pIJ.subtract(p0));
-    }
-
-    /**
-     * Gets the location of the camera.
-     *
-     * @return the location of the camera
-     */
-    public Point getLocation() {
-        return p0;
-    }
-
-    /**
-     * Gets the right direction vector of the camera.
-     *
-     * @return the right direction vector of the camera
-     */
-    public Vector getVRight() {
-        return VRight;
-    }
-
-    /**
-     * Gets the up direction vector of the camera.
-     *
-     * @return the up direction vector of the camera
-     */
-    public Vector getVUp() {
-        return VUp;
-    }
-
-    /**
-     * Gets the direction vector towards which the camera is facing.
-     *
-     * @return the direction vector towards which the camera is facing
-     */
-    public Vector getVTo() {
-        return VTo;
-    }
-
-    /**
-     * Gets the height of the viewport.
-     *
-     * @return the height of the viewport
-     */
-    public double getHeight() {
-        return height;
-    }
-
-    /**
-     * Gets the width of the viewport.
-     *
-     * @return the width of the viewport
-     */
-    public double getWidth() {
-        return width;
-    }
-
-    /**
-     * Gets the distance from the camera to the viewport.
-     *
-     * @return the distance from the camera to the viewport
-     */
-    public double getDistance() {
-        return distance;
     }
 
     /**
@@ -207,13 +171,12 @@ public class Camera implements Cloneable {
         if (rayTracer == null) {
             throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
         }
+        Color pixelColor;
         if (samplesPerPixel <= 1) {
             Ray ray = constructRay(nX, nY, j, i);
-            Color color = rayTracer.traceRay(ray);
-            imageWriter.writePixel(j, i, color);
-
+            pixelColor = rayTracer.traceRay(ray);
         } else {
-            Color finalColor = new Color(0, 0, 0);
+            pixelColor = new Color(0, 0, 0);
             double subPixelSize = 1.0 / samplesPerPixel;
             for (int k = 0; k < samplesPerPixel; k++) {
                 for (int l = 0; l < samplesPerPixel; l++) {
@@ -221,12 +184,12 @@ public class Camera implements Cloneable {
                     double offsetY = (l + Math.random()) * subPixelSize - 0.5;
                     Ray ray = constructRay(nX, nY, j + offsetX, i + offsetY);
                     Color sampleColor = rayTracer.traceRay(ray);
-                    finalColor = finalColor.add(sampleColor);
+                    pixelColor = pixelColor.add(sampleColor);
                 }
             }
-            finalColor = finalColor.scale(1.0 / (samplesPerPixel * samplesPerPixel));
-            imageWriter.writePixel(j, i, finalColor);
+            pixelColor = pixelColor.scale(1.0 / (samplesPerPixel * samplesPerPixel));
         }
+        imageWriter.writePixel(j, i, pixelColor);
     }
 
     /**
@@ -236,36 +199,56 @@ public class Camera implements Cloneable {
      * @throws MissingResourceException if the ImageWriter or RayTracer is missing
      */
     public Camera renderImage() {
-        if (imageWriter == null) {
-            throw new MissingResourceException("ImageWriter", "ImageWriter", "ImageWriter is missing");
-        }
-        if (rayTracer == null) {
-            throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
-        }
-        int nX = imageWriter.getNx();
-        int nY = imageWriter.getNy();
-        for (int i = 0; i < nY; i++) {
-            for (int j = 0; j < nX; j++) {
-                castRay(nX, nY, j, i);
+        if (imageWriter == null)
+            throw new MissingResourceException("Missing image writer", ImageWriter.class.getName(), "");
+        if (rayTracer == null)
+            throw new MissingResourceException("Missing ray tracer", RayTracerBase.class.getName(), "");
+
+        final int nX = imageWriter.getNx();
+        final int nY = imageWriter.getNy();
+        if (printProgress != null) printProgress.print(0);
+        AtomicInteger counter = new AtomicInteger(0);
+
+        if (threadsCount == 1) {
+            for (int i = 0; i < nY; ++i)
+                for (int j = 0; j < nX; ++j) {
+                    castRay(nX, nY, j, i);
+                    if (printProgress != null) printProgress.print(counter.incrementAndGet() / (double)(nY * nX));
+                }
+        } else {
+            ExecutorService executor = Executors.newFixedThreadPool(threadsCount);
+            for (int i = 0; i < nY; ++i) {
+                final int ii = i;
+                executor.execute(() -> {
+                    for (int j = 0; j < nX; ++j) {
+                        castRay(nX, nY, j, ii);
+                        if (printProgress != null) printProgress.print(counter.incrementAndGet() / (double)(nY * nX));
+                    }
+                });
+            }
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ignore) {}
             }
         }
         return this;
     }
 
     /**
+     * Interface for printing progress during rendering.
+     */
+    public interface PrintProgress {
+        void print(double percent);
+    }
+
+    /**
      * Inner Builder class for constructing Camera objects.
      */
     public static class Builder {
-
         private final Camera camera = new Camera();
 
-        /**
-         * Sets the location of the camera.
-         *
-         * @param location the location point
-         * @return the Builder instance
-         * @throws IllegalArgumentException if the location point is null
-         */
         public Builder setLocation(Point location) {
             if (location == null) {
                 throw new IllegalArgumentException("Location cannot be null");
@@ -274,15 +257,6 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        /**
-         * Sets the direction vectors of the camera.
-         * The second vector passed will be adjusted to ensure orthogonality and normalization.
-         *
-         * @param directionTo the direction vector towards which the camera is facing
-         * @param directionUp the up direction vector
-         * @return the Builder instance
-         * @throws IllegalArgumentException if direction vectors are not orthogonal or cannot be normalized
-         */
         public Builder setDirection(Vector directionTo, Vector directionUp) {
             if (directionTo == null || directionUp == null) {
                 throw new IllegalArgumentException("Direction vectors cannot be null");
@@ -296,14 +270,6 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        /**
-         * Sets the size of the viewport (screen plane).
-         *
-         * @param width  the width of the viewport
-         * @param height the height of the viewport
-         * @return the Builder instance
-         * @throws IllegalArgumentException if width or height are non-positive
-         */
         public Builder setVUpSize(double width, double height) {
             if (alignZero(width) <= 0 || alignZero(height) <= 0) {
                 throw new IllegalArgumentException("Width and height must be positive");
@@ -313,13 +279,6 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        /**
-         * Sets the distance from the camera to the viewport (screen plane).
-         *
-         * @param distance the distance from the camera to the viewport
-         * @return the Builder instance
-         * @throws IllegalArgumentException if distance is non-positive
-         */
         public Builder setVpDistance(double distance) {
             if (alignZero(distance) <= 0) {
                 throw new IllegalArgumentException("Distance must be positive");
@@ -328,13 +287,32 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        /**
-         * Builds and returns the Camera object.
-         *
-         * @return the constructed Camera object
-         * @throws MissingResourceException if any required resources are missing
-         * @throws IllegalArgumentException if width, height, or distance are non-positive or if direction vectors are not orthogonal
-         */
+        public Builder setImageWriter(ImageWriter imageWriter) {
+            camera.imageWriter = imageWriter;
+            return this;
+        }
+
+        public Builder setRayTracer(RayTracerBase rayTracer) {
+            camera.rayTracer = rayTracer;
+            return this;
+        }
+
+        public Builder setSamplesPerPixel(int samplesPerPixel) {
+            camera.samplesPerPixel = samplesPerPixel;
+            return this;
+        }
+
+        public Builder setMultithreading(int threads) {
+            camera.threadsCount = threads;
+            return this;
+        }
+
+        public Builder setDebugPrint(PrintProgress printProgress) {
+            camera.printProgress = printProgress;
+            return this;
+        }
+
+
         public Camera build() {
             if (camera.p0 == null) {
                 throw new MissingResourceException("Location", "Point", "Location point is missing");
@@ -350,33 +328,6 @@ public class Camera implements Cloneable {
             }
             camera.VRight = camera.VTo.crossProduct(camera.VUp).normalize();
             return (Camera) camera.clone();
-        }
-
-        /**
-         * Sets the ImageWriter for the camera.
-         *
-         * @param imageWriter the ImageWriter to set
-         * @return the Builder instance
-         */
-        public Builder setImageWriter(ImageWriter imageWriter) {
-            camera.imageWriter = imageWriter;
-            return this;
-        }
-
-        /**
-         * Sets the RayTracer for the camera.
-         *
-         * @param rayTracer the RayTracer to set
-         * @return the Builder instance
-         */
-        public Builder setRayTracer(RayTracerBase rayTracer) {
-            camera.rayTracer = rayTracer;
-            return this;
-        }
-
-        public Builder setSamplesPerPixel(int i) {
-            camera.samplesPerPixel = i;
-            return this;
         }
     }
 }
