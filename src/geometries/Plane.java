@@ -52,6 +52,8 @@ public class Plane extends Geometry {
         q = p1;
         // Calculate the normal vector using the cross product of the two vectors
         this.normal = v1.crossProduct(v2).normalize();
+        // Set the bounding box to infinity as a plane is infinite
+        this.boundingBox = new BoundingBox();
     }
 
     /**
@@ -63,6 +65,7 @@ public class Plane extends Geometry {
     public Plane(Point p, Vector vNormal) {
         this.q = p;
         this.normal = vNormal.normalize();
+        this.boundingBox = new BoundingBox();
     }
 
     /**
@@ -86,6 +89,7 @@ public class Plane extends Geometry {
         return this.normal;
     }
 
+
     /**
      * Finds the intersections of a ray with the plane.
      *
@@ -94,7 +98,9 @@ public class Plane extends Geometry {
      */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
-
+        if (boundingBox != null && !boundingBox.hasIntersection(ray)) {
+            return null;  // No intersection with the bounding box, so no need to check further
+        }
         if (ray.getHead().equals(q))
             return null;
 

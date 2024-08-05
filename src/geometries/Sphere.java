@@ -66,6 +66,10 @@ public class Sphere extends RadialGeometry {
      */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+
+        if (boundingBox != null && !boundingBox.hasIntersection(ray)) {
+            return null;  // No intersection with the bounding box, so no need to check further
+        }
         if (this.center.equals(ray.getHead())) {
             return List.of(new GeoPoint(this, ray.getHead().add(ray.getDirection().scale(this.radius))));
         }

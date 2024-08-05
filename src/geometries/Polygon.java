@@ -132,6 +132,10 @@ public class Polygon extends Geometry {
 
    @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+
+      if (boundingBox != null && !boundingBox.hasIntersection(ray)) {
+         return null;  // No intersection with the bounding box, so no need to check further
+      }
       // First, find intersections with the plane containing the polygon
       List<GeoPoint> planeIntersections = plane.findGeoIntersections(ray, maxDistance);
 
