@@ -171,7 +171,7 @@ public class ProjectImage {
         Scene scene = new Scene("Vertical Checkerboard Crystal Scene");
 
         // Crystal sphere at the origin
-        Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
+            Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
                 .setEmission(new Color(20, 20, 20))
                 .setMaterial(new Material()
                         .setKd(0.2).setKs(0.9).setShininess(300)
@@ -218,7 +218,7 @@ public class ProjectImage {
                 .setMultithreading(9)
                 .setSamplesPerPixel(9)
                 .setVUpSize(200, 200).setVpDistance(1500);
-        camera.setImageWriter(new ImageWriter("NaturalAxisCrystalScene", 800, 800))
+        camera.setImageWriter(new ImageWriter("first NaturalAxisCrystalScene", 800, 800))
                 .build()
                 .renderImage()
                 .writeToImage();
