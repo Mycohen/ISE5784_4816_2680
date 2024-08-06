@@ -65,8 +65,8 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
                 .setVUpSize(2500, 2500)
-                .setSamplesPerPixel(9)
-                .setMultithreading(4)
+                .setSamplesPerPixel(1)
+                .setMultithreading(9)
                 .setImageWriter(new ImageWriter("reflectionTwoSpheresMirrored with 9 j", 500, 500))
                 .build()
                 .renderImage()
@@ -97,7 +97,7 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVUpSize(200, 200)
-                .setSamplesPerPixel(9)
+                .setSamplesPerPixel(1)
                 .setMultithreading(4)
                 .setImageWriter(new ImageWriter("refractionShadow with 9 j", 600, 600))
                 .build()
@@ -122,8 +122,8 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVUpSize(150, 150)
-                .setSamplesPerPixel(9)
-                .setMultithreading(4)
+                .setSamplesPerPixel(1)
+                .setMultithreading(9)
                 .setImageWriter(new ImageWriter("refractionTwoSpheres with 9 j", 500, 500))
                 .build()
                 .renderImage()
@@ -329,7 +329,7 @@ public class ReflectionRefractionTests {
         );
 
         cameraBuilder.setVpDistance(1000).setVUpSize(500, 500)
-                .setSamplesPerPixel(9) // Enable 4x super-sampling
+                .setSamplesPerPixel(1) // Enable 4x super-sampling
                 .setLocation(new Point(0, 0, 1000))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setMultithreading(9)

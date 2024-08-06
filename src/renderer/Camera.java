@@ -167,15 +167,19 @@ public class Camera implements Cloneable {
      * @param i  row index of the pixel (from top to bottom)
      * @throws MissingResourceException if the RayTracer is missing
      */
-    public void castRay(int nX, int nY, int j, int i) {
+    public void castRay(int nX, int nY, int j, int i)
+    {
         if (rayTracer == null) {
             throw new MissingResourceException("RayTracer", "RayTracer", "RayTracer is missing");
         }
         Color pixelColor;
         if (samplesPerPixel <= 1) {
-            Ray ray = constructRay(nX, nY, j, i);
+            double epsilon = 1e-5; // Small offset
+            Ray ray = constructRay(nX, nY, j + epsilon, i + epsilon);
             pixelColor = rayTracer.traceRay(ray);
-        } else {
+        }
+        else
+        {
             pixelColor = new Color(0, 0, 0);
             double subPixelSize = 1.0 / samplesPerPixel;
             for (int k = 0; k < samplesPerPixel; k++) {

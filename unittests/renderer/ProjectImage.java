@@ -180,8 +180,8 @@ public class ProjectImage {
         // Create a checkered floor on YX plane (vertical)
         int squareSize = 50;
         Geometries checkerboard = new Geometries();
-        for (int i = -5; i <= 5; i++) {
-            for (int j = -5; j <= 5; j++) {
+        for (int i = -18; i <= 5; i++) {
+            for (int j = -18; j <= 5; j++) {
                 Color color = (i + j) % 2 == 0 ? new Color(20, 20, 20) : new Color(180, 180, 180);
                 checkerboard.add(new Polygon(
                         new Point(i * squareSize, j * squareSize, 0),
@@ -194,13 +194,15 @@ public class ProjectImage {
         }
 
         // Add some additional objects for interesting reflections
-        Geometry reflectiveSphere = new Sphere(30, new Point(0, 100, 30))
+        Geometry reflectiveSphere = new Sphere(30, new Point(100,0 , 30))
                 .setEmission(new Color(100, 20, 20))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
 
 
 
         scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere);
+
+        scene.geometries.makeBVH();
 
         scene.setAmbientLight(new AmbientLight(new Color(150, 30, 50), 0.1));
 
@@ -213,12 +215,14 @@ public class ProjectImage {
 
         Camera.Builder camera = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
-                .setLocation(new Point(10, -1200, 30))
+                .setLocation(new Point(0, -1500, 90))
                 .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
                 .setMultithreading(9)
-                .setSamplesPerPixel(9)
-                .setVUpSize(200, 200).setVpDistance(1500);
-        camera.setImageWriter(new ImageWriter("first NaturalAxisCrystalScene", 800, 800))
+                .setSamplesPerPixel(1)
+                .setVUpSize(200, 150)  // Changed to 200x150 for a 4:3 aspect ratio
+                .setVpDistance(1000);
+
+        camera.setImageWriter(new ImageWriter("1500 NaturalAxisCrystalScene", 1600, 1200))  // Changed to 1600x1200 for a 4:3 aspect ratio
                 .build()
                 .renderImage()
                 .writeToImage();
