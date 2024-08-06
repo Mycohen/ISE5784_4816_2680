@@ -171,7 +171,7 @@ public class ProjectImage {
         Scene scene = new Scene("Vertical Checkerboard Crystal Scene");
 
         // Crystal sphere at the origin
-            Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
+        Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
                 .setEmission(new Color(20, 20, 20))
                 .setMaterial(new Material()
                         .setKd(0.2).setKs(0.9).setShininess(300)
@@ -194,14 +194,16 @@ public class ProjectImage {
         }
 
         // Add some additional objects for interesting reflections
-        Geometry reflectiveSphere = new Sphere(30, new Point(100,0 , 30))
+        Geometry reflectiveSphere = new Sphere(30, new Point(100, 0, 30))
                 .setEmission(new Color(100, 20, 20))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
 
+        // Create background wall
+        Geometry backgroundWall = new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
+                .setEmission(new Color(40,40,40)) // A medium gray color
+                .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));  // Matte finish
 
-
-        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere);
-
+        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall);
         scene.geometries.makeBVH();
 
         scene.setAmbientLight(new AmbientLight(new Color(150, 30, 50), 0.1));
@@ -212,6 +214,9 @@ public class ProjectImage {
                 new Vector(-1, -1, -4))
                 .setKl(0.00001).setKq(0.000005));
 
+        // Add a light to illuminate the background
+        scene.lights.add(new PointLight(new Color(150, 150, 150), new Point(0, -500, 500))
+                .setKl(0.00001).setKq(0.000005));
 
         Camera.Builder camera = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
@@ -222,12 +227,10 @@ public class ProjectImage {
                 .setVUpSize(200, 150)  // Changed to 200x150 for a 4:3 aspect ratio
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("1500 NaturalAxisCrystalScene", 1600, 1200))  // Changed to 1600x1200 for a 4:3 aspect ratio
+        camera.setImageWriter(new ImageWriter("40 Blue back plane NaturalAxisCrystalScene", 1600, 1200))  // Changed to 1600x1200 for a 4:3 aspect ratio
                 .build()
                 .renderImage()
                 .writeToImage();
-
-
     }
 
 
