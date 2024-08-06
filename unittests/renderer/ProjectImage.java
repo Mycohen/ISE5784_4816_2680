@@ -200,23 +200,60 @@ public class ProjectImage {
 
         // Create background wall
         Geometry backgroundWall = new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
-                .setEmission(new Color(40,40,40)) // A medium gray color
+                .setEmission(new Color(50, 50, 80))
                 .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));  // Matte finish
 
-        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall);
+        // Define the base points for the cube
+        Point p1 = new Point(-150, 150, 0);
+        Point p2 = new Point(-100, 150, 0);
+        Point p3 = new Point(-150, 100, 0);
+        Point p4 = new Point(-100, 100, 0);
+
+        // Set material properties to match a matte, bubblegum-like appearance
+        Material bubblegumMaterial = new Material()
+                .setKd(0.9).setKs(0.1).setShininess(10); // High diffuse, low specular, low shininess
+
+        // Set a solid pink color for the bubblegum look
+        Color bubblegumColor = new Color(255, 105, 180);
+
+        // Create the cube faces and apply the material and color
+        Geometry[] cubeFaces = {
+                // Bottom face
+                new Polygon(p1, p2, p4, p3),
+                // Top face
+                new Polygon(p1.add(new Vector(0, 0, 15)), p2.add(new Vector(0, 0, 15)),
+                        p4.add(new Vector(0, 0, 15)), p3.add(new Vector(0, 0, 15))),
+                // Side faces
+                new Polygon(p1, p2, p2.add(new Vector(0, 0, 15)), p1.add(new Vector(0, 0, 15))),
+                new Polygon(p2, p4, p4.add(new Vector(0, 0, 15)), p2.add(new Vector(0, 0, 15))),
+                new Polygon(p4, p3, p3.add(new Vector(0, 0, 15)), p4.add(new Vector(0, 0, 15))),
+                new Polygon(p3, p1, p1.add(new Vector(0, 0, 15)), p3.add(new Vector(0, 0, 15)))
+        };
+
+        // Apply material and color to each face
+        for (Geometry face : cubeFaces) {
+            face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial);
+        }
+        Geometry sphereOnCube = new Sphere(15, new Point(-125, -125, 25))
+                .setEmission(new Color(231, 158, 110))  // Bubblegum pink color
+                .setMaterial(new Material()
+                        .setKd(0.7)       // High diffuse for a matte look
+                        .setKs(0.3)       // Low specular for a slight shine
+                        .setShininess(10) // Low shininess for a soft highlight
+                        .setKT(0.2)       // Slight transparency for a gummy look
+                        .setKR(0.1));     // Minimal reflection
+        // Add all geometries to the scene
+        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube);
+        scene.geometries.add(cubeFaces);
         scene.geometries.makeBVH();
 
-        scene.setAmbientLight(new AmbientLight(new Color(150, 30, 50), 0.1));
+        // Subtle fill light
+        scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
+                .setKl(0.0002).setKq(0.00002));
 
-        scene.lights.add(new SpotLight(
-                new Color(80, 30, 200),
-                new Point(100, 100, 500),
-                new Vector(-1, -1, -4))
-                .setKl(0.00001).setKq(0.000005));
-
-        // Add a light to illuminate the background
-        scene.lights.add(new PointLight(new Color(150, 150, 150), new Point(0, -500, 500))
-                .setKl(0.00001).setKq(0.000005));
+        // Add a soft, diffuse light to illuminate the cube
+        scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
+                .setKl(0.001).setKq(0.0002));
 
         Camera.Builder camera = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
@@ -227,11 +264,9 @@ public class ProjectImage {
                 .setVUpSize(200, 150)  // Changed to 200x150 for a 4:3 aspect ratio
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("40 Blue back plane NaturalAxisCrystalScene", 1600, 1200))  // Changed to 1600x1200 for a 4:3 aspect ratio
+        camera.setImageWriter(new ImageWriter("1.8 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
                 .build()
                 .renderImage()
                 .writeToImage();
     }
-
-
 }
