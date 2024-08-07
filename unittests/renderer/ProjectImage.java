@@ -234,7 +234,7 @@ public class ProjectImage {
         for (Geometry face : cubeFaces) {
             face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial);
         }
-        Geometry sphereOnCube = new Sphere(15, new Point(-125, -125, 25))
+        Geometry sphereOnCube = new Sphere(15, new Point(-125, 125, 30))
                 .setEmission(new Color(231, 158, 110))  // Bubblegum pink color
                 .setMaterial(new Material()
                         .setKd(0.7)       // High diffuse for a matte look
