@@ -9,6 +9,7 @@ import test.*;
 import scene.Scene;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.Color.*;
@@ -201,7 +202,7 @@ public class ProjectImage {
         // Create background wall
         Geometry backgroundWall = new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
                 .setEmission(new Color(50, 50, 80))
-                .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));  // Matte finish
+                .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));
 
         // Define the base points for the cube
         Point p1 = new Point(-150, 150, 0);
@@ -211,19 +212,16 @@ public class ProjectImage {
 
         // Set material properties to match a matte, bubblegum-like appearance
         Material bubblegumMaterial = new Material()
-                .setKd(0.9).setKs(0.1).setShininess(10); // High diffuse, low specular, low shininess
+                .setKd(0.9).setKs(0.1).setShininess(10);
 
         // Set a solid pink color for the bubblegum look
         Color bubblegumColor = new Color(255, 105, 180);
 
         // Create the cube faces and apply the material and color
         Geometry[] cubeFaces = {
-                // Bottom face
                 new Polygon(p1, p2, p4, p3),
-                // Top face
                 new Polygon(p1.add(new Vector(0, 0, 15)), p2.add(new Vector(0, 0, 15)),
                         p4.add(new Vector(0, 0, 15)), p3.add(new Vector(0, 0, 15))),
-                // Side faces
                 new Polygon(p1, p2, p2.add(new Vector(0, 0, 15)), p1.add(new Vector(0, 0, 15))),
                 new Polygon(p2, p4, p4.add(new Vector(0, 0, 15)), p2.add(new Vector(0, 0, 15))),
                 new Polygon(p4, p3, p3.add(new Vector(0, 0, 15)), p4.add(new Vector(0, 0, 15))),
@@ -234,24 +232,37 @@ public class ProjectImage {
         for (Geometry face : cubeFaces) {
             face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial);
         }
+
         Geometry sphereOnCube = new Sphere(15, new Point(-125, 125, 30))
-                .setEmission(new Color(231, 158, 110))  // Bubblegum pink color
+                .setEmission(new Color(231, 158, 110))
                 .setMaterial(new Material()
-                        .setKd(0.7)       // High diffuse for a matte look
-                        .setKs(0.3)       // Low specular for a slight shine
-                        .setShininess(10) // Low shininess for a soft highlight
-                        .setKT(0.2)       // Slight transparency for a gummy look
-                        .setKR(0.1));     // Minimal reflection
+                        .setKd(0.7).setKs(0.3).setShininess(10)
+                        .setKT(0.2).setKR(0.1));
+
+        // Add decorative elements to the background wall
+        Geometries wallDecorations = new Geometries();
+
+        // Create cubes at specific locations
+        Color cubeColor = new Color(0.5, 0.5, 1); // Light blue color
+        Material cubeMaterial = new Material().setKd(0.7).setKs(0.3).setShininess(100).setKR(0.1);
+        wallDecorations.add(createCube(new Point(-100, 245, 100), 20, cubeColor, cubeMaterial));
+        wallDecorations.add(createCube(new Point(0, 245, 150), 30, cubeColor, cubeMaterial));
+        wallDecorations.add(createCube(new Point(100, 245, 125), 25, cubeColor, cubeMaterial));
+
+        // Wave-like pattern
+        for (int i = 0; i < 3; i++) {
+            wallDecorations.add(createWave(i * 60 - 100, 240, 60, 200, 30, 20,
+                    new Color(200, 200, 255), new Material().setKd(0.8).setKs(0.2).setShininess(30).setKT(0.3)));
+        }
+
         // Add all geometries to the scene
-        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube);
+        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube, wallDecorations);
         scene.geometries.add(cubeFaces);
         scene.geometries.makeBVH();
 
-        // Subtle fill light
+        // Lighting setup
         scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
-
-        // Add a soft, diffuse light to illuminate the cube
         scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
                 .setKl(0.001).setKq(0.0002));
 
@@ -261,12 +272,66 @@ public class ProjectImage {
                 .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
                 .setMultithreading(9)
                 .setSamplesPerPixel(1)
-                .setVUpSize(200, 150)  // Changed to 200x150 for a 4:3 aspect ratio
+                .setVUpSize(200, 150)
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("1.8 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
+        camera.setImageWriter(new ImageWriter("2.0.2 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
                 .build()
                 .renderImage()
                 .writeToImage();
+    }
+
+    private Geometries createCube(Point center, double size, Color color, Material material) {
+        double halfSize = size / 2;
+        Geometries cube = new Geometries();
+        Polygon[] faces = {
+                new Polygon(center.add(new Vector(-halfSize, -halfSize, -halfSize)), center.add(new Vector(halfSize, -halfSize, -halfSize)),
+                        center.add(new Vector(halfSize, halfSize, -halfSize)), center.add(new Vector(-halfSize, halfSize, -halfSize))),
+                new Polygon(center.add(new Vector(-halfSize, -halfSize, halfSize)), center.add(new Vector(halfSize, -halfSize, halfSize)),
+                        center.add(new Vector(halfSize, halfSize, halfSize)), center.add(new Vector(-halfSize, halfSize, halfSize))),
+                new Polygon(center.add(new Vector(-halfSize, -halfSize, -halfSize)), center.add(new Vector(-halfSize, -halfSize, halfSize)),
+                        center.add(new Vector(-halfSize, halfSize, halfSize)), center.add(new Vector(-halfSize, halfSize, -halfSize))),
+                new Polygon(center.add(new Vector(halfSize, -halfSize, -halfSize)), center.add(new Vector(halfSize, -halfSize, halfSize)),
+                        center.add(new Vector(halfSize, halfSize, halfSize)), center.add(new Vector(halfSize, halfSize, -halfSize))),
+                new Polygon(center.add(new Vector(-halfSize, -halfSize, -halfSize)), center.add(new Vector(halfSize, -halfSize, -halfSize)),
+                        center.add(new Vector(halfSize, -halfSize, halfSize)), center.add(new Vector(-halfSize, -halfSize, halfSize))),
+                new Polygon(center.add(new Vector(-halfSize, halfSize, -halfSize)), center.add(new Vector(halfSize, halfSize, -halfSize)),
+                        center.add(new Vector(halfSize, halfSize, halfSize)), center.add(new Vector(-halfSize, halfSize, halfSize)))
+        };
+
+        for (Polygon face : faces) {
+            cube.add(face.setEmission(color).setMaterial(material));
+        }
+
+        return cube;
+    }
+
+    private Geometries createWave(double x, double y, double z, double width, double height, double amplitude, Color color, Material material) {
+        Geometries wave = new Geometries();
+        int segments = 50;
+        double segmentWidth = width / segments;
+
+        for (int i = 0; i < segments; i++) {
+            double t1 = (double) i / segments;
+            double t2 = (double) (i + 1) / segments;
+
+            double x1 = x + t1 * width;
+            double x2 = x + t2 * width;
+            double y1 = y + amplitude * Math.sin(t1 * Math.PI * 4);
+            double y2 = y + amplitude * Math.sin(t2 * Math.PI * 4);
+            double z1 = z + height * t1;
+            double z2 = z + height * t2;
+
+            Geometry segment = new Polygon(
+                    new Point(x1, y1, z1),
+                    new Point(x2, y2, z2),
+                    new Point(x2, y2, z2 + 1),
+                    new Point(x1, y1, z1 + 1)
+            ).setEmission(color).setMaterial(material);
+
+            wave.add(segment);
+        }
+
+        return wave;
     }
 }
