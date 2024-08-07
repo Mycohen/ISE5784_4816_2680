@@ -53,6 +53,7 @@ public class Triangle extends Polygon {
             return null;
         }
 
+
         Vector v1 = vertices.get(0).subtract(ray.getHead());
         Vector v2 = vertices.get(1).subtract(ray.getHead());
         Vector v3 = vertices.get(2).subtract(ray.getHead());

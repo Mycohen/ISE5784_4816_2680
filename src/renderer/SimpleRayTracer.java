@@ -222,14 +222,18 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector epsVector = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
         Point point = geoPoint.point.add(epsVector);
         Ray lightRay = new Ray(point, lightDirection, n);
+        // Check if the light source is visible from the intersection point
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        // If no intersections found, the light source is visible
         if (intersections == null)
             return Double3.ONE;
         double lightDistance = ls.getDistance(geoPoint.point);
         Double3 ktr = Double3.ONE;
         for (GeoPoint gp : intersections) {
+            // Check if the intersection point is closer to the light source than the geometry
             if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0)
                 ktr = ktr.product(gp.geometry.getMaterial().kT);
+            // If the transparency coefficient is below the threshold, return it
             if (ktr.equals(Double3.ZERO))
                 break;
         }

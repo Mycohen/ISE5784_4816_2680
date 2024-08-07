@@ -29,8 +29,6 @@ import primitives.Vector;
  * @see Plane
  * @see Point
  * @see Vector
- *
- *
  */
 public class Polygon extends Geometry {
 

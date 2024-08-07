@@ -9,6 +9,8 @@ public class SpotLight extends PointLight {
 
     /** The direction in which the spot light is pointing */
     private Vector direction;
+
+    /** The narrow beam of the spot light */
     private double narrowBeam = 1;
 
     /**

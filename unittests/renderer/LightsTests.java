@@ -229,6 +229,9 @@ public class LightsTests {
                 .renderImage()
                 .writeToImage();
     }
+    /**
+     * Produce a picture of a sphere lighted by a point light
+     */
     @Test
     public void sphereMultipleLights() {
         // Define multiple light sources for the sphere
@@ -247,6 +250,9 @@ public class LightsTests {
                 .renderImage()
                 .writeToImage();
     }
+    /**
+     * Produce a picture of two triangles lighted by a point light
+     */
     @Test
     public void trianglesMultipleLights() {
         scene2.geometries.add(triangle1, triangle2);
@@ -294,25 +300,5 @@ public class LightsTests {
                 .writeToImage();
 
     }
-//    @Test
-//    public void triangles() {
-//        String filePath = "C:\\Users\\mycoh\\Downloads\\tinker.obj"; // Replace with your OBJ file path
-//        List<Triangle> triangles = readTrianglesFromOBJ(filePath);
-//
-//        // Loop through each triangle and add it to scene2.geometries
-//        for (Triangle triangle : triangles) {
-//            scene2.geometries.add(triangle.setMaterial(material));
-//        }
-//
-//        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
-//                .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
-//
-//
-//        camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//    }
-
 
 }

@@ -224,10 +224,10 @@ public class ProjectImage {
                 .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));
 
         // Define the base points for the cube
-        Point p1 = new Point(-150, 150, 0);
-        Point p2 = new Point(-100, 150, 0);
-        Point p3 = new Point(-150, 100, 0);
-        Point p4 = new Point(-100, 100, 0);
+        Point p1 = new Point(-140, 130, 0);
+        Point p2 = new Point(-90, 130, 0);
+        Point p3 = new Point(-140, 80, 0);
+        Point p4 = new Point(-90, 80, 0);
 
         // Set material properties to match a matte, bubblegum-like appearance
         Material bubblegumMaterial = new Material()
@@ -252,7 +252,7 @@ public class ProjectImage {
             face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial);
         }
 
-        Geometry sphereOnCube = new Sphere(15, new Point(-125, 125, 30))
+        Geometry sphereOnCube = new Sphere(15, new Point(-115, 115, 30))
                 .setEmission(new Color(231, 158, 110))
                 .setMaterial(new Material()
                         .setKd(0.7).setKs(0.3).setShininess(10)
@@ -283,8 +283,8 @@ public class ProjectImage {
         wallDecorations.add(createMirrorWithFrame(new Point(100, 245, 150), 20, new Vector(-1, -5, -2).normalize()));
 
         Geometry mirror = new Polygon(
-                new Point(-150, 150, 0),
-                new Point(-150, 150, 80),
+                new Point(-155, 150, 0),
+                new Point(-155, 150, 80),
                 new Point(-50, 200, 80),
                 new Point(-50, 200, 0)
         );
@@ -309,8 +309,8 @@ public class ProjectImage {
         // Lighting setup
         scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
-        scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
-                .setKl(0.001).setKq(0.0002));
+//        scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
+//                .setKl(0.001).setKq(0.0002));
 
         //Camera setup
         Camera.Builder camera = Camera.getBuilder()
@@ -322,7 +322,7 @@ public class ProjectImage {
                 .setVUpSize(200, 150)
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("1.0.1 Final Image", 1600, 1200))
+        camera.setImageWriter(new ImageWriter("1.0.9 Final Image", 1600, 1200))
                 .build()
                 .renderImage()
                 .writeToImage();

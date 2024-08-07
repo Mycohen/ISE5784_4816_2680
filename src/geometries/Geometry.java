@@ -21,15 +21,36 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * The emission color of the geometry.
-     * Default emission color is black.
-     *
+     * <p>
+     * Default emission color is black, meaning the geometry does not emit any light by default.
+     * </p>
      */
     protected Color emission = Color.BLACK;
+
+    /**
+     * The material properties of the geometry.
+     * <p>
+     * This includes properties like reflectivity, transparency, and shininess,
+     * which affect how the geometry interacts with light.
+     * </p>
+     */
     private Material material = new Material();
 
+    /**
+     * Gets the material properties of the geometry.
+     *
+     * @return the material properties of the geometry
+     */
     public Material getMaterial() {
         return material;
     }
+
+    /**
+     * Sets the material properties of the geometry.
+     *
+     * @param material the material properties to set
+     * @return the geometry itself (for method chaining)
+     */
     public Geometry setMaterial(Material material) {
         this.material = material;
         return this;
@@ -37,6 +58,11 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * Calculates the normal vector to the geometry at a given point.
+     * <p>
+     * The normal vector is perpendicular to the surface of the geometry at the given point.
+     * Implementing classes must provide the specific logic to calculate this vector
+     * based on the shape's geometry.
+     * </p>
      *
      * @param p the point on the geometry where the normal is to be calculated
      * @return the normal vector to the geometry at the specified point
@@ -45,6 +71,10 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * Gets the emission color of the geometry.
+     * <p>
+     * The emission color represents the color that the geometry appears to emit,
+     * contributing to the overall lighting of the scene.
+     * </p>
      *
      * @return the emission color of the geometry
      */
@@ -54,6 +84,10 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * Sets the emission color of the geometry.
+     * <p>
+     * This method allows you to set a color that the geometry will appear to emit.
+     * This is often used for objects that are self-illuminating in a scene.
+     * </p>
      *
      * @param emission the emission color to set
      * @return the geometry itself (for method chaining)

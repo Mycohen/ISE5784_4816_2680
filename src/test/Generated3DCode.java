@@ -4,7 +4,9 @@ import geometries.*;
 import primitives.*;
 import java.util.List;
 import java.util.ArrayList;
-
+/**
+ * Class for generating a 3D scene with geometries and materials.
+ */
 public class Generated3DCode {
     public static List<Triangle> Triangles() {
         List<Triangle> triangles = new ArrayList<>();

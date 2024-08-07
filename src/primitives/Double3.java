@@ -1,6 +1,3 @@
-/**
- *
- */
 package primitives;
 
 import static primitives.Util.isZero;
@@ -45,6 +42,10 @@ public class Double3 {
         this.d3 = value;
     }
 
+    /**
+     * Copy constructor for a Double3 object
+     * @param  other the object to be copied
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -121,7 +122,6 @@ public class Double3 {
      * @param  k the test number
      * @return true if all the numbers are less than k, false otherwise
      */
-
     public boolean lowerThan(double k) {
         return d1 < k && d2 < k && d3 < k;
     }

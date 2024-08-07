@@ -136,7 +136,9 @@ public class ReflectionRefractionTests {
 //                .renderImage()
 //                .writeToImage();
     }
-
+/**
+     * Produce a picture of a sphere lighted by a spot light
+     */
     @Test
     public void testSimplePyramid() {
         Scene scene = new Scene("Simple Pyramid");
@@ -290,7 +292,9 @@ public class ReflectionRefractionTests {
 //
 //
 //    }
-
+/**
+     * Test for a scene with mosaic triangles and anti-aliasing
+     */
     @Test
     public void MosaicTrianglesWithAntiAliasing() {
         scene.background = Color.BLACK;

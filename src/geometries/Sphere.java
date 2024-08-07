@@ -25,6 +25,7 @@ public class Sphere extends RadialGeometry {
     /**
      * Constructor initializing the sphere with a specified center point and radius.
      *
+     *
      * @param radius the radius of the sphere
      * @param myCenter the center point of the sphere
      */

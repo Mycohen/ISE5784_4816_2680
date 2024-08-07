@@ -39,7 +39,7 @@ public class Cylinder extends Tube {
      */
     public Cylinder(double radius, Ray axis, double height) {
         super(radius, axis);
-        if ( alignZero(height)  <= 0) {
+        if (alignZero(height) <= 0) {
             throw new IllegalArgumentException("Height must be greater than 0");
         }
         this.height = height;
@@ -57,8 +57,8 @@ public class Cylinder extends Tube {
      */
     @Override
     public Vector getNormal(Point p) {
-        Point p0 = axis.getHead();
-        Vector dir = axis.getDirection();
+        Point p0 = axis.getHead(); // Starting point of the cylinder's axis
+        Vector dir = axis.getDirection(); // Direction of the cylinder's axis
 
         // Vector from p0 to the point p
         Vector p0ToP = p.subtract(p0);
@@ -87,12 +87,23 @@ public class Cylinder extends Tube {
 
         return normal.normalize(); // Normal vector is radial
     }
+
+    /**
+     * Finds the intersections of the given ray with the cylinder within a maximum distance.
+     *
+     * <p>This method solves a quadratic equation to find intersections with the cylindrical surface,
+     * and checks for intersections with the top and bottom bases of the cylinder.</p>
+     *
+     * @param ray the ray to intersect with the cylinder
+     * @param maxDistance the maximum allowable distance for intersections
+     * @return a list of intersection points (if any), or null if no intersections are found
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        Vector dir = ray.getDirection();
-        Vector v = axis.getDirection();
-        Point p0 = ray.getHead();
-        Point axisP0 = axis.getHead();
+        Vector dir = ray.getDirection(); // Direction of the ray
+        Vector v = axis.getDirection(); // Direction of the cylinder's axis
+        Point p0 = ray.getHead(); // Origin point of the ray
+        Point axisP0 = axis.getHead(); // Origin point of the cylinder's axis
 
         // Calculate coefficients for the quadratic equation
         double a = dir.lengthSquared() - Math.pow(dir.dotProduct(v), 2);
@@ -101,7 +112,7 @@ public class Cylinder extends Tube {
                 Math.pow(p0.subtract(axisP0).dotProduct(v), 2) -
                 radius * radius;
 
-        // Check if ray is parallel to cylinder axis
+        // Check if ray is parallel to the cylinder axis
         if (isZero(a)) {
             if (isZero(b)) {
                 return null; // Ray is on the surface or completely outside
@@ -118,7 +129,7 @@ public class Cylinder extends Tube {
             return List.of(new GeoPoint(this, intersectionPoint));
         }
 
-        // Solve quadratic equation
+        // Solve the quadratic equation for the cylindrical surface
         double discriminant = b * b - 4 * a * c;
         if (discriminant < 0) {
             return null; // No intersections
@@ -132,6 +143,7 @@ public class Cylinder extends Tube {
 
         List<GeoPoint> intersections = new LinkedList<>();
 
+        // Check the first intersection point
         if (t1 > 0 && alignZero(t1 - maxDistance) <= 0) {
             Point p1 = ray.getPoint(t1);
             double h1 = v.dotProduct(p1.subtract(axisP0));
@@ -140,6 +152,7 @@ public class Cylinder extends Tube {
             }
         }
 
+        // Check the second intersection point
         if (alignZero(t2 - maxDistance) <= 0) {
             Point p2 = ray.getPoint(t2);
             double h2 = v.dotProduct(p2.subtract(axisP0));

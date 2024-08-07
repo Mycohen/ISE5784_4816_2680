@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for the Camera class.
  */
 class CameraTests {
+
     /**
      * Camera builder for the tests.
      */
