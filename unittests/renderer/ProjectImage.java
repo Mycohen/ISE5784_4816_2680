@@ -166,7 +166,27 @@ public class ProjectImage {
                 .writeToImage();
     }
 
+@Test
+public void testCylinder()  {
+        Scene scene  = new Scene ("Test cylinder");
+       scene.geometries.add(new Cylinder(10, new Ray(Point.ZERO, new Vector(1, 0, 0)), 100)
+                .setEmission(new Color(0, 0, 255))
+                .setMaterial(new Material().setKd(0.2).setKs(0.9).setShininess(300).setKR(0.4).setKT(0.6)));
+       Camera.Builder camera = Camera.getBuilder()
+                .setRayTracer(new SimpleRayTracer(scene))
+                .setLocation(new Point(0, 0, 1000))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
+                .setMultithreading(9)
+                .setSamplesPerPixel(9)
+                .setVUpSize(200, 200).setVpDistance(1000);
+        camera.setImageWriter(new ImageWriter("Cylinder", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
 
+
+
+}
     @Test
     public void testVerticalCheckerboardScene() {
         Scene scene = new Scene("Vertical Checkerboard Crystal Scene");
@@ -239,19 +259,34 @@ public class ProjectImage {
                         .setKd(0.7).setKs(0.3).setShininess(10)
                         .setKT(0.2).setKR(0.1));
 
+
         // Add decorative elements to the background wall
         Geometries wallDecorations = new Geometries();
 
         // Create cubes at specific locations
         Color cubeColor = new Color(0.5, 0.5, 1); // Light blue color
         Material cubeMaterial = new Material().setKd(0.7).setKs(0.3).setShininess(100).setKR(0.1);
-        wallDecorations.add(createCube(new Point(-100, 245, 100), 20, cubeColor, cubeMaterial));
-        wallDecorations.add(createCube(new Point(0, 245, 150), 30, cubeColor, cubeMaterial));
-        wallDecorations.add(createCube(new Point(100, 245, 125), 25, cubeColor, cubeMaterial));
+
+        // First cube with mirror
+        Point cube1Center = new Point(-100, 245, 100);
+        wallDecorations.add(createCube(cube1Center, 20, cubeColor, cubeMaterial));
+        // Adjust mirror position and orientation to reflect the crystal sphere
+        wallDecorations.add(createMirrorWithFrame(new Point(-100, 245, 120), 18, new Vector(-1, -5, -2)));
+
+        // Second cube with flower
+        Point cube2Center = new Point(0, 245, 150);
+        wallDecorations.add(createCube(cube2Center, 30, cubeColor, cubeMaterial));
+        wallDecorations.add(createFlower(new Point(0, 245, 180), 25));
+
+        // Third cube with
+        Point cube3Center = new Point(100, 245, 125);
+        wallDecorations.add(createCube(cube3Center, 25, cubeColor, cubeMaterial));
+        wallDecorations.add(createMirrorWithFrame(new Point(100, 245, 150), 20,new Vector(-1, -5, -2).normalize()));//add a new shape
+
 
         // Wave-like pattern
         for (int i = 0; i < 3; i++) {
-            wallDecorations.add(createWave(i * 60 - 100, 240, 60, 200, 30, 20,
+            wallDecorations.add(createWave(i * 60 - 100, 240, 60, 250, 30, 20,
                     new Color(200, 200, 255), new Material().setKd(0.8).setKs(0.2).setShininess(30).setKT(0.3)));
         }
 
@@ -275,10 +310,86 @@ public class ProjectImage {
                 .setVUpSize(200, 150)
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("2.0.2 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
+        camera.setImageWriter(new ImageWriter("2.1.4 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
                 .build()
                 .renderImage()
                 .writeToImage();
+    }
+
+    private Geometries createMirrorWithFrame(Point center, double size, Vector normal) {
+        Geometries mirrorWithFrame = new Geometries();
+
+        // Mirror
+        double mirrorSize = size * 0.8;
+        Vector up = new Vector(0, 1, 0);
+        Vector right = normal.crossProduct(up).normalize();
+        up = right.crossProduct(normal).normalize();
+
+        Point p1 = center.add(up.scale(-mirrorSize/2)).add(right.scale(-mirrorSize/2));
+        Point p2 = center.add(up.scale(-mirrorSize/2)).add(right.scale(mirrorSize/2));
+        Point p3 = center.add(up.scale(mirrorSize/2)).add(right.scale(mirrorSize/2));
+        Point p4 = center.add(up.scale(mirrorSize/2)).add(right.scale(-mirrorSize/2));
+
+        Geometry mirror = new Polygon(p1, p2, p3, p4)
+                .setEmission(new Color(255, 255, 255))  // White emission
+                .setMaterial(new Material()
+                        .setKd(0.2)  // Low diffuse reflection
+                        .setKs(0.9)  // High specular reflection
+                        .setShininess(300)
+                        .setKR(0.9)); // High reflectivity
+
+        mirrorWithFrame.add(mirror);
+
+        // Frame
+        double frameThickness = (size - mirrorSize) / 2;
+        Color frameColor = new Color(150, 75, 0);
+        Material frameMaterial = new Material().setKd(0.8).setKs(0.2).setShininess(30);
+
+        Point[] framePoints = {
+                p1.add(up.scale(-frameThickness/2)).add(right.scale(-frameThickness/2)),
+                p2.add(up.scale(-frameThickness/2)).add(right.scale(frameThickness/2)),
+                p3.add(up.scale(frameThickness/2)).add(right.scale(frameThickness/2)),
+                p4.add(up.scale(frameThickness/2)).add(right.scale(-frameThickness/2))
+        };
+
+        for (int i = 0; i < 4; i++) {
+            Point frameCenter = framePoints[i].add(framePoints[(i+1) % 4].subtract(framePoints[i]).scale(0.5));
+            mirrorWithFrame.add(createCube(frameCenter, frameThickness, frameColor, frameMaterial));
+        }
+
+        return mirrorWithFrame;
+    }
+
+    private Geometries createFlower(Point center, double size) {
+        Geometries flower = new Geometries();
+        Color petalColor = new Color(255, 182, 193); // Light pink
+        Material petalMaterial = new Material().setKd(0.8).setKs(0.2).setShininess(30);
+
+        // Petals
+        for (int i = 0; i < 5; i++) {
+            double angle = i * 2 * Math.PI / 5;
+            Point tip = center.add(new Vector(Math.cos(angle) * size/2, 0.1, Math.sin(angle) * size/2));
+            Point left = center.add(new Vector(Math.cos(angle - 0.5) * size/4, 0.1, Math.sin(angle - 0.5) * size/4));
+            Point right = center.add(new Vector(Math.cos(angle + 0.5) * size/4, 0.1, Math.sin(angle + 0.5) * size/4));
+
+            Geometry petal = new Triangle(center, left, tip)
+                    .setEmission(petalColor)
+                    .setMaterial(petalMaterial);
+            flower.add(petal);
+
+            petal = new Triangle(center, right, tip)
+                    .setEmission(petalColor)
+                    .setMaterial(petalMaterial);
+            flower.add(petal);
+        }
+
+        // Center
+        Geometry flowerCenter = new Sphere(size/8, center.add(new Vector(0, 0.2, 0)))
+                .setEmission(new Color(255, 215, 0)) // Gold
+                .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));
+        flower.add(flowerCenter);
+
+        return flower;
     }
 
     private Geometries createCube(Point center, double size, Color color, Material material) {

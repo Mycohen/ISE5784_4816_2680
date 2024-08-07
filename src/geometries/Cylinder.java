@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -85,5 +86,86 @@ public class Cylinder extends Tube {
         }
 
         return normal.normalize(); // Normal vector is radial
+    }
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        Vector dir = ray.getDirection();
+        Vector v = axis.getDirection();
+        Point p0 = ray.getHead();
+        Point axisP0 = axis.getHead();
+
+        // Calculate coefficients for the quadratic equation
+        double a = dir.lengthSquared() - Math.pow(dir.dotProduct(v), 2);
+        double b = 2 * (dir.dotProduct(p0.subtract(axisP0)) - (dir.dotProduct(v)) * (p0.subtract(axisP0).dotProduct(v)));
+        double c = p0.subtract(axisP0).lengthSquared() -
+                Math.pow(p0.subtract(axisP0).dotProduct(v), 2) -
+                radius * radius;
+
+        // Check if ray is parallel to cylinder axis
+        if (isZero(a)) {
+            if (isZero(b)) {
+                return null; // Ray is on the surface or completely outside
+            }
+            double t = -c / b;
+            if (t <= 0 || alignZero(t - maxDistance) > 0) {
+                return null;
+            }
+            Point intersectionPoint = ray.getPoint(t);
+            double pointHeight = v.dotProduct(intersectionPoint.subtract(axisP0));
+            if (pointHeight < 0 || pointHeight > height) {
+                return null;
+            }
+            return List.of(new GeoPoint(this, intersectionPoint));
+        }
+
+        // Solve quadratic equation
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0) {
+            return null; // No intersections
+        }
+
+        double t1 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        double t2 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        if (t2 <= 0 || alignZero(t1 - maxDistance) > 0) {
+            return null;
+        }
+
+        List<GeoPoint> intersections = new LinkedList<>();
+
+        if (t1 > 0 && alignZero(t1 - maxDistance) <= 0) {
+            Point p1 = ray.getPoint(t1);
+            double h1 = v.dotProduct(p1.subtract(axisP0));
+            if (h1 >= 0 && h1 <= height) {
+                intersections.add(new GeoPoint(this, p1));
+            }
+        }
+
+        if (alignZero(t2 - maxDistance) <= 0) {
+            Point p2 = ray.getPoint(t2);
+            double h2 = v.dotProduct(p2.subtract(axisP0));
+            if (h2 >= 0 && h2 <= height) {
+                intersections.add(new GeoPoint(this, p2));
+            }
+        }
+
+        // Check for intersections with the bases
+        double baseT1 = v.dotProduct(axisP0.subtract(p0)) / v.dotProduct(dir);
+        double baseT2 = v.dotProduct(axisP0.add(v.scale(height)).subtract(p0)) / v.dotProduct(dir);
+
+        if (baseT1 > 0 && alignZero(baseT1 - maxDistance) <= 0) {
+            Point basePoint1 = ray.getPoint(baseT1);
+            if (basePoint1.subtract(axisP0).lengthSquared() <= radius * radius) {
+                intersections.add(new GeoPoint(this, basePoint1));
+            }
+        }
+
+        if (baseT2 > 0 && alignZero(baseT2 - maxDistance) <= 0) {
+            Point basePoint2 = ray.getPoint(baseT2);
+            if (basePoint2.subtract(axisP0.add(v.scale(height))).lengthSquared() <= radius * radius) {
+                intersections.add(new GeoPoint(this, basePoint2));
+            }
+        }
+
+        return intersections.isEmpty() ? null : intersections;
     }
 }
