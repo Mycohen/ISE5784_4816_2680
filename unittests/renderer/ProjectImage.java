@@ -9,7 +9,6 @@ import test.*;
 import scene.Scene;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.Color.*;
@@ -17,7 +16,7 @@ import static java.awt.Color.*;
 public class ProjectImage {
 
     @Test
-    public void finalImage() {
+    public void imageBasedTriangles() {
 
         Scene scene = new Scene("Test final image");
         final Camera.Builder camera2 = Camera.getBuilder()
@@ -166,13 +165,13 @@ public class ProjectImage {
                 .writeToImage();
     }
 
-@Test
-public void testCylinder()  {
-        Scene scene  = new Scene ("Test cylinder");
-       scene.geometries.add(new Cylinder(10, new Ray(Point.ZERO, new Vector(1, 0, 0)), 100)
+    @Test
+    public void testCylinder() {
+        Scene scene = new Scene("Test cylinder");
+        scene.geometries.add(new Cylinder(10, new Ray(Point.ZERO, new Vector(1, 0, 0)), 100)
                 .setEmission(new Color(0, 0, 255))
                 .setMaterial(new Material().setKd(0.2).setKs(0.9).setShininess(300).setKR(0.4).setKT(0.6)));
-       Camera.Builder camera = Camera.getBuilder()
+        Camera.Builder camera = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
                 .setLocation(new Point(0, 0, 1000))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
@@ -185,11 +184,11 @@ public void testCylinder()  {
                 .writeToImage();
 
 
+    }
 
-}
     @Test
-    public void testVerticalCheckerboardScene() {
-        Scene scene = new Scene("Vertical Checkerboard Crystal Scene");
+    public void testFinalImage() {
+        Scene scene = new Scene("Final image");
 
         // Crystal sphere at the origin
         Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
@@ -281,8 +280,20 @@ public void testCylinder()  {
         // Third cube with
         Point cube3Center = new Point(100, 245, 125);
         wallDecorations.add(createCube(cube3Center, 25, cubeColor, cubeMaterial));
-        wallDecorations.add(createMirrorWithFrame(new Point(100, 245, 150), 20,new Vector(-1, -5, -2).normalize()));//add a new shape
+        wallDecorations.add(createMirrorWithFrame(new Point(100, 245, 150), 20, new Vector(-1, -5, -2).normalize()));
 
+        Geometry mirror = new Polygon(
+                new Point(-150, 150, 0),
+                new Point(-150, 150, 80),
+                new Point(-50, 200, 80),
+                new Point(-50, 200, 0)
+        );
+        Material mirrorMaterial = new Material()
+                .setKD(0.1)  // Low diffuse reflection
+                .setKS(0.9)  // High specular reflection
+                .setShininess(300)  // High shininess for a sharp reflection
+                .setKR(0.9);  // High reflection coefficient
+        mirror.setMaterial(mirrorMaterial);
 
         // Wave-like pattern
         for (int i = 0; i < 3; i++) {
@@ -291,7 +302,7 @@ public void testCylinder()  {
         }
 
         // Add all geometries to the scene
-        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube, wallDecorations);
+        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube, wallDecorations, mirror);
         scene.geometries.add(cubeFaces);
         scene.geometries.makeBVH();
 
@@ -301,6 +312,7 @@ public void testCylinder()  {
         scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
                 .setKl(0.001).setKq(0.0002));
 
+        //Camera setup
         Camera.Builder camera = Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
                 .setLocation(new Point(0, -1500, 90))
@@ -310,7 +322,7 @@ public void testCylinder()  {
                 .setVUpSize(200, 150)
                 .setVpDistance(1000);
 
-        camera.setImageWriter(new ImageWriter("2.1.4 Bubblegum Cube NaturalAxisCrystalScene", 1600, 1200))
+        camera.setImageWriter(new ImageWriter("1.0.1 Final Image", 1600, 1200))
                 .build()
                 .renderImage()
                 .writeToImage();
@@ -325,10 +337,10 @@ public void testCylinder()  {
         Vector right = normal.crossProduct(up).normalize();
         up = right.crossProduct(normal).normalize();
 
-        Point p1 = center.add(up.scale(-mirrorSize/2)).add(right.scale(-mirrorSize/2));
-        Point p2 = center.add(up.scale(-mirrorSize/2)).add(right.scale(mirrorSize/2));
-        Point p3 = center.add(up.scale(mirrorSize/2)).add(right.scale(mirrorSize/2));
-        Point p4 = center.add(up.scale(mirrorSize/2)).add(right.scale(-mirrorSize/2));
+        Point p1 = center.add(up.scale(-mirrorSize / 2)).add(right.scale(-mirrorSize / 2));
+        Point p2 = center.add(up.scale(-mirrorSize / 2)).add(right.scale(mirrorSize / 2));
+        Point p3 = center.add(up.scale(mirrorSize / 2)).add(right.scale(mirrorSize / 2));
+        Point p4 = center.add(up.scale(mirrorSize / 2)).add(right.scale(-mirrorSize / 2));
 
         Geometry mirror = new Polygon(p1, p2, p3, p4)
                 .setEmission(new Color(255, 255, 255))  // White emission
@@ -346,19 +358,20 @@ public void testCylinder()  {
         Material frameMaterial = new Material().setKd(0.8).setKs(0.2).setShininess(30);
 
         Point[] framePoints = {
-                p1.add(up.scale(-frameThickness/2)).add(right.scale(-frameThickness/2)),
-                p2.add(up.scale(-frameThickness/2)).add(right.scale(frameThickness/2)),
-                p3.add(up.scale(frameThickness/2)).add(right.scale(frameThickness/2)),
-                p4.add(up.scale(frameThickness/2)).add(right.scale(-frameThickness/2))
+                p1.add(up.scale(-frameThickness / 2)).add(right.scale(-frameThickness / 2)),
+                p2.add(up.scale(-frameThickness / 2)).add(right.scale(frameThickness / 2)),
+                p3.add(up.scale(frameThickness / 2)).add(right.scale(frameThickness / 2)),
+                p4.add(up.scale(frameThickness / 2)).add(right.scale(-frameThickness / 2))
         };
 
         for (int i = 0; i < 4; i++) {
-            Point frameCenter = framePoints[i].add(framePoints[(i+1) % 4].subtract(framePoints[i]).scale(0.5));
+            Point frameCenter = framePoints[i].add(framePoints[(i + 1) % 4].subtract(framePoints[i]).scale(0.5));
             mirrorWithFrame.add(createCube(frameCenter, frameThickness, frameColor, frameMaterial));
         }
 
         return mirrorWithFrame;
     }
+
 
     private Geometries createFlower(Point center, double size) {
         Geometries flower = new Geometries();
@@ -368,9 +381,9 @@ public void testCylinder()  {
         // Petals
         for (int i = 0; i < 5; i++) {
             double angle = i * 2 * Math.PI / 5;
-            Point tip = center.add(new Vector(Math.cos(angle) * size/2, 0.1, Math.sin(angle) * size/2));
-            Point left = center.add(new Vector(Math.cos(angle - 0.5) * size/4, 0.1, Math.sin(angle - 0.5) * size/4));
-            Point right = center.add(new Vector(Math.cos(angle + 0.5) * size/4, 0.1, Math.sin(angle + 0.5) * size/4));
+            Point tip = center.add(new Vector(Math.cos(angle) * size / 2, 0.1, Math.sin(angle) * size / 2));
+            Point left = center.add(new Vector(Math.cos(angle - 0.5) * size / 4, 0.1, Math.sin(angle - 0.5) * size / 4));
+            Point right = center.add(new Vector(Math.cos(angle + 0.5) * size / 4, 0.1, Math.sin(angle + 0.5) * size / 4));
 
             Geometry petal = new Triangle(center, left, tip)
                     .setEmission(petalColor)
@@ -384,7 +397,7 @@ public void testCylinder()  {
         }
 
         // Center
-        Geometry flowerCenter = new Sphere(size/8, center.add(new Vector(0, 0.2, 0)))
+        Geometry flowerCenter = new Sphere(size / 8, center.add(new Vector(0, 0.2, 0)))
                 .setEmission(new Color(255, 215, 0)) // Gold
                 .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));
         flower.add(flowerCenter);
