@@ -335,23 +335,32 @@ public class ProjectImage {
         scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
         Color spotlightIntensity = new Color(120, 120, 180); // Increased intensity
-        Point position = new Point(75, -300, 2); // Original position
-        Point position2 = new Point(102.5,-114.2,7.7); // Original position
-        Vector direction1 = new Vector(41.9, 283.3, 11.7); // Original direction
-        Vector direction2 = new Vector(17.3, 111.1, -0.1); // Original direction
+        Point position = new Point(102.5,-114.2,7.7); // Original position
+        Vector direction = new Vector(17.3, 111.1, -0.1); // Original direction
 
-        SpotLight spotLight = new SpotLight(spotlightIntensity, position2, direction2);
+        SpotLight spotLight = new SpotLight(spotlightIntensity, position, direction);
         spotLight.setKc(1)
-                .setKl(0.0005) // Reduced linear attenuation for further reach
-                .setKq(0.00005) // Reduced quadratic attenuation for further reach
-                .setNarrowBeam(4); // Slightly increased narrow beam for better focus
-//        SpotLight spotLight = new SpotLight(spotlightIntensity, position, direction);
-//        spotLight.setKc(1)
-//                .setKl(0.0005) // Reduced linear attenuation for further reach
-//                .setKq(0.00005) // Reduced quadratic attenuation for further reach
-//                .setNarrowBeam(4); // Slightly increased narrow beam for better focus
+                .setKl(0.0005)
+                .setKq(0.00005)
+                .setNarrowBeam(4);
+        SpotLight lightSmallSphere = new SpotLight(new Color(200, 200, 200), new Point(136.1733,138.6233,100), new Vector(-29.6, -127.7, -56.4))
+                .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
+        SpotLight lightLargeSphere = new SpotLight(new Color(200, 200, 200), new Point(0, 245, 150), new Vector(4.8, -291.1, -118.7))
+                .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
+//        SpotLight generalLight = new SpotLight(new Color(150, 150, 150), new Point(300, 245, 400), new Vector(-300, -245, -400))
+//                .setKc(1)  // Set constant attenuation to 1 (full intensity at the source)
+//                .setKl(0.000005)  // Reduced linear attenuation for further reach
+//                .setKq(0.0000025)  // Reduced quadratic attenuation for slower falloff
+//                .setNarrowBeam(8);  // Increased beam width for more general lighting
+
+PointLight pointLight = new PointLight(new Color(150, 150, 150), new Point(200,245,180));
+
 
         scene.lights.add(spotLight);
+        scene.lights.add(lightSmallSphere);
+        scene.lights.add(lightLargeSphere);
+//        scene.lights.add(generalLight);
+        scene.lights.add(pointLight);
 
     }
 
@@ -364,7 +373,7 @@ public class ProjectImage {
                 .setSamplesPerPixel(1)
                 .setVUpSize(200, 150)
                 .setVpDistance(1000)
-                .setImageWriter(new ImageWriter("1.1.6 Lighting Final Image ", 1600, 1200))
+                .setImageWriter(new ImageWriter("1.2.5 Lighting the small sphere Final Image ", 1600, 1200))
                 .build();
     }
 
