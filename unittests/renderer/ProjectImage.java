@@ -214,7 +214,8 @@ public class ProjectImage {
                 createBubblegumCube(),
                 createSphereOnCube(),
                 createWallDecorations(),
-                createMirror()
+                createMirror(),
+                createSphereForMirror()
         );
         scene.geometries.makeBVH();
     }
@@ -250,6 +251,14 @@ public class ProjectImage {
                 .setEmission(new Color(100, 20, 20))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
     }
+
+    private Geometry createSphereForMirror() {
+        return new Sphere(30, new Point(230,-150,60))
+                .setEmission(new Color(118, 243, 255))
+                .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
+    }
+
+
 
     private Geometry createBackgroundWall() {
         return new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
@@ -332,7 +341,7 @@ public class ProjectImage {
     }
 
     private void addLightsToScene(Scene scene) {
-        scene.lights.add(new PointLight(new Color(20, 20, 200), new Point(0, -70, 25))
+        scene.lights.add(new PointLight(new Color(0, 0, 210), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
 
         Point position = new Point(102.5,-114.2,7.7); // Original position
@@ -343,9 +352,9 @@ public class ProjectImage {
                 .setKl(0.0005)
                 .setKq(0.00005)
                 .setNarrowBeam(4);
-        SpotLight lightSmallSphere = new SpotLight(new Color(150, 7, 7), new Point(136.1733,138.6233,100), new Vector(-29.6, -127.7, -56.4))
+        SpotLight lightSmallSphere = new SpotLight(new Color(150, 7, 70), new Point(136.1733,138.6233,100), new Vector(-29.6, -127.7, -56.4))
                 .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
-        SpotLight lightLargeSphere = new SpotLight(new Color(30, 180, 30), new Point(0, 245, 150), new Vector(4.8, -291.1, -118.7))
+        SpotLight lightLargeSphere = new SpotLight(new Color(10, 200, 10), new Point(0, 245, 150), new Vector(4.8, -291.1, -118.7))
                 .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
 //        SpotLight generalLight = new SpotLight(new Color(150, 150, 150), new Point(300, 245, 400), new Vector(-300, -245, -400))
 //                .setKc(1)  // Set constant attenuation to 1 (full intensity at the source)
@@ -378,7 +387,7 @@ SpotLight rightCubeLight = new SpotLight(new Color(200, 6, 2), new Point(190.482
                 .setSamplesPerPixel(1)
                 .setVUpSize(200, 150)
                 .setVpDistance(1000)
-                .setImageWriter(new ImageWriter("1.3.1 Lighting the small sphere Final Image ", 1600, 1200))
+                .setImageWriter(new ImageWriter("1.3.5 Lighting completed, test mirror Final Image ", 1600, 1200))
                 .build();
     }
 
