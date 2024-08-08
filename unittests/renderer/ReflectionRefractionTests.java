@@ -122,19 +122,13 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVUpSize(150, 150)
-                .setSamplesPerPixel(1)
-                .setMultithreading(9)
+                .setSamplesPerPixel(9)
+                .setMultithreading(10)
                 .setImageWriter(new ImageWriter("refractionTwoSpheres with 9 j", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
-//        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
-//                .setVUpSize(150, 150)
-//                .setSamplesPerPixel(1) // Enable 4x super-sampling anti-aliasing
-//                .setImageWriter(new ImageWriter("refractionTwoSpheres with 1", 500, 500))
-//                .build()
-//                .renderImage()
-//                .writeToImage();
+
     }
 /**
      * Produce a picture of a sphere lighted by a spot light
@@ -180,118 +174,7 @@ public class ReflectionRefractionTests {
         camera.writeToImage();
     }
 
-//    @Test
-//    public void MosaicTriangles() {
-//
-//        // Magic Mint background color
-//        // scene.background = new Color(185, 251, 237);
-//        // Deep Teal or Sea Green
-//       // scene.background = new Color(71, 105, 98);
-//        // scene.background = new Color(0, 0, 0);
-//        scene.background = new Color(0, 0, 0);
-//
-//        // Define colors
-//        Color[] colors = {new Color(RED), new Color(GREEN), new Color(BLUE), new Color(YELLOW),
-//                new Color(CYAN), new Color(MAGENTA), new Color(ORANGE), new Color(PINK)};
-//
-//        // Create triangles in a grid pattern
-//        int gridSize = 10; // Adjust the grid size as needed
-//        double size = 50;  // Size of each triangle
-//        for (int i = -gridSize; i < gridSize; i++) {
-//            for (int j = -gridSize; j < gridSize; j++) {
-//                Color color = colors[(i + gridSize) % colors.length];
-//                scene.geometries.add(
-//                        new Triangle(
-//                                new Point(i * size, j * size, -100),
-//                                new Point(i * size, (j + 1) * size, -100),
-//                                new Point((i + 1) * size, j * size, -100))
-//                                .setEmission(color)
-//                                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20))
-//                );
-//
-//
-//            }
-//        }
-//
-//        // Add spheres with new colors
-//        scene.geometries.add(
-//                new Sphere(100d, new Point(0, 0, -50)).setEmission(new Color(BLUE))
-//                        .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKT(0.3)),
-//                new Sphere(50d, new Point(0, 0, -50)).setEmission(new Color(255, 215, 0)) // Gold
-//                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
-//    scene.geometries.makeBVH();
-//        scene.lights.add(
-//                new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
-//                        .setKl(0.0004).setKq(0.0000006));
-//
-//        // Camera view configurations
-//        cameraBuilder.setVpDistance(1000).setVUpSize(500, 500);
-//
-//        // View 1: Default front view
-//        cameraBuilder.setLocation(new Point(0, 0, 1000))
-//                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_frontView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 2: Left front top view
-//        cameraBuilder.setLocation(new Point(-500, 500, 1000))
-//                .setDirection(new Vector(0.5, -0.5, -1).normalize(), new Vector(-0.5, -0.5, 0).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_leftFrontTopView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 3: Right front top view
-//        cameraBuilder.setLocation(new Point(500, 500, 1000))
-//                .setDirection(new Vector(-0.5, -0.5, -1).normalize(), new Vector(0.5, -0.5, 0).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_rightFrontTopView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 4: Left bottom view
-//        cameraBuilder.setLocation(new Point(-500, -500, 1000))
-//                .setDirection(new Vector(0.5, 0.5, -1).normalize(), new Vector(-0.5, 0.5, 0).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_leftBottomView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 5: Right bottom view
-//        cameraBuilder.setLocation(new Point(500, -500, 1000))
-//                .setDirection(new Vector(-0.5, 0.5, -1).normalize(), new Vector(0.5, 0.5, 0).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_rightBottomView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 6: Top down view
-//        cameraBuilder.setLocation(new Point(0, 1000, 0))
-//                .setDirection(new Vector(0, -1, 0).normalize(), new Vector(0, 0, -1).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_topDownView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//        // View 7: Bottom up view
-//        cameraBuilder.setLocation(new Point(0, -1000, 0))
-//                .setDirection(new Vector(0, 1, 0).normalize(), new Vector(0, 0, 1).normalize())
-//                .setImageWriter(new ImageWriter("MT mosaicTriangles_bottomUpView", 600, 600))
-//                .setMultithreading(9)
-//                .build()
-//                .renderImage()
-//                .writeToImage();
-//
-//
-//    }
+
 /**
      * Test for a scene with mosaic triangles and anti-aliasing
      */

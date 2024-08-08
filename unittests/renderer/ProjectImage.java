@@ -253,7 +253,7 @@ public class ProjectImage {
     }
 
     private Geometry createSphereForMirror() {
-        return new Sphere(30, new Point(230,-150,60))
+        return new Sphere(15, new Point(167,0,55))
                 .setEmission(new Color(118, 243, 255))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
     }
@@ -267,10 +267,10 @@ public class ProjectImage {
     }
 
     private Geometries createBubblegumCube() {
-        Point p1 = new Point(-125, 90, 0);
-        Point p2 = new Point(-75, 90, 0);
-        Point p3 = new Point(-125, 40, 0);
-        Point p4 = new Point(-75, 40, 0);
+        Point p1 = new Point(-140, 130, 0);
+        Point p2 = new Point(-90, 130, 0);
+        Point p3 = new Point(-140, 80, 0);
+        Point p4 = new Point(-90, 80, 0);
 
         Material bubblegumMaterial = new Material()
                 .setKd(0.9).setKs(0.1).setShininess(10);
@@ -294,7 +294,7 @@ public class ProjectImage {
     }
 
     private Geometry createSphereOnCube() {
-        return new Sphere(15, new Point(-100, 75, 30))
+        return new Sphere(15, new Point(-115, 115, 30))
                 .setEmission(new Color(231, 158, 110))
                 .setMaterial(new Material()
                         .setKd(0.7).setKs(0.3).setShininess(10)
@@ -383,11 +383,11 @@ SpotLight rightCubeLight = new SpotLight(new Color(200, 6, 2), new Point(190.482
                 .setRayTracer(new SimpleRayTracer(scene))
                 .setLocation(new Point(0, -1500, 90))
                 .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
-                .setMultithreading(10)
-                .setSamplesPerPixel(1)
+                .setMultithreading(15)
+                .setSamplesPerPixel(9)
                 .setVUpSize(200, 150)
                 .setVpDistance(1000)
-                .setImageWriter(new ImageWriter("1.3.5 Lighting completed, test mirror Final Image ", 1600, 1200))
+                .setImageWriter(new ImageWriter("1.4.2 Final Image with 9 sample ", 1600, 1200))
                 .build();
     }
 
