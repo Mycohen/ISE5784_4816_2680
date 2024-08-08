@@ -259,7 +259,6 @@ public class ProjectImage {
     }
 
 
-
     private Geometry createBackgroundWall() {
         return new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
                 .setEmission(new Color(50, 50, 80))
