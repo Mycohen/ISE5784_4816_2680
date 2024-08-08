@@ -334,6 +334,25 @@ public class ProjectImage {
     private void addLightsToScene(Scene scene) {
         scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
+        Color spotlightIntensity = new Color(120, 120, 180); // Increased intensity
+        Point position = new Point(75, -300, 2); // Original position
+        Point position2 = new Point(102.5,-114.2,7.7); // Original position
+        Vector direction1 = new Vector(41.9, 283.3, 11.7); // Original direction
+        Vector direction2 = new Vector(17.3, 111.1, -0.1); // Original direction
+
+        SpotLight spotLight = new SpotLight(spotlightIntensity, position2, direction2);
+        spotLight.setKc(1)
+                .setKl(0.0005) // Reduced linear attenuation for further reach
+                .setKq(0.00005) // Reduced quadratic attenuation for further reach
+                .setNarrowBeam(4); // Slightly increased narrow beam for better focus
+//        SpotLight spotLight = new SpotLight(spotlightIntensity, position, direction);
+//        spotLight.setKc(1)
+//                .setKl(0.0005) // Reduced linear attenuation for further reach
+//                .setKq(0.00005) // Reduced quadratic attenuation for further reach
+//                .setNarrowBeam(4); // Slightly increased narrow beam for better focus
+
+        scene.lights.add(spotLight);
+
     }
 
     private Camera setupCamera(Scene scene) {
@@ -345,7 +364,7 @@ public class ProjectImage {
                 .setSamplesPerPixel(1)
                 .setVUpSize(200, 150)
                 .setVpDistance(1000)
-                .setImageWriter(new ImageWriter("1.1.1 refactor Final Image ", 1600, 1200))
+                .setImageWriter(new ImageWriter("1.1.6 Lighting Final Image ", 1600, 1200))
                 .build();
     }
 
