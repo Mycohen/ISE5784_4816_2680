@@ -258,10 +258,10 @@ public class ProjectImage {
     }
 
     private Geometries createBubblegumCube() {
-        Point p1 = new Point(-140, 130, 0);
-        Point p2 = new Point(-90, 130, 0);
-        Point p3 = new Point(-140, 80, 0);
-        Point p4 = new Point(-90, 80, 0);
+        Point p1 = new Point(-125, 90, 0);
+        Point p2 = new Point(-75, 90, 0);
+        Point p3 = new Point(-125, 40, 0);
+        Point p4 = new Point(-75, 40, 0);
 
         Material bubblegumMaterial = new Material()
                 .setKd(0.9).setKs(0.1).setShininess(10);
@@ -285,7 +285,7 @@ public class ProjectImage {
     }
 
     private Geometry createSphereOnCube() {
-        return new Sphere(15, new Point(-115, 115, 30))
+        return new Sphere(15, new Point(-100, 75, 30))
                 .setEmission(new Color(231, 158, 110))
                 .setMaterial(new Material()
                         .setKd(0.7).setKs(0.3).setShininess(10)
@@ -332,35 +332,40 @@ public class ProjectImage {
     }
 
     private void addLightsToScene(Scene scene) {
-        scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
+        scene.lights.add(new PointLight(new Color(20, 20, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
-        Color spotlightIntensity = new Color(120, 120, 180); // Increased intensity
+
         Point position = new Point(102.5,-114.2,7.7); // Original position
         Vector direction = new Vector(17.3, 111.1, -0.1); // Original direction
 
-        SpotLight spotLight = new SpotLight(spotlightIntensity, position, direction);
+        SpotLight spotLight = new SpotLight(new Color(200, 0, 0), position, direction);
         spotLight.setKc(1)
                 .setKl(0.0005)
                 .setKq(0.00005)
                 .setNarrowBeam(4);
-        SpotLight lightSmallSphere = new SpotLight(new Color(200, 200, 200), new Point(136.1733,138.6233,100), new Vector(-29.6, -127.7, -56.4))
+        SpotLight lightSmallSphere = new SpotLight(new Color(150, 7, 7), new Point(136.1733,138.6233,100), new Vector(-29.6, -127.7, -56.4))
                 .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
-        SpotLight lightLargeSphere = new SpotLight(new Color(200, 200, 200), new Point(0, 245, 150), new Vector(4.8, -291.1, -118.7))
+        SpotLight lightLargeSphere = new SpotLight(new Color(30, 180, 30), new Point(0, 245, 150), new Vector(4.8, -291.1, -118.7))
                 .setKl(0.00001).setKq(0.000005).setNarrowBeam(4);
 //        SpotLight generalLight = new SpotLight(new Color(150, 150, 150), new Point(300, 245, 400), new Vector(-300, -245, -400))
 //                .setKc(1)  // Set constant attenuation to 1 (full intensity at the source)
 //                .setKl(0.000005)  // Reduced linear attenuation for further reach
 //                .setKq(0.0000025)  // Reduced quadratic attenuation for slower falloff
 //                .setNarrowBeam(8);  // Increased beam width for more general lighting
-
-PointLight pointLight = new PointLight(new Color(150, 150, 150), new Point(200,245,180));
+SpotLight middleCubeLight = new SpotLight(new Color(200, 6, 2), new Point(190.4821,168.4696,50), new Vector(-190.5,76.5,130))
+        .setKl(0.0001).setKq(0.00005).setNarrowBeam(4);
+SpotLight rightCubeLight = new SpotLight(new Color(200, 6, 2), new Point(190.4821,168.4696,50), new Vector(-90.5, 76.5, 100))
+        .setKl(0.0001).setKq(0.00005).setNarrowBeam(4);
+//PointLight pointLight = new PointLight(new Color(150, 150, 150), new Point(200,245,180));
 
 
         scene.lights.add(spotLight);
         scene.lights.add(lightSmallSphere);
         scene.lights.add(lightLargeSphere);
 //        scene.lights.add(generalLight);
-        scene.lights.add(pointLight);
+//        scene.lights.add(pointLight);
+        scene.lights.add(middleCubeLight);
+        scene.lights.add(rightCubeLight);
 
     }
 
@@ -373,7 +378,7 @@ PointLight pointLight = new PointLight(new Color(150, 150, 150), new Point(200,2
                 .setSamplesPerPixel(1)
                 .setVUpSize(200, 150)
                 .setVpDistance(1000)
-                .setImageWriter(new ImageWriter("1.2.5 Lighting the small sphere Final Image ", 1600, 1200))
+                .setImageWriter(new ImageWriter("1.3.1 Lighting the small sphere Final Image ", 1600, 1200))
                 .build();
     }
 
