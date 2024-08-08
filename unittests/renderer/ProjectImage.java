@@ -190,14 +190,44 @@ public class ProjectImage {
     public void testFinalImage() {
         Scene scene = new Scene("Final image");
 
-        // Crystal sphere at the origin
-        Geometry crystalSphere = new Sphere(50, new Point(0, 0, 50))
+        // Create and add geometries to the scene
+        addGeometriesToScene(scene);
+
+        // Lighting setup
+        addLightsToScene(scene);
+
+        // Camera setup
+        Camera camera = setupCamera(scene);
+
+        // Render and write image
+        camera.renderImage();
+        camera.writeToImage();
+    }
+
+
+    private void addGeometriesToScene(Scene scene) {
+        scene.geometries.add(
+                createCrystalSphere(),
+                createCheckerboardFloor(),
+                createReflectiveSphere(),
+                createBackgroundWall(),
+                createBubblegumCube(),
+                createSphereOnCube(),
+                createWallDecorations(),
+                createMirror()
+        );
+        scene.geometries.makeBVH();
+    }
+
+    private Geometry createCrystalSphere() {
+        return new Sphere(50, new Point(0, 0, 50))
                 .setEmission(new Color(20, 20, 20))
                 .setMaterial(new Material()
                         .setKd(0.2).setKs(0.9).setShininess(300)
                         .setKR(0.4).setKT(0.6));
+    }
 
-        // Create a checkered floor on YX plane (vertical)
+    private Geometries createCheckerboardFloor() {
         int squareSize = 50;
         Geometries checkerboard = new Geometries();
         for (int i = -18; i <= 5; i++) {
@@ -212,31 +242,31 @@ public class ProjectImage {
                         .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30).setKR(0.1)));
             }
         }
+        return checkerboard;
+    }
 
-        // Add some additional objects for interesting reflections
-        Geometry reflectiveSphere = new Sphere(30, new Point(100, 0, 30))
+    private Geometry createReflectiveSphere() {
+        return new Sphere(30, new Point(100, 0, 30))
                 .setEmission(new Color(100, 20, 20))
                 .setMaterial(new Material().setKd(0.4).setKs(0.6).setShininess(100).setKR(0.3));
+    }
 
-        // Create background wall
-        Geometry backgroundWall = new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
+    private Geometry createBackgroundWall() {
+        return new Plane(new Point(0, 250, 0), new Vector(0, -1, 0))
                 .setEmission(new Color(50, 50, 80))
                 .setMaterial(new Material().setKd(0.8).setKs(0.2).setShininess(30));
+    }
 
-        // Define the base points for the cube
+    private Geometries createBubblegumCube() {
         Point p1 = new Point(-140, 130, 0);
         Point p2 = new Point(-90, 130, 0);
         Point p3 = new Point(-140, 80, 0);
         Point p4 = new Point(-90, 80, 0);
 
-        // Set material properties to match a matte, bubblegum-like appearance
         Material bubblegumMaterial = new Material()
                 .setKd(0.9).setKs(0.1).setShininess(10);
-
-        // Set a solid pink color for the bubblegum look
         Color bubblegumColor = new Color(255, 105, 180);
 
-        // Create the cube faces and apply the material and color
         Geometry[] cubeFaces = {
                 new Polygon(p1, p2, p4, p3),
                 new Polygon(p1.add(new Vector(0, 0, 15)), p2.add(new Vector(0, 0, 15)),
@@ -247,53 +277,38 @@ public class ProjectImage {
                 new Polygon(p3, p1, p1.add(new Vector(0, 0, 15)), p3.add(new Vector(0, 0, 15)))
         };
 
-        // Apply material and color to each face
+        Geometries cube = new Geometries();
         for (Geometry face : cubeFaces) {
-            face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial);
+            cube.add(face.setEmission(bubblegumColor).setMaterial(bubblegumMaterial));
         }
+        return cube;
+    }
 
-        Geometry sphereOnCube = new Sphere(15, new Point(-115, 115, 30))
+    private Geometry createSphereOnCube() {
+        return new Sphere(15, new Point(-115, 115, 30))
                 .setEmission(new Color(231, 158, 110))
                 .setMaterial(new Material()
                         .setKd(0.7).setKs(0.3).setShininess(10)
                         .setKT(0.2).setKR(0.1));
+    }
 
-
-        // Add decorative elements to the background wall
+    private Geometries createWallDecorations() {
         Geometries wallDecorations = new Geometries();
 
-        // Create cubes at specific locations
-        Color cubeColor = new Color(0.5, 0.5, 1); // Light blue color
+        Color cubeColor = new Color(0.5, 0.5, 1);
         Material cubeMaterial = new Material().setKd(0.7).setKs(0.3).setShininess(100).setKR(0.1);
 
         // First cube with mirror
-        Point cube1Center = new Point(-100, 245, 100);
-        wallDecorations.add(createCube(cube1Center, 20, cubeColor, cubeMaterial));
-        // Adjust mirror position and orientation to reflect the crystal sphere
+        wallDecorations.add(createCube(new Point(-100, 245, 100), 20, cubeColor, cubeMaterial));
         wallDecorations.add(createMirrorWithFrame(new Point(-100, 245, 120), 18, new Vector(-1, -5, -2)));
 
         // Second cube with flower
-        Point cube2Center = new Point(0, 245, 150);
-        wallDecorations.add(createCube(cube2Center, 30, cubeColor, cubeMaterial));
+        wallDecorations.add(createCube(new Point(0, 245, 150), 30, cubeColor, cubeMaterial));
         wallDecorations.add(createFlower(new Point(0, 245, 180), 25));
 
-        // Third cube with
-        Point cube3Center = new Point(100, 245, 125);
-        wallDecorations.add(createCube(cube3Center, 25, cubeColor, cubeMaterial));
+        // Third cube with mirror
+        wallDecorations.add(createCube(new Point(100, 245, 125), 25, cubeColor, cubeMaterial));
         wallDecorations.add(createMirrorWithFrame(new Point(100, 245, 150), 20, new Vector(-1, -5, -2).normalize()));
-
-        Geometry mirror = new Polygon(
-                new Point(-155, 150, 0),
-                new Point(-155, 150, 80),
-                new Point(-50, 200, 80),
-                new Point(-50, 200, 0)
-        );
-        Material mirrorMaterial = new Material()
-                .setKD(0.1)  // Low diffuse reflection
-                .setKS(0.9)  // High specular reflection
-                .setShininess(300)  // High shininess for a sharp reflection
-                .setKR(0.9);  // High reflection coefficient
-        mirror.setMaterial(mirrorMaterial);
 
         // Wave-like pattern
         for (int i = 0; i < 3; i++) {
@@ -301,31 +316,37 @@ public class ProjectImage {
                     new Color(200, 200, 255), new Material().setKd(0.8).setKs(0.2).setShininess(30).setKT(0.3)));
         }
 
-        // Add all geometries to the scene
-        scene.geometries.add(crystalSphere, checkerboard, reflectiveSphere, backgroundWall, sphereOnCube, wallDecorations, mirror);
-        scene.geometries.add(cubeFaces);
-        scene.geometries.makeBVH();
+        return wallDecorations;
+    }
 
-        // Lighting setup
+    private Geometry createMirror() {
+        Geometry mirror = new Polygon(
+                new Point(-155, 150, 0),
+                new Point(-155, 150, 80),
+                new Point(-50, 200, 80),
+                new Point(-50, 200, 0)
+        );
+        Material mirrorMaterial = new Material()
+                .setKD(0.1).setKS(0.9).setShininess(300).setKR(0.9);
+        return mirror.setMaterial(mirrorMaterial);
+    }
+
+    private void addLightsToScene(Scene scene) {
         scene.lights.add(new PointLight(new Color(200, 200, 200), new Point(0, -70, 25))
                 .setKl(0.0002).setKq(0.00002));
-//        scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(-125, -125, 50))
-//                .setKl(0.001).setKq(0.0002));
+    }
 
-        //Camera setup
-        Camera.Builder camera = Camera.getBuilder()
+    private Camera setupCamera(Scene scene) {
+        return Camera.getBuilder()
                 .setRayTracer(new SimpleRayTracer(scene))
                 .setLocation(new Point(0, -1500, 90))
                 .setDirection(new Vector(0, 1, 0), new Vector(0, 0, 1))
-                .setMultithreading(9)
+                .setMultithreading(10)
                 .setSamplesPerPixel(1)
                 .setVUpSize(200, 150)
-                .setVpDistance(1000);
-
-        camera.setImageWriter(new ImageWriter("1.0.9 Final Image", 1600, 1200))
-                .build()
-                .renderImage()
-                .writeToImage();
+                .setVpDistance(1000)
+                .setImageWriter(new ImageWriter("1.1.1 refactor Final Image ", 1600, 1200))
+                .build();
     }
 
     private Geometries createMirrorWithFrame(Point center, double size, Vector normal) {
@@ -371,7 +392,6 @@ public class ProjectImage {
 
         return mirrorWithFrame;
     }
-
 
     private Geometries createFlower(Point center, double size) {
         Geometries flower = new Geometries();
